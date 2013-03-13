@@ -1,4 +1,4 @@
-# CDN Connect API Ruby Client
+# CDN Connect API Ruby Client, v0.0.1
 
 ## Description
 
@@ -12,7 +12,7 @@ to easily upload files and get information with only a few lines of code.
 
 ## API Key
 
-An API Key is can be created for a specific app within your CDN Connect's account. Sign into your account and go to the "API Key" tab for the app you want to interact with. Next click "Add API Key" and use this value when creating a new client within the code. The API Key can be revoked
+An API Key is can be created for a specific app within your CDN Connect's account. Sign into your account and go to the "API Key" tab for the app you want to interact with. Next click "Add API Key" and use this value when creating a new API client within the code. The API Key can be revoked
 by you at any time and numerous keys can be created.
 
 ## Example Usage
@@ -23,7 +23,7 @@ by you at any time and numerous keys can be created.
     
     # Upload to a folder in the app the API Key was created for
     response = api_client.upload(:destination_folder_url => 'demo.cdnconnect.com/images', 
-                                 :source_local_path => 'cat.jpg')
+                                 :source_file_local_path => 'meowzers.jpg')
 
     # Read the response
     if response.is_success
@@ -32,16 +32,40 @@ by you at any time and numerous keys can be created.
 
 ## Get Object Data
 
-An object can be either a file or a folder. Pass the get method the url you want to receive data on.
+An object can be either a file or a folder. Pass the `get` method the `url` you want to receive data about.
 
     # Get file information
-    response = api_client.get(:url => 'demo.cdnconnect.com/images/cat.jpg')
-    puts response.get_result('name')
+    response = api_client.get(:url => 'demo.cdnconnect.com/images/meowzers.jpg')
+    puts response.results['data']['name']           #=> "meowzers.jpg"
 
     # Get folder information
     response = api_client.get(:url => 'demo.cdnconnect.com/images')
-    puts response.get_result('name')
+    puts response.results['data']['name']           #=> "images"
 
+
+## Response Object
+
+All responses will be structured the same with both a `results` and `msgs` object at the root level, such as:
+
+    {
+      "results":
+      {
+        "data":
+        {
+          "id": "bU1SS1JyvF9I", 
+          "status": 1,
+          "name": "images",
+          "created": "2013-03-12T17:02Z",
+          "parent_id": "iF637hnbwI4G",
+          "folder": true, 
+          "files": [],
+          "folders": []
+          }
+      },
+      "msgs":[]
+    }
+
+The `results` object contains the guts of the information your looking for, and the `msgs` object contains an array of messages which can represent errors, warnings and information. The `results` object can be null, or it can contain many objects within it. Each response can have different data within `results` object and `msgs` object. In the case above, the `results` object contains the key `data`, and within the `data` object it contains summary information of the images folder. 
 
 ## Support
 

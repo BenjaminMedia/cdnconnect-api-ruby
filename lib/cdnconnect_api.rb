@@ -39,7 +39,7 @@ module CDNConnect
     #     created within CDN Connect's account for a specific app.
     #   - <code>:response_format</code> -
     #     How data should be formatted on the response. Possible values for
-    #     include application/json, application/xml, text/html. JSON is the default.
+    #     include application/json, application/xml. JSON is the default.
     #   - <code>:client_id</code> -
     #     A unique identifier issued to the client to identify itself to CDN Connect's
     #     authorization server. This is issued by CDN Connect to individual clients.
@@ -110,23 +110,23 @@ module CDNConnect
 
 
     ##
-    # Used to upload a local file to a destination folder within
+    # Used to upload a file or files within a folder to a destination folder within
     # a CDN Connect app. This method requires either a CDN Connect URL, or both an app_id
-    # and obj_id.
+    # and obj_id. If you are uploading many files be sure to use the same client instance.
     #
     # @param [Hash] options
     #   The configuration parameters for the client.
     #   - <code>:destination_folder_url</code> -
-    #     The URL of the folder to upload to. If thedestination_folder_url option 
-    #     is not provided then you must use both the app_id and obj_id options.
+    #     The URL of the folder to upload to. If the destination folder URL option 
+    #     is not provided then you must use the app_id and obj_id options.
     #   - <code>:app_id</code> -
     #     The app_id of the app to upload to. If the app_id or obj_id options 
-    #     are not provided then you must use the destination_folder_url option.
+    #     are not provided then you must use the url option.
     #   - <code>:obj_id</code> -
     #     The obj_id of the folder to upload to. If the app_id or obj_id options 
-    #     are not provided then you must use the destination_folder_url option.
-    #   - <code>:source_local_path</code> -
-    #     The local path of the source file to upload.
+    #     are not provided then you must use the url option.
+    #   - <code>:source_file_local_path</code> -
+    #     A string of a source file's local paths to upload.
     def upload(options={})
       # Make sure we've got good data before starting the upload
       prepare_upload(options)
@@ -134,14 +134,26 @@ module CDNConnect
       i = 1
       begin
 
-        upload_url_response = self.get_upload_url(options)
-        if upload_url_response.is_error
-          return upload_url_response
+        # Check if we have a prefetched upload url before requesting a new one
+        upload_url = get_prefetched_upload_url(options[:destination_folder_url], 
+                                               options[:app_id], 
+                                               options[:obj_id])
+        if upload_url == nil
+          # We do not already have an upload url created. The first upload request
+          # will need to make a request for an upload url. After the first upload
+          # each upload response will also include a new upload url which can be used 
+          # for the next upload when uploading to the same folder.
+          upload_url_response = self.get_upload_url(options)
+          if upload_url_response.is_error
+            return upload_url_response
+          end
+          upload_url = upload_url_response.get_result('upload_url')
         end
-        upload_url = upload_url_response.get_result('upload_url')
 
-        # Create POST data that gets sent in the request
-        post_data = { :file => Faraday::UploadIO.new(options[:source_local_path], options[:mime_type]) }
+        # Create the POST data that gets sent in the request
+        post_data = {}
+        post_data[:create_upload_url] = 'true' # have the API also create the next upload url
+        post_data[:file] = Faraday::UploadIO.new(options[:source_file_local_path], options[:mime_type])
 
         # Build the request to the API
         conn = Faraday.new() do |req|
@@ -158,6 +170,12 @@ module CDNConnect
         # Woot! Convert the response to our model and see what's up
         response = APIResponse.new(api_response)
 
+        # an upload response also contains a new upload url. Save it for the next upload.
+        set_prefetched_upload_url(options[:destination_folder_url], 
+                                  options[:app_id], 
+                                  options[:obj_id],
+                                  response.get_result('upload_url'))
+
         # Rettempt the upload a max of two times if there was a server error
         # Otherwise return the response data
         if not response.is_server_error or i > 2
@@ -165,6 +183,7 @@ module CDNConnect
         end
         i += 1
       end while i <= 3
+      
     end
 
 
@@ -173,10 +192,10 @@ module CDNConnect
     # to get the options all ready to go and validated before uploading a file(s).
     # @!visibility private
     def prepare_upload(options={})
-      # Validate we've got a source file or folder to upload
-      source_local_path = options[:source_local_path]
-      if source_local_path == nil
-        raise ArgumentError, 'source_local_path required'
+      # Validate we've got a source file
+      source_file_local_path = options[:source_file_local_path]
+      if source_file_local_path == nil
+        raise ArgumentError, 'source_file_local_path required'
       end
 
       # Validate we've got a destination folder to upload to
@@ -189,7 +208,9 @@ module CDNConnect
 
       # Ideally it'd be awesome to already set what the mime type is, but getting that
       # info accurately is a pain. If you do not send in the mime_type we will 
-      # figure it out for you by using the file extension (so ALWAYS have an extension)
+      # figure it out for you by the file extension (so ALWAYS have an extension)
+      # This will only work when using the source_file option, and will not 
+      # work with the source_files or source_folder option.
       if options[:mime_type] == nil
         options[:mime_type] = 'application/octet-stream'
       end
@@ -199,10 +220,48 @@ module CDNConnect
 
 
     ##
-    # Do not call this directly. An upload url must be optained first before uploading a file. 
+    # This method should not be called directly, but is used to check if we
+    # already have an upload url ready to go for the folder we're uploading to.
+    # @!visibility private
+    def get_prefetched_upload_url(destination_url, app_id, obj_id)
+      # Build a unique key for the folder which was used to save an new upload url
+      key = destination_url || ''
+      key += app_id || ''
+      key += obj_id || ''
+      rtn_url = @prefetched_upload_urls[key]
+      @prefetched_upload_urls[key] = nil
+      return rtn_url
+    end
+
+
+    ##
+    # This method should not be called directly, but is used to remember an upload url 
+    # for the next upload to this folder.
+    # @!visibility private
+    def set_prefetched_upload_url(destination_url, app_id, obj_id, upload_url)
+      # Build a unique key for the folder to save an new upload url value to
+      key = destination_url || ''
+      key += app_id || ''
+      key += obj_id || ''
+      @prefetched_upload_urls[key] = upload_url
+    end
+
+
+    ##
+    # An upload url must be optained first before uploading a file. After the first
+    # upload url is received, all upload responses contain another upload which can be
+    # used to eliminate the need to do seperate requests for an upload url.
     # @!visibility private
     def get_upload_url(options={})
-      path = generate_obj_path(options) + '/upload'
+      destination_folder_url = options[:destination_folder_url]
+
+      path = nil
+      if destination_folder_url != nil
+        path = '/v1/' + destination_folder_url + '/upload'
+      else
+        path = generate_obj_path(options) + '/upload'
+      end
+
       i = 1
       begin
         response = self.fetch(:path => path)
@@ -221,15 +280,15 @@ module CDNConnect
     def generate_obj_path(options={})
       app_id = options[:app_id]
       obj_id = options[:obj_id]
-      url = options[:url]
+      uri = options[:uri] || options[:url]
       path = nil
 
       # An object's path can either be made up of an app_id and an obj_id
-      # Or it can be made up of the entire url
+      # Or it can be made up of the entire URI
       if app_id != nil and obj_id != nil
         path = 'apps/' + app_id + '/objects/' + obj_id
-      elsif url != nil
-        path = url
+      elsif uri != nil
+        path = uri
       end
 
       if path == nil
@@ -241,7 +300,6 @@ module CDNConnect
 
 
     ##
-    # Do not call this directly.
     # This method should not be called directly, but is used to validate data
     # and make it all pretty before firing off the request to the API.
     # @!visibility private
@@ -254,22 +312,20 @@ module CDNConnect
 
       headers = { 'User-Agent' => @@user_agent }
 
-      # There are three possible response content-types: JSON, XML, HTML
+      # There are three possible response content-types: JSON, XML
       # Default Content-Type is application/json with a .json extension
       if options[:response_format] == 'application/xml'
         headers['Content-Type'] = 'application/xml'
         response_extension = 'xml'
-      elsif options[:response_format] == 'text/html'
-        headers['Content-Type'] = 'text/html'
-        response_extension = 'html'
       else
         options[:response_format] = 'application/json'
         headers['Content-Type'] = 'application/json'
-        response_extension = 'json'          
+        response_extension = 'json'       
       end
       options[:headers] = headers
 
       options[:uri] = @@api_host + options[:path] + '.' + response_extension
+      options[:url] = options[:uri]
       options[:method] = options[:method] || 'GET'
 
       return options
@@ -277,7 +333,7 @@ module CDNConnect
 
 
     ##
-    # Do not call this directly. Guts of an authorized request.
+    # Guts of an authorized request. Do not call this directly.
     # @!visibility private
     def fetch(options={})
       # Prepare the data to be shipped in the request

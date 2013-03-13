@@ -40,25 +40,25 @@ class CDNConnectApiTest < Test::Unit::TestCase
       options = api_client.prepare_upload(options)
     end
 
-    options = { :source_local_path => 'source_file', :destination_folder_url => 'destination_folder_url' }
+    options = { :source_file_local_path => 'source_file_local_path', :destination_folder_url => 'destination_folder_url' }
     options = api_client.prepare_upload(options)
     assert_equal 'application/octet-stream', options[:mime_type]
 
-    options = { :source_local_path => 'source_local_path', :destination_folder_url => 'destination_folder_url', :mime_type => 'mime_type' }
+    options = { :source_file_local_path => 'source_file_local_path', :destination_folder_url => 'destination_folder_url', :mime_type => 'mime_type' }
     options = api_client.prepare_upload(options)
     assert_equal 'mime_type', options[:mime_type]
 
-    options = { :source_local_path => 'source_local_path', :destination_folder_url => 'destination_folder_url', :mime_type => 'mime_type' }
+    options = { :source_file_local_path => 'source_file_local_path', :destination_folder_url => 'destination_folder_url', :mime_type => 'mime_type' }
     options = api_client.prepare_upload(options)
     assert_equal 'mime_type', options[:mime_type]
 
     assert_raise ArgumentError do
-      options = { :source_local_path => 'source_local_path', :app_id => 'app_id' }
+      options = { :source_file_local_path => 'source_file_local_path', :app_id => 'app_id' }
       options = api_client.prepare_upload(options)
     end
 
     assert_raise ArgumentError do
-      options = { :source_local_path => 'source_local_path', :obj_id => 'obj_id' }
+      options = { :source_file_local_path => 'source_file_local_path', :obj_id => 'obj_id' }
       options = api_client.prepare_upload(options)
     end
 
@@ -86,12 +86,6 @@ class CDNConnectApiTest < Test::Unit::TestCase
     rtn = api_client.prepare(options)
     assert_equal 'application/xml', rtn[:response_format]
     assert_equal 'https://api.cdnconnect.com/ME_PATH.xml', rtn[:url]
-
-    options = { :path => '/ME_PATH', :response_format => 'text/html', :method => 'POST' }
-    rtn = api_client.prepare(options)
-    assert_equal 'text/html', rtn[:response_format]
-    assert_equal 'https://api.cdnconnect.com/ME_PATH.html', rtn[:url]
-    assert_equal 'POST', rtn[:method]
 
     options = { :path => '/ME_PATH', :response_format => 'wrong/type' }
     rtn = api_client.prepare(options)

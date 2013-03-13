@@ -40,16 +40,13 @@ module CDNConnect
         elsif format.include? 'application/xml'
           @data = ActiveSupport::XML.decode(body)
         else
-          @data = body
+          raise "invalid data format"
         end
       end
       @data
     end
 
     def results()
-      if format.include? 'text/html'
-        return body
-      end
       # this is just double checking the results data
       # exists and is built with the correct structure
       d = data
@@ -60,7 +57,7 @@ module CDNConnect
     end
 
     def get_result(key)
-      # A handy method so you don't have to do any nil checking
+      # A helper method so you don't have to do any nil checking
       # as you dig through the response results
       r = results
       if r != nil
@@ -70,9 +67,6 @@ module CDNConnect
     end
 
     def msgs()
-      if format.include? 'text/html'
-        return body
-      end
       # this is just double checking the msgs data
       # exists and is built with the correct structure
       d = data
