@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email = "developer@cdnconnect.com"
 
   s.date = "2013-04-01"
-  s.description = "CDN Connect API Ruby Client which makes it easier to interact with api.cdnconnect.com."
+  s.description = "The CDN Connect API Ruby Client makes it easier to upload files and interact with our API. Most interactions with CDN Connect APIs require users to authorize applications via OAuth 2.0. This library simplifies the communication with CDN Connect even further allowing you to easily upload files and get information with only a few lines of code."
   
   s.extra_rdoc_files = ["README.md"]
   s.require_paths = ["lib"]

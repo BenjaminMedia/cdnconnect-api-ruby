@@ -1,8 +1,4 @@
 .yardopts/
-.yardoc/checksums
-
-.yardoc/object_types
-
-.yardoc/objects/root.dat
+.yardoc/
 
 *.gem
