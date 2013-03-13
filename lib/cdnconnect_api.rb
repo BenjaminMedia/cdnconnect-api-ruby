@@ -23,7 +23,7 @@ module CDNConnect
   class APIClient
   
     @@application_name = 'cdnconnect-api-ruby'
-    @@application_version = '0.0.1'
+    @@application_version = '0.0.2'
     @@api_host = 'https://api.cdnconnect.com'
     @@user_agent = @@application_name + ' v' + @@application_version
 
