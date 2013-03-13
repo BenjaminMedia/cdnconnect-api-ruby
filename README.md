@@ -1,6 +1,4 @@
-# CDN Connect API Ruby Client, v0.0.1
-
-## Description
+# CDN Connect API Ruby Client, v0.0.2
 
 The CDN Connect API Ruby Client makes it easier to upload files and interact with
 our API. Most interactions with CDN Connect APIs require users to authorize applications via OAuth 2.0. This library simplifies the communication with CDN Connect even further allowing you
@@ -9,6 +7,8 @@ to easily upload files and get information with only a few lines of code.
 ## Install
 
     $ sudo gem install cdnconnect-api
+
+[RubyGems.org: cdnconnect-api](https://rubygems.org/gems/cdnconnect-api)
 
 ## API Key
 
@@ -65,7 +65,9 @@ All responses will be structured the same with both a `results` and `msgs` objec
       "msgs":[]
     }
 
-The `results` object contains the guts of the information your looking for, and the `msgs` object contains an array of messages which can represent errors, warnings and information. The `results` object can be null, or it can contain many objects within it. Each response can have different data within `results` object and `msgs` object. In the case above, the `results` object contains the key `data`, and within the `data` object it contains summary information of the images folder. 
+The `results` object contains the guts of the information your looking for, and the `msgs` object contains an array of messages which can represent errors, warnings and information. The `results` object can be null, or it can contain many objects within it. Each response can have different data within `results` object and `msgs` object. In the case above, the `results` object contains the key `data`, and within the `data` object it contains summary information of the images folder.
+
+
 
 ## Support
 
