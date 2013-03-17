@@ -1,19 +1,22 @@
-# CDN Connect API Ruby Client, v0.0.2
+# CDN Connect API Ruby Client, v0.1.0
 
 The CDN Connect API Ruby Client makes it easier to upload files and interact with
-our API. Most interactions with CDN Connect APIs require users to authorize applications via OAuth 2.0. This library simplifies the communication with CDN Connect even further allowing you
-to easily upload files and get information with only a few lines of code.
+our API. CDN Connect makes it easier to manage production assets for teams of developers and designers, all while serving files from a fast content delivery network. Features include image optimization, resizing, cropping, filters, etc. Most interactions with CDN Connect APIs require users to authorize applications via OAuth 2.0. This library simplifies the communication with CDN Connect even further allowing you to easily upload files and get information with only a few lines of code.
+
+[View the full CDN Connect API documentation](http://api.cdnconnect.com/)
 
 ## Install
 
-    $ sudo gem install cdnconnect-api
+    $ gem install cdnconnect-api
 
 [RubyGems.org: cdnconnect-api](https://rubygems.org/gems/cdnconnect-api)
 
+
 ## API Key
 
-An API Key is can be created for a specific app within your CDN Connect's account. Sign into your account and go to the "API Key" tab for the app you want to interact with. Next click "Add API Key" and use this value when creating a new API client within the code. The API Key can be revoked
+An API Key can be created for a specific app within your CDN Connect's account. Sign into your account and go to the "API Key" tab for the app you want to interact with. Next click "Add API Key" and use this value when creating a new API client within the code. The API Key can be revoked
 by you at any time and numerous keys can be created.
+
 
 ## Example Usage
 
@@ -30,43 +33,46 @@ by you at any time and numerous keys can be created.
       # "Woot!"
     end
 
+
 ## Get Object Data
 
-An object can be either a file or a folder. Pass the `get` method the `url` you want to receive data about.
+Following the [API documentation](http://api.cdnconnect.com/), you can use these methods to  build a requests and return an APIResponse object.
+
+* `get`: GET Request. Used when needing to just read data.
+* `post`: POST Request. Used when creating data.
+* `put`: PUT Request. Used when updating data.
+* `delete`: DELETE Request. Used when deleting data.
+
+Each of these methods take one parameter which is the API path you want to request. Depending on which method you use, it will send the request with the correct HTTP verb.
 
     # Get file information
-    response = api_client.get(:url => 'demo.cdnconnect.com/images/meowzers.jpg')
+    response = api_client.get('demo.cdnconnect.com/images/meowzers.jpg')
     puts response.results['data']['name']           #=> "meowzers.jpg"
-
-    # Get folder information
-    response = api_client.get(:url => 'demo.cdnconnect.com/images')
-    puts response.results['data']['name']           #=> "images"
 
 
 ## Response Object
 
 All responses will be structured the same with both a `results` and `msgs` object at the root level, such as:
 
-    {
+  {
       "results":
       {
-        "data":
-        {
-          "id": "bU1SS1JyvF9I", 
-          "status": 1,
-          "name": "images",
-          "created": "2013-03-12T17:02Z",
-          "parent_id": "iF637hnbwI4G",
-          "folder": true, 
-          "files": [],
-          "folders": []
+          "data":
+          {
+              "id": "bU1SS1JyvF9I", 
+              "status": 1,
+              "name": "images",
+              "created": "2013-03-12T17:02Z",
+              "parent_id": "iF637hnbwI4G",
+              "folder": true, 
+              "files": [],
+              "folders": []
           }
       },
       "msgs":[]
-    }
+  }
 
-The `results` object contains the guts of the information your looking for, and the `msgs` object contains an array of messages which can represent errors, warnings and information. The `results` object can be null, or it can contain many objects within it. Each response can have different data within `results` object and `msgs` object. In the case above, the `results` object contains the key `data`, and within the `data` object it contains summary information of the images folder.
-
+Be sure to view the [API documentation](http://api.cdnconnect.com/) describing what each response object will contain depending on the API resource.
 
 
 ## Support
