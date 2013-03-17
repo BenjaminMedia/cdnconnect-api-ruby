@@ -44,7 +44,6 @@ Following the [API documentation](http://api.cdnconnect.com/), you can use these
 
 Each of these methods take one parameter which is the API path you want to request. Depending on which method you use, it will send the request with the correct HTTP verb.
 
-    # Get file information
     response = api_client.get('demo.cdnconnect.com/images/meowzers.jpg')
     puts response.results['data']['name']           #=> "meowzers.jpg"
 
@@ -53,23 +52,23 @@ Each of these methods take one parameter which is the API path you want to reque
 
 All responses will be structured the same with both a `results` and `msgs` object at the root level, such as:
 
-  {
-      "results":
-      {
-          "data":
-          {
-              "id": "bU1SS1JyvF9I", 
-              "status": 1,
-              "name": "images",
-              "created": "2013-03-12T17:02Z",
-              "parent_id": "iF637hnbwI4G",
-              "folder": true, 
-              "files": [],
-              "folders": []
-          }
-      },
-      "msgs":[]
-  }
+    {
+        "results":
+        {
+            "data":
+            {
+                "id": "bU1SS1JyvF9I", 
+                "status": 1,
+                "name": "images",
+                "created": "2013-03-12T17:02Z",
+                "parent_id": "iF637hnbwI4G",
+                "folder": true, 
+                "files": [],
+                "folders": []
+            }
+        },
+        "msgs":[]
+    }
 
 Be sure to view the [API documentation](http://api.cdnconnect.com/) describing what each response object will contain depending on the API resource.
 
