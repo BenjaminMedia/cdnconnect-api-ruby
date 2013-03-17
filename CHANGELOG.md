@@ -1,3 +1,10 @@
+# 0.1.1
+
+* Client needs to specify the version number in the path
+* Library does not assume /v1/ in the path
+* Added debug option to print out debugging info
+
+
 # 0.1.0
 
 * Have the client call the exact API path they need data from.
