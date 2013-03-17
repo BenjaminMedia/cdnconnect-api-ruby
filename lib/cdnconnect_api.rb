@@ -23,7 +23,7 @@ module CDNConnect
   class APIClient
   
     @@application_name = 'cdnconnect-api-ruby'
-    @@application_version = '0.0.2'
+    @@application_version = '0.1.1'
     @@api_host = 'https://api.cdnconnect.com'
     @@user_agent = @@application_name + ' v' + @@application_version
 
@@ -37,16 +37,15 @@ module CDNConnect
     #   - <code>:api_key</code> -
     #     An API Key (commonly known as an access_token) which was previously 
     #     created within CDN Connect's account for a specific app.
-    #   - <code>:response_format</code> -
-    #     How data should be formatted on the response. Possible values for
-    #     include application/json, application/xml. JSON is the default.
     #   - <code>:client_id</code> -
     #     A unique identifier issued to the client to identify itself to CDN Connect's
-    #     authorization server. This is issued by CDN Connect to individual clients.
+    #     authorization server. This is issued by CDN Connect to external clients.
+    #     This is only needed if an API Key isn't already known. 
     #   - <code>:client_secret</code> -
-    #     A shared secret issued by the CDN Connect's authorization server,
+    #     A secret issued by the CDN Connect's authorization server,
     #     which is used to authenticate the client. Do not confuse this is an access_token
-    #     or an api_key.
+    #     or an api_key. This is only required if an API Key
+    #     isn't already known. A client secret should not be shared.
     #   - <code>:scope</code> -
     #     The scope of the access request, expressed either as an Array
     #     or as a space-delimited String.
@@ -59,6 +58,8 @@ module CDNConnect
     #     The redirection URI used in the initial request.
     #   - <code>:access_token</code> -
     #     The current access token for this client, also known as the API Key.
+    #   - <code>:debug</code> -
+    #     Print out any debugging information. Default is false.
     def initialize(options={})
       # Normalize key to String to allow indifferent access.
       options = options.inject({}) { |accu, (k, v)| accu[k.to_s] = v; accu }
@@ -72,7 +73,7 @@ module CDNConnect
       @redirect_uri = options["redirect_uri"]
       options["access_token"] = options["access_token"] || options["api_key"] # both work
       @access_token = options["access_token"]
-      @response_format = options["response_format"] || 'application/json'
+      @debug = options["debug"] || false
       @prefetched_upload_urls = {}
       
       # Create the OAuth2 client which will be used to authorize the requests
@@ -88,24 +89,46 @@ module CDNConnect
 
 
     ##
-    # Used to receive information about an object, which can be either a file or 
-    # folder. This method requires either a CDN Connect URL, or both an
-    # app_id and obj_id.
+    # Executes a GET request to an API URL and returns a response object.
+    # GET requests are used when reading data.
     #
-    # @param [Hash] options
-    #   The configuration parameters for the client.
-    #   - <code>:url</code> -
-    #     The URL of the object to get data on. If the URL option is not provided
-    #     then you must use the app_id and obj_id options.
-    #   - <code>:app_id</code> -
-    #     The app_id of the object to get data on. If the app_id or obj_id options 
-    #     are not provided then you must use the url option.
-    #   - <code>:obj_id</code> -
-    #     The obj_id of the object to get data on. If the app_id or obj_id options 
-    #     are not provided then you must use the url option.
-    def get(options={})
-      options[:path] = self.generate_obj_path(options)
-      return self.fetch(options)
+    # @param path [String] The API path to send the GET request to.
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def get(path)
+      return self.fetch(:path => path, :method => 'GET')
+    end
+
+
+    ##
+    # Executes a POST request to an API URL and returns a response object. 
+    # POST requests are used when creating data.
+    #
+    # @param path [String] The API path to send the POST request to.
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def post(path)
+      return self.fetch(:path => path, :method => 'POST')
+    end
+
+
+    ##
+    # Executes a PUT request to an API URL and returns a response object.
+    # PUT requests are used when updating data.
+    #
+    # @param path [String] The API path to send the POST request to.
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def put(path)
+      return self.fetch(:path => path, :method => 'PUT')
+    end
+
+
+    ##
+    # Executes a DELETE request to an API URL and returns a response object.
+    # DELETE requests are used when (you guessed it) deleting data.
+    #
+    # @param path [String] The API path to send the DELETE request to.
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def delete(url)
+      return self.fetch(:path => path, :method => 'DELETE')
     end
 
 
@@ -127,6 +150,10 @@ module CDNConnect
     #     are not provided then you must use the url option.
     #   - <code>:source_file_local_path</code> -
     #     A string of a source file's local paths to upload.
+    #   - <code>:response_format</code> -
+    #     How data should be formatted on the response. Possible values 
+    #     include json (default) or xml.
+    # @return [APIResponse] A response object with helper methods to read the response.
     def upload(options={})
       # Make sure we've got good data before starting the upload
       prepare_upload(options)
@@ -165,6 +192,9 @@ module CDNConnect
         end
 
         # Kick it off!
+        if @debug
+          puts 'upload, source: ' + options[:source_file_local_path] + ', destination: ' + options[:destination_folder_url]
+        end
         api_response = conn.post upload_url, post_data
 
         # Woot! Convert the response to our model and see what's up
@@ -257,10 +287,18 @@ module CDNConnect
 
       path = nil
       if destination_folder_url != nil
-        path = '/v1/' + destination_folder_url + '/upload'
+        path = destination_folder_url + '/upload'
       else
         path = generate_obj_path(options) + '/upload'
       end
+
+      # Default Content-Type is application/json with a .json extension
+      response_extension = 'json'
+      if options[:response_format] == 'xml'
+        response_extension = 'xml'
+      end
+
+      path = '/v1/' + path + '.' + response_extension
 
       i = 1
       begin
@@ -278,6 +316,11 @@ module CDNConnect
     # path common needed by a few methods.
     # @!visibility private
     def generate_obj_path(options={})
+      path = options[:path]
+      if path != nil
+        return path
+      end
+
       app_id = options[:app_id]
       obj_id = options[:obj_id]
       uri = options[:uri] || options[:url]
@@ -295,7 +338,7 @@ module CDNConnect
         raise ArgumentError, "missing url or both app_id and obj_id"
       end
 
-      return '/v1/' + path
+      return path
     end
 
 
@@ -308,23 +351,8 @@ module CDNConnect
         raise ArgumentError, 'missing api path'
       end
 
-      options[:response_format] = options[:response_format] || @response_format
-
-      headers = { 'User-Agent' => @@user_agent }
-
-      # There are three possible response content-types: JSON, XML
-      # Default Content-Type is application/json with a .json extension
-      if options[:response_format] == 'application/xml'
-        headers['Content-Type'] = 'application/xml'
-        response_extension = 'xml'
-      else
-        options[:response_format] = 'application/json'
-        headers['Content-Type'] = 'application/json'
-        response_extension = 'json'       
-      end
-      options[:headers] = headers
-
-      options[:uri] = @@api_host + options[:path] + '.' + response_extension
+      options[:headers] = { 'User-Agent' => @@user_agent }
+      options[:uri] = @@api_host + options[:path]
       options[:url] = options[:uri]
       options[:method] = options[:method] || 'GET'
 
@@ -339,6 +367,10 @@ module CDNConnect
       # Prepare the data to be shipped in the request
       options = self.prepare(options)
 
+      if @debug
+        puts 'fetch: ' + options[:uri]
+      end
+
       begin
         # Send the request and get the response
         response = @client.fetch_protected_resource(options)
@@ -352,34 +384,76 @@ module CDNConnect
     end
 
 
+    ##
+    # A unique identifier issued to the client to identify itself to CDN Connect's
+    # authorization server. This is issued by CDN Connect to external clients.
+    # This is only needed if an API Key isn't already known. 
+    #
+    # @return [String]
     def client_id
       @client_id
     end
 
+
+    ##
+    # A secret issued by the CDN Connect's authorization server,
+    # which is used to authenticate the client. Do not confuse this is an access_token
+    # or an api_key. This is only required if an API Key
+    # isn't already known. A client secret should not be shared.
+    #
+    # @return [String]
     def client_secret
       @client_secret
     end
 
+
+    ##
+    # The scope of the access request, expressed either as an Array
+    # or as a space-delimited String. This is only required if an API Key
+    # isn't already known. 
+    #
+    # @return [String]
     def scope
       @scope
     end
 
+
+    ##
+    # An unguessable random string designed to allow the client to maintain state
+    # to protect against cross-site request forgery attacks. 
+    # This is only required if an API Key isn't already known. 
+    #
+    # @return [String]
     def state
       @state
     end
 
+
+    # @return [String]
     def code
       @code
     end
 
+
+    # @return [String]
     def redirect_uri
       @redirect_uri
     end
 
+
+    # @return [String]
     def access_token
       @access_token
     end
 
+
+    # @return [String]
+    def api_key
+      @access_token
+    end
+
+
+    # @return [String]
     def response_format
       @response_format
     end
