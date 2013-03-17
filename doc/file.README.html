@@ -61,22 +61,22 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><div id='filecontents'><h1>CDN Connect API Ruby Client, v0.0.1</h1>
+    <div id="content"><div id='filecontents'><h1>CDN Connect API Ruby Client, v0.1.1</h1>
 
-<h2>Description</h2>
+<p>CDN Connect makes it easier to manage production assets for teams of developers and designers, all while serving files from a fast content delivery network. Features include image optimization, resizing, cropping, filters, etc. The CDN Connect API Ruby Client makes it easier to upload files and interact with the API. Most interactions with CDN Connect APIs require users to authorize applications via OAuth 2.0. This library simplifies the communication with CDN Connect even further allowing you to easily upload files and get information with only a few lines of code.</p>
 
-<p>The CDN Connect API Ruby Client makes it easier to upload files and interact with
-our API. Most interactions with CDN Connect APIs require users to authorize applications via OAuth 2.0. This library simplifies the communication with CDN Connect even further allowing you
-to easily upload files and get information with only a few lines of code.</p>
+<p><a href="http://api.cdnconnect.com/">View the full CDN Connect API documentation</a></p>
 
 <h2>Install</h2>
 
-<pre class="code ruby"><code class="ruby">$ sudo gem install cdnconnect-api
+<pre class="code ruby"><code class="ruby">$ gem install cdnconnect-api
 </code></pre>
+
+<p><a href="https://rubygems.org/gems/cdnconnect-api">RubyGems.org: cdnconnect-api</a></p>
 
 <h2>API Key</h2>
 
-<p>An API Key is can be created for a specific app within your CDN Connect&#39;s account. Sign into your account and go to the &quot;API Key&quot; tab for the app you want to interact with. Next click &quot;Add API Key&quot; and use this value when creating a new API client within the code. The API Key can be revoked
+<p>An API Key can be created for a specific app within your CDN Connect&#39;s account. Sign into your account and go to the &quot;API Key&quot; tab for the app you want to interact with. Next click &quot;Add API Key&quot; and use this value when creating a new API client within the code. The API Key can be revoked
 by you at any time and numerous keys can be created.</p>
 
 <h2>Example Usage</h2>
@@ -97,41 +97,45 @@ by you at any time and numerous keys can be created.</p>
 
 <h2>Get Object Data</h2>
 
-<p>An object can be either a file or a folder. Pass the <code>get</code> method the <code>url</code> you want to receive data about.</p>
+<p>Following the <a href="http://api.cdnconnect.com/">API documentation</a>, you can use these methods to  build a requests and return an APIResponse object.</p>
+
+<ul>
+<li><code>get</code>: GET Request. Used when needing to just read data.</li>
+<li><code>post</code>: POST Request. Used when creating data.</li>
+<li><code>put</code>: PUT Request. Used when updating data.</li>
+<li><code>delete</code>: DELETE Request. Used when deleting data.</li>
+</ul>
+
+<p>Each of these methods take one parameter which is the API path you want to request. Depending on which method you use, it will send the request with the correct HTTP verb.</p>
 
 <pre class="code ruby"><code class="ruby"><span class='comment'># Get file information
-</span><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='symbol'>:url</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>demo.cdnconnect.com/images/meowzers.jpg</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+</span><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>demo.cdnconnect.com/images/meowzers.jpg</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_results'>results</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>data</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>           <span class='comment'>#=&gt; &quot;meowzers.jpg&quot;
-</span>
-<span class='comment'># Get folder information
-</span><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='symbol'>:url</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>demo.cdnconnect.com/images</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-<span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_results'>results</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>data</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>           <span class='comment'>#=&gt; &quot;images&quot;
 </span></code></pre>
 
 <h2>Response Object</h2>
 
 <p>All responses will be structured the same with both a <code>results</code> and <code>msgs</code> object at the root level, such as:</p>
 
-<pre class="code ruby"><code class="ruby">{
-  &quot;results&quot;:
-  {
-    &quot;data&quot;:
-    {
-      &quot;id&quot;: &quot;bU1SS1JyvF9I&quot;, 
-      &quot;status&quot;: 1,
-      &quot;name&quot;: &quot;images&quot;,
-      &quot;created&quot;: &quot;2013-03-12T17:02Z&quot;,
-      &quot;parent_id&quot;: &quot;iF637hnbwI4G&quot;,
-      &quot;folder&quot;: true, 
-      &quot;files&quot;: [],
-      &quot;folders&quot;: []
-      }
-  },
-  &quot;msgs&quot;:[]
-}
-</code></pre>
+<p>{
+      &quot;results&quot;:
+      {
+          &quot;data&quot;:
+          {
+              &quot;id&quot;: &quot;bU1SS1JyvF9I&quot;, 
+              &quot;status&quot;: 1,
+              &quot;name&quot;: &quot;images&quot;,
+              &quot;created&quot;: &quot;2013-03-12T17:02Z&quot;,
+              &quot;parent_id&quot;: &quot;iF637hnbwI4G&quot;,
+              &quot;folder&quot;: true, 
+              &quot;files&quot;: [],
+              &quot;folders&quot;: []
+          }
+      },
+      &quot;msgs&quot;:[]
+  }</p>
 
-<p>The <code>results</code> object contains the guts of the information your looking for, and the <code>msgs</code> object contains an array of messages which can represent errors, warnings and information. The <code>results</code> object can be null, or it can contain many objects within it. Each response can have different data within <code>results</code> object and <code>msgs</code> object. In the case above, the <code>results</code> object contains the key <code>data</code>, and within the <code>data</code> object it contains summary information of the images folder. </p>
+<p>Be sure to view the <a href="http://api.cdnconnect.com/">API documentation</a> describing what each response object will contain depending on the API resource.</p>
 
 <h2>Support</h2>
 
@@ -139,7 +143,7 @@ by you at any time and numerous keys can be created.</p>
 </div></div>
 
     <div id="footer">
-  Generated on Tue Mar 12 19:52:04 2013 by
+  Generated on Sat Mar 16 23:01:31 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.5.2 (ruby-2.0.0).
 </div>
