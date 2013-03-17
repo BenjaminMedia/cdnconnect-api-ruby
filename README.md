@@ -44,8 +44,14 @@ Following the [API documentation](http://api.cdnconnect.com/), you can use these
 
 Each of these methods take one parameter which is the API path you want to request. Depending on which method you use, it will send the request with the correct HTTP verb.
 
-    response = api_client.get('demo.cdnconnect.com/images/meowzers.jpg')
+    response = api_client.get('/v1/demo.cdnconnect.com/images/meowzers.jpg.json')
     puts response.results['data']['name']           #=> "meowzers.jpg"
+
+The path in the API request is broken down as:
+
+* `/v1/` - API Version 1. A version number must always prefix an API request.
+* `demo.cdnconnect.com/images/meowzers.jpg` - The URL which you want to get information about.
+* `.json` - The response format, which can be `json` or `xml`.
 
 
 ## Response Object
