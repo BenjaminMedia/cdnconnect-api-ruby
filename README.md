@@ -17,7 +17,7 @@ An API Key can be created for a specific app within your CDN Connect's account. 
 by you at any time and numerous keys can be created.
 
 
-## Example Usage
+## Upload Example
 
     # Initialize the CDN Connect API client
     require 'cdnconnect_api'
@@ -33,7 +33,7 @@ by you at any time and numerous keys can be created.
     end
 
 
-## Get Object Data
+## API Requests
 
 Following the [API documentation](http://api.cdnconnect.com/), you can use these methods to  build a requests and return an APIResponse object.
 
@@ -49,9 +49,9 @@ Each of these methods take one parameter which is the API path you want to reque
 
 The path in the API request is broken down as:
 
-* `/v1/` - API Version 1. A version number must always prefix an API request.
-* `demo.cdnconnect.com/images/meowzers.jpg` - The URL which you want to get information about.
-* `.json` - The response format, which can be `json` or `xml`.
+* `/v1/` The API version, which must always prefix an API request path.
+* `demo.cdnconnect.com/images/meowzers.jpg` The URL which you want to get information about.
+* `.json` The response format, which can be `json` or `xml`.
 
 
 ## Response Object
