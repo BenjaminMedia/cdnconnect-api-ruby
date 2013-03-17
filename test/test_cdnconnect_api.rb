@@ -76,21 +76,21 @@ class CDNConnectApiTest < Test::Unit::TestCase
       response = api_client.prepare(options)
     end
 
-    options = { :path => '/ME_PATH' }
+    options = { :path => '/v1/ME_PATH' }
     rtn = api_client.prepare(options)
     assert_equal 'application/json', rtn[:response_format]
-    assert_equal 'https://api.cdnconnect.com/ME_PATH.json', rtn[:url]
+    assert_equal 'https://api.cdnconnect.com/v1/ME_PATH.json', rtn[:url]
     assert_equal 'GET', rtn[:method]
 
-    options = { :path => '/ME_PATH', :response_format => 'application/xml' }
+    options = { :path => '/v1/ME_PATH', :response_format => 'application/xml' }
     rtn = api_client.prepare(options)
     assert_equal 'application/xml', rtn[:response_format]
-    assert_equal 'https://api.cdnconnect.com/ME_PATH.xml', rtn[:url]
+    assert_equal 'https://api.cdnconnect.com/v1/ME_PATH.xml', rtn[:url]
 
-    options = { :path => '/ME_PATH', :response_format => 'wrong/type' }
+    options = { :path => '/v1/ME_PATH', :response_format => 'wrong/type' }
     rtn = api_client.prepare(options)
     assert_equal 'application/json', rtn[:response_format]
-    assert_equal 'https://api.cdnconnect.com/ME_PATH.json', rtn[:url]
+    assert_equal 'https://api.cdnconnect.com/v1/ME_PATH.json', rtn[:url]
     assert_equal 'GET', rtn[:method]
 
     headers = rtn[:headers]
@@ -102,10 +102,10 @@ class CDNConnectApiTest < Test::Unit::TestCase
   def test_generate_obj_path
     api_client = CDNConnect::APIClient.new(:access_token => 'ACCESS_TOKEN')
     path = api_client.generate_obj_path(:url => 'demo.cdnconnect.com/images/file.jpg')
-    assert_equal "/v1/demo.cdnconnect.com/images/file.jpg", path
+    assert_equal "demo.cdnconnect.com/images/file.jpg", path
 
     path = api_client.generate_obj_path(:app_id => 'app_id', :obj_id => 'obj_id')
-    assert_equal "/v1/apps/app_id/objects/obj_id", path
+    assert_equal "apps/app_id/objects/obj_id", path
 
     assert_raise ArgumentError do
       api_client.generate_obj_path(:app_id => 'app_id')
