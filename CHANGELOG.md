@@ -1,3 +1,9 @@
+# 0.1.2
+
+* Remove XML from data format possibilities. API supports XML
+  but there is no need for this library to support both.
+  
+
 # 0.1.1
 
 * Client needs to specify the version number in the path
