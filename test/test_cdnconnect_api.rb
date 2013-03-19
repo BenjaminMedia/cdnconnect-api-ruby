@@ -76,20 +76,8 @@ class CDNConnectApiTest < Test::Unit::TestCase
       response = api_client.prepare(options)
     end
 
-    options = { :path => '/v1/ME_PATH' }
+    options = { :path => '/v1/ME_PATH.json' }
     rtn = api_client.prepare(options)
-    assert_equal 'application/json', rtn[:response_format]
-    assert_equal 'https://api.cdnconnect.com/v1/ME_PATH.json', rtn[:url]
-    assert_equal 'GET', rtn[:method]
-
-    options = { :path => '/v1/ME_PATH', :response_format => 'application/xml' }
-    rtn = api_client.prepare(options)
-    assert_equal 'application/xml', rtn[:response_format]
-    assert_equal 'https://api.cdnconnect.com/v1/ME_PATH.xml', rtn[:url]
-
-    options = { :path => '/v1/ME_PATH', :response_format => 'wrong/type' }
-    rtn = api_client.prepare(options)
-    assert_equal 'application/json', rtn[:response_format]
     assert_equal 'https://api.cdnconnect.com/v1/ME_PATH.json', rtn[:url]
     assert_equal 'GET', rtn[:method]
 
@@ -121,7 +109,6 @@ class CDNConnectApiTest < Test::Unit::TestCase
     api_client = CDNConnect::APIClient.new(:client_id => 'CLIENT_ID')
     assert_equal "CLIENT_ID", api_client.client_id
     assert_equal nil, api_client.code
-    assert_equal 'application/json', api_client.response_format
 
     api_client = CDNConnect::APIClient.new(:client_secret => 'CLIENT_SECRET')
     assert_equal "CLIENT_SECRET", api_client.client_secret
@@ -135,9 +122,6 @@ class CDNConnectApiTest < Test::Unit::TestCase
     api_client = CDNConnect::APIClient.new(:code => 'CODE')
     assert_equal "CODE", api_client.code
 
-    api_client = CDNConnect::APIClient.new(:response_format => 'application/xml')
-    assert_equal "application/xml", api_client.response_format
-
     api_client = CDNConnect::APIClient.new(:redirect_uri => 'https://REDIRECT_URI')
     assert_equal "https://REDIRECT_URI", api_client.redirect_uri
 
@@ -149,5 +133,6 @@ class CDNConnectApiTest < Test::Unit::TestCase
     assert_equal "ACCESS_TOKEN", api_client.access_token
 
   end
+
   
 end
