@@ -23,7 +23,7 @@ module CDNConnect
   class APIClient
   
     @@application_name = 'cdnconnect-api-ruby'
-    @@application_version = '0.1.1'
+    @@application_version = '0.1.2'
     @@api_host = 'https://api.cdnconnect.com'
     @@user_agent = @@application_name + ' v' + @@application_version
 
@@ -150,9 +150,6 @@ module CDNConnect
     #     are not provided then you must use the url option.
     #   - <code>:source_file_local_path</code> -
     #     A string of a source file's local paths to upload.
-    #   - <code>:response_format</code> -
-    #     How data should be formatted on the response. Possible values 
-    #     include json (default) or xml.
     # @return [APIResponse] A response object with helper methods to read the response.
     def upload(options={})
       # Make sure we've got good data before starting the upload
@@ -292,13 +289,7 @@ module CDNConnect
         path = generate_obj_path(options) + '/upload'
       end
 
-      # Default Content-Type is application/json with a .json extension
-      response_extension = 'json'
-      if options[:response_format] == 'xml'
-        response_extension = 'xml'
-      end
-
-      path = '/v1/' + path + '.' + response_extension
+      path = '/v1/' + path + '.json'
 
       i = 1
       begin
@@ -452,11 +443,6 @@ module CDNConnect
       @access_token
     end
 
-
-    # @return [String]
-    def response_format
-      @response_format
-    end
 
   end
 
