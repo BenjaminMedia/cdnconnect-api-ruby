@@ -45,7 +45,7 @@ Following the [API documentation](http://api.cdnconnect.com/), you can use these
 Each of these methods take one parameter which is the API path you want to request. Depending on which method you use, it will send the request with the correct HTTP verb.
 
     response = api_client.get('/v1/demo.cdnconnect.com/images/meowzers.jpg.json')
-    puts response.results['data']['name']           #=> "meowzers.jpg"
+    puts response.results['object']['name']           #=> "meowzers.jpg"
 
 The path in the API request is broken down as:
 
@@ -61,7 +61,7 @@ All responses will be structured the same with both a `results` and `msgs` objec
     {
         "results":
         {
-            "data":
+            "object":
             {
                 "id": "bU1SS1JyvF9I", 
                 "status": 1,
