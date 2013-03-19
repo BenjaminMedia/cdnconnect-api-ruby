@@ -1,4 +1,4 @@
-# CDN Connect API Ruby Client, v0.1.1
+# CDN Connect API Ruby Client, v0.1.2
 
 CDN Connect makes it easier to manage production assets for teams of developers and designers, all while serving files from a fast content delivery network. Features include image optimization, resizing, cropping, filters, etc. The CDN Connect API Ruby Client makes it easier to upload files and interact with the API. Most interactions with CDN Connect APIs require users to authorize applications via OAuth 2.0. This library simplifies the communication with CDN Connect even further allowing you to easily upload files and get information with only a few lines of code.
 
@@ -37,12 +37,12 @@ by you at any time and numerous keys can be created.
 
 Following the [API documentation](http://api.cdnconnect.com/), you can use these methods to  build a requests and return an APIResponse object.
 
-* `get`: GET Request. Used when needing to just read data.
-* `post`: POST Request. Used when creating data.
-* `put`: PUT Request. Used when updating data.
-* `delete`: DELETE Request. Used when deleting data.
+* `get` GET Request. Used when needing to just read data.
+* `post` POST Request. Used when creating data.
+* `put` PUT Request. Used when updating data.
+* `delete` DELETE Request. Used when deleting data.
 
-Each of these methods take one parameter which is the API path you want to request. Depending on which method you use, it will send the request with the correct HTTP verb.
+Each of these methods take one parameter which is the API path you want to request. Depending on which method you use, it will send the request with the correct HTTP method.
 
     response = api_client.get('/v1/demo.cdnconnect.com/images/meowzers.jpg.json')
     puts response.results['object']['name']           #=> "meowzers.jpg"
@@ -51,12 +51,13 @@ The path in the API request is broken down as:
 
 * `/v1/` The API version, which must always prefix an API request path.
 * `demo.cdnconnect.com/images/meowzers.jpg` The URL which you want to get information about.
-* `.json` The response format, which can be `json` or `xml`.
+* `.json` The response format, which can only be `json`. The API does support `xml`, however,
+  since this wrapper does all the interacting with the API for you, its going to go with `json` only. Even if the object URL already has an extension, which a file will, you still need to specify which response type of `json`.
 
 
 ## Response Object
 
-All responses will be structured the same with both a `results` and `msgs` object at the root level, such as:
+All responses will be structured the same with both a `results` and `msgs` object at the root level. The actual HTTP response content-type will be `application/json`, but the `APIResponse` class within this wrapper will automatically decode the `json` response to an object for you.
 
     {
         "results":
