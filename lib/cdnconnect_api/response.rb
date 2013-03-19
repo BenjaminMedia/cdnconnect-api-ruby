@@ -31,16 +31,14 @@ module CDNConnect
     end
 
     def data()
-      # Convert the response body depending on the response format
+      # Decode the response body from JSON into an object.
       # Keep the parsed data in an instance variable so we 
       # don't keep parsing it every time we reference data()
       if @data == nil
         if format.include? 'application/json'
           @data = ActiveSupport::JSON.decode(body)
-        elsif format.include? 'application/xml'
-          @data = ActiveSupport::XML.decode(body)
         else
-          raise "invalid data format"
+          raise "Data response type must be JSON"
         end
       end
       @data
@@ -90,6 +88,10 @@ module CDNConnect
 
     def is_error()
       (status >= 400)
+    end
+
+    def is_client_error()
+      (status >= 400 and status < 500)
     end
 
     def is_bad_request()
