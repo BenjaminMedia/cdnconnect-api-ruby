@@ -61,9 +61,9 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><div id='filecontents'><h1>CDN Connect API Ruby Client, v0.1.2</h1>
+    <div id="content"><div id='filecontents'><h1>CDN Connect API Ruby Client, v0.2.0</h1>
 
-<p>CDN Connect makes it easier to manage production assets for teams of developers and designers, all while serving files from a fast content delivery network. Features include image optimization, resizing, cropping, filters, etc. The CDN Connect API Ruby Client makes it easier to upload files and interact with the API. Most interactions with CDN Connect APIs require users to authorize applications via OAuth 2.0. This library simplifies the communication with CDN Connect even further allowing you to easily upload files and get information with only a few lines of code.</p>
+<p>CDN Connect makes it easier to manage production assets for teams of developers and designers, all while serving files from a fast content delivery network. Features include image optimization, resizing, cropping, filters, changing output formats, convert to WebP image format, etc. The CDN Connect API Ruby Client makes it easier to upload files and interact with the API with only a few lines of code.</p>
 
 <p><a href="http://api.cdnconnect.com/">View the full CDN Connect API documentation</a></p>
 
@@ -74,77 +74,154 @@
 
 <p><a href="https://rubygems.org/gems/cdnconnect-api">RubyGems.org: cdnconnect-api</a></p>
 
-<h2>API Key</h2>
+<h2>Setup the API Client</h2>
 
-<p>An API Key can be created for a specific app within your CDN Connect&#39;s account. Sign into your account and go to the &quot;API Key&quot; tab for the app you want to interact with. Next click &quot;Add API Key&quot; and use this value when creating a new API client within the code. The API Key can be revoked
-by you at any time and numerous keys can be created.</p>
+<p>First step is to create an api client instance which will be used to connect to your CDN Connect app. The required options are <code>app_host</code> and <code>api_key</code>.</p>
 
-<h2>Upload Example</h2>
+<h4>App Host</h4>
 
-<pre class="code ruby"><code class="ruby"><span class='comment'># Initialize the CDN Connect API client
-</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>cdnconnect_api</span><span class='tstring_end'>&#39;</span></span>
-<span class='id identifier rubyid_api_client'>api_client</span> <span class='op'>=</span> <span class='const'>CDNConnect</span><span class='op'>::</span><span class='const'>APIClient</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:api_key</span> <span class='op'>=&gt;</span> <span class='const'>YOUR_API_KEY</span><span class='rparen'>)</span>
+<p>The CDN Connect App host includes your app subdomain and the <code>cdnconnect.com</code> domain. For example, <code>demo.cdnconnect.com</code> is a CDN Connect app host. The app host should not include <code>https://</code>, <code>http://</code> or a URL path such as <code>/images</code>.</p>
 
-<span class='comment'># Upload to a folder in the app the API Key was created for
-</span><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_upload'>upload</span><span class='lparen'>(</span><span class='symbol'>:destination_folder_url</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>demo.cdnconnect.com/images</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> 
-                             <span class='symbol'>:source_file_local_path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>meowzers.jpg</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<h4>API Key</h4>
 
-<span class='comment'># Read the response
-</span><span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_is_success'>is_success</span>
-  <span class='comment'># &quot;Woot!&quot;
-</span><span class='kw'>end</span>
+<p>Most interactions with CDN Connect APIs require users to authorize applications via OAuth 2.0. An API Key can be created for a specific app within your CDN Connect&#39;s account. Sign into your account and go to the &quot;API Key&quot; tab for the app you want to interact with. Next click &quot;Add API Key&quot; and use this value when creating a new API client within the code. The API Key can be revoked by you at any time and numerous keys can be created.</p>
+
+<h4>Example API Client</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>cdnconnect_api</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_api_client'>api_client</span> <span class='op'>=</span> <span class='const'>CDNConnect</span><span class='op'>::</span><span class='const'>APIClient</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:app_host</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>YOUR_APP.cdnconnect.com</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> 
+                                       <span class='symbol'>:api_key</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>YOUR_API_KEY</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 </code></pre>
 
-<h2>API Requests</h2>
+<h2>Upload Files</h2>
 
-<p>Following the <a href="http://api.cdnconnect.com/">API documentation</a>, you can use these methods to  build a requests and return an APIResponse object.</p>
+<p>Upload a file or multiple files from a local machine to a folder within a CDN Connect app. The <code>upload</code> method provides numerous ways to upload files or files, to include recursively drilling down through local folders and uploading only files that match your chosen extensions. If any of the folders within the upload path do not already exist then they will be created automatically.</p>
 
-<ul>
-<li><code>get</code> GET Request. Used when needing to just read data.</li>
-<li><code>post</code> POST Request. Used when creating data.</li>
-<li><code>put</code> PUT Request. Used when updating data.</li>
-<li><code>delete</code> DELETE Request. Used when deleting data.</li>
-</ul>
-
-<p>Each of these methods take one parameter which is the API path you want to request. Depending on which method you use, it will send the request with the correct HTTP method.</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v1/demo.cdnconnect.com/images/meowzers.jpg.json</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-<span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_results'>results</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>object</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>           <span class='comment'>#=&gt; &quot;meowzers.jpg&quot;
-</span></code></pre>
-
-<p>The path in the API request is broken down as:</p>
+<p>Below are the possible parameters for the <code>upload</code> method. You must set <code>destination_path</code> and use one of the options to select where the source files are uploaded from.</p>
 
 <ul>
-<li><code>/v1/</code> The API version, which must always prefix an API request path.</li>
-<li><code>demo.cdnconnect.com/images/meowzers.jpg</code> The URL which you want to get information about.</li>
-<li><code>.json</code> The response format, which can only be <code>json</code>. The API does support <code>xml</code>, however,
-since this wrapper does all the interacting with the API for you, its going to go with <code>json</code> only. Even if the object URL already has an extension, which a file will, you still need to specify which response type of <code>json</code>.</li>
+<li><code>destination_path</code> : The URL of the CDN Connect folder to upload to. If the destination folder does not already exist it will automatically be created.</li>
+<li><code>source_file_path</code> : A string of a source file&#39;s local path to upload to the destination folder. If you have more than one file to upload it&#39;d be better to use <code>source_file_paths</code> or <code>source_folder_path</code> instead.</li>
+<li><code>source_file_paths</code> : A list of a source file&#39;s local paths to upload. This option uploads all of the files to the destination folder. If you want to upload files in a local folder then <code>source_folder_path</code> option may would be easier than listing out files manually.</li>
+<li><code>source_folder_path</code> : A string of a source folder&#39;s local path to upload. This will upload all of the files in this source folder to the destination url. By using the <code>valid_extensions</code> parameter you can also restrict which files should be uploaded according to extension.</li>
+<li><code>valid_extensions</code> : An array of valid extensions which should be uploaded. This is only applied when the <code>source_folder_path</code> options is used. If nothing is provided, which is the default, all files within the folder are uploaded. The extensions should be in all lower case, and they should not contain a period or asterisks. Example <code>valid_extensions =&gt; [&#39;js&#39;, &#39;css&#39;, &#39;jpg&#39;, jpeg&#39;, &#39;png&#39;, &#39;gif&#39;, &#39;webp&#39;]</code></li>
+<li><code>recursive_local_folders</code> : A true or false value indicating if this call should recursively upload all of the local folder&#39;s sub-folders, and their sub-folders, etc. This option is only used when the <code>source_folder_path</code> option is used.</li>
+<li><code>async</code> : A true or false value indicating if the processing of the data should be asynchronous or not. The default value is false meaning that the processing of the data will be synchronous. An async response will be faster because the resposne doesn&#39;t wait on the system to complete processing the data. However, because an async response does not wait for the data to complete processing then the response will not contain any information about the data which was just uploaded. Use async only if you do not need to know the details of the upload.</li>
+<li><code>webhook_url</code> : A URL which the system should <code>POST</code> the response to. This works for both synchronous and asynchronous calls. The data sent to the <code>webhook_url</code> will be the same as the data that is sent in a synchronous response. By default there is not webhook URL.</li>
 </ul>
 
-<h2>Response Object</h2>
+<h3>Upload One File: <code>source_file_path</code></h3>
 
-<p>All responses will be structured the same with both a <code>results</code> and <code>msgs</code> object at the root level. The actual HTTP response content-type will be <code>application/json</code>, but the <code>APIResponse</code> class within this wrapper will automatically decode the <code>json</code> response to an object for you.</p>
+<p>Use this option if you simply want to upload just one file. If you have many files to upload we recommend using either <code>source_file_paths</code> or <code>source_folder_path</code>.</p>
 
-<pre class="code ruby"><code class="ruby">{
-    &quot;results&quot;:
-    {
-        &quot;object&quot;:
-        {
-            &quot;id&quot;: &quot;bU1SS1JyvF9I&quot;, 
-            &quot;status&quot;: 1,
-            &quot;name&quot;: &quot;images&quot;,
-            &quot;created&quot;: &quot;2013-03-12T17:02Z&quot;,
-            &quot;parent_id&quot;: &quot;iF637hnbwI4G&quot;,
-            &quot;folder&quot;: true, 
-            &quot;files&quot;: [],
-            &quot;folders&quot;: []
-        }
-    },
-    &quot;msgs&quot;:[]
-}
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_upload'>upload</span><span class='lparen'>(</span><span class='symbol'>:destination_path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/images</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> 
+                             <span class='symbol'>:source_file_path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/Users/Ellie/Pictures/meowzers.jpg</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 </code></pre>
 
-<p>Be sure to view the <a href="http://api.cdnconnect.com/">API documentation</a> describing what each response object will contain depending on the API resource.</p>
+<h3>Upload A List Of Files: <code>source_file_paths</code></h3>
+
+<p>Specify a list of local files that should be uploaded to an app folder. Use this option if you want to manually select which files should be uploaded. Use the <code>source_folder_path</code> option if you want to easily upload all of the files
+in a folder.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_upload'>upload</span><span class='lparen'>(</span><span class='symbol'>:destination_path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/images/kitty</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> 
+                             <span class='symbol'>:source_file_paths</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span>
+                                <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/Users/Ellie/Pictures/furball.jpg</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                                <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/Users/Ellie/Pictures/smuckers.jpg</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                                <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/Users/Ellie/Pictures/socks.jpg</span><span class='tstring_end'>&#39;</span></span>
+                             <span class='rbracket'>]</span><span class='rparen'>)</span>
+</code></pre>
+
+<h3>Upload All Of The Files In The Folder: <code>source_folder_path</code></h3>
+
+<p>All files within the local <code>Pictures</code> folder will be uploaded. Additionally, by default all files within its subfolders will also be uploaded. Refer to the <code>recursive_local_folders</code> parameter if you do not want to recursively upload files in subfolders. </p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_upload'>upload</span><span class='lparen'>(</span><span class='symbol'>:destination_path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/images/</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> 
+                             <span class='symbol'>:source_folder_path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/Users/Ellie/Pictures/</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<h2>Get File or Folder Information</h2>
+
+<p>Both files and folders are considered &quot;objects&quot;, and object data contains information stating if it is a file or a folder. A folder can contain many sub-folders, and many files, and a file is contained by a folder. The concept of files and folders is no different than how your computer handles them, and their hierarchy is what builds the URL. Getting information about a file or a folder both use <code>get_object</code>.</p>
+
+<h4>Get File Information</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_get_object'>get_object</span><span class='lparen'>(</span><span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/images/spacewalk.jpg</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<h4>Get Folder Information</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_get_object'>get_object</span><span class='lparen'>(</span><span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/images</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<h2>Rename File or Folder</h2>
+
+<p>Renames a file or folder, which are both also known as an object.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_rename_object'>rename_object</span><span class='lparen'>(</span><span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/images/tv-shows/night-rider.jpeg</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                                    <span class='symbol'>:new_name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>knight-rider.jpg</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<h2>Create A Folder Path</h2>
+
+<p>Creates a folder structure according to the path provided. If any of the folders do not already exist they will be created. The response contains data for every folder in the path, new and existing. The feature of creating the path automatically is also available when uploading files.</p>
+
+<p>In the example below, if the folders <code>images</code> or <code>movies</code> did not already exist with the CDN Conenct app then they would automatically be created.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_create_path'>create_path</span><span class='lparen'>(</span><span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/images/movies</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<h2>API Response</h2>
+
+<p>HTTP responses will be formatted in json, but the library takes the HTTP response and decodes into a hash for the <code>APIResponse</code> class. The <code>APIResponse</code> class is used to simpilfy things by using helper functions to read response data. Responses from the API are all structured the same way, and this class is used as a small wrapper to make it easier to get data from it.</p>
+
+<ul>
+<li><code>files</code> : <code>array</code> : A list of all the files that were uploaded. Each file in the array is a hash.</li>
+<li><code>object</code>: <code>hash</code> : Can be either a file or folder, or the first file in the <code>files</code> array.</li>
+<li><code>msgs</code> : <code>array</code> : An array of messages, and each message is a hash. Example message within the <code>msgs</code> array: <code>{&quot;text&quot; =&gt; &quot;info about the message&quot;, &quot;status&quot; =&gt; &quot;error&quot;}</code></li>
+<li><code>is_success</code> : <code>bool</code> : Successful API call, the response should contain the data your looking for.</li>
+<li><code>is_error</code> : <code>bool</code> : Unsuccessful API call. Could be a client error (400) or a server error (500).</li>
+<li><code>is_client_error</code> : <code>bool</code> : Unsuccessful API call due to a client error. Review the <code>msgs</code> array for more info.</li>
+<li><code>is_bad_request</code> : <code>bool</code> : Unsuccessful API call due to sending invalid data. Review the <code>msgs</code> array for more info.</li>
+<li><code>is_unauthorized</code> : <code>bool</code> : Unsuccessful API call due to not being authorized.</li>
+<li><code>is_not_found</code> : <code>bool</code> : Unsuccessful API call because the resource does not exist.</li>
+<li><code>is_server_error</code> : <code>bool</code> : Unsuccessful API call because server is having issues (its also possible, but hopefully you&#39;ll never see this).</li>
+</ul>
+
+<h4>Example Upload Response</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_is_success'>is_success</span>
+
+    <span class='kw'>for</span> <span class='id identifier rubyid_file'>file</span> <span class='kw'>in</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_files'>files</span>
+        <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Uploaded </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_file'>file</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='kw'>end</span>
+
+<span class='kw'>end</span>
+</code></pre>
+
+<h4>Example Get Object Response</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_is_success'>is_success</span>
+
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Got object </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_object'>object</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+
+<span class='kw'>end</span>
+</code></pre>
+
+<h4>Example Error Response</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_is_error'>is_error</span>
+
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>CDN Connect Error</span><span class='tstring_end'>&quot;</span></span>
+
+    <span class='kw'>for</span> <span class='id identifier rubyid_msg'>msg</span> <span class='kw'>in</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_msgs'>msgs</span>
+        <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_msg'>msg</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>status</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_msg'>msg</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>text</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='kw'>end</span>
+
+<span class='kw'>end</span>
+</code></pre>
+
+<p>Note that this HTTP response will be parsed and can be easily read using the APIResponse. Be sure to view the <a href="http://api.cdnconnect.com/">API documentation</a> describing what each response object will contain depending on the API resource.</p>
 
 <h2>Support</h2>
 
@@ -152,7 +229,7 @@ since this wrapper does all the interacting with the API for you, its going to g
 </div></div>
 
     <div id="footer">
-  Generated on Mon Mar 18 22:37:28 2013 by
+  Generated on Tue Jun 18 23:26:29 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.5.2 (ruby-2.0.0).
 </div>

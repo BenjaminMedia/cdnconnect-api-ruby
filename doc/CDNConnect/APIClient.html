@@ -99,7 +99,18 @@
 </dl>
 <div class="clear"></div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Used to easily interact with CDN Connect API.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
   <h2>Constant Summary</h2>
   
     <dl class="constants">
@@ -112,17 +123,22 @@
         <dt id="application_version-classvariable" class="">@@application_version =
           
         </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0.1.2</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0.2.0</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="user_agent-classvariable" class="">@@user_agent =
+          
+        </dt>
+        <dd><pre class="code"><span class='cvar'>@@application_name</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> v</span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='cvar'>@@application_version</span></pre></dd>
       
         <dt id="api_host-classvariable" class="">@@api_host =
           
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>https://api.cdnconnect.com</span><span class='tstring_end'>&#39;</span></span></pre></dd>
       
-        <dt id="user_agent-classvariable" class="">@@user_agent =
+        <dt id="api_version-classvariable" class="">@@api_version =
           
         </dt>
-        <dd><pre class="code"><span class='cvar'>@@application_name</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> v</span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='cvar'>@@application_version</span></pre></dd>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>v1</span><span class='tstring_end'>&#39;</span></span></pre></dd>
       
     </dl>
   
@@ -158,7 +174,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>OAuth2 value.</p>
+</div></span>
   
 </li>
 
@@ -166,7 +184,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#api_key-instance_method" title="#api_key (instance method)">- (String) <strong>api_key</strong> </a>
+      <a href="#app_host-instance_method" title="#app_host (instance method)">- (String) <strong>app_host</strong> </a>
     
 
     
@@ -180,7 +198,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>The CDN Connect App host.</p>
+</div></span>
   
 </li>
 
@@ -203,8 +223,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>A unique identifier issued to the client to identify itself to CDN
-Connect&#39;s authorization server.</p>
+<p>OAuth2 parameter.</p>
 </div></span>
   
 </li>
@@ -228,8 +247,7 @@ Connect&#39;s authorization server.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>A secret issued by the CDN Connect&#39;s authorization server, which is
-used to authenticate the client.</p>
+<p>OAuth2 parameter.</p>
 </div></span>
   
 </li>
@@ -252,7 +270,9 @@ used to authenticate the client.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>OAuth2 value.</p>
+</div></span>
   
 </li>
 
@@ -260,7 +280,31 @@ used to authenticate the client.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#delete-instance_method" title="#delete (instance method)">- (APIResponse) <strong>delete</strong>(url) </a>
+      <a href="#create_path-instance_method" title="#create_path (instance method)">- (APIResponse) <strong>create_path</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Create a folder path.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#delete-instance_method" title="#delete (instance method)">- (APIResponse) <strong>delete</strong>(api_path) </a>
     
 
     
@@ -284,7 +328,55 @@ used to authenticate the client.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#get-instance_method" title="#get (instance method)">- (APIResponse) <strong>get</strong>(path) </a>
+      <a href="#delete_object-instance_method" title="#delete_object (instance method)">- (APIResponse) <strong>delete_object</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Delete object info, which can be either a file or folder.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#failed_uploads-instance_method" title="#failed_uploads (instance method)">- (Array) <strong>failed_uploads</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>An array of files which failed.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get-instance_method" title="#get (instance method)">- (APIResponse) <strong>get</strong>(api_path) </a>
     
 
     
@@ -300,6 +392,30 @@ used to authenticate the client.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Executes a GET request to an API URL and returns a response object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_object-instance_method" title="#get_object (instance method)">- (APIResponse) <strong>get_object</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Get object info, which can be either a file or folder.</p>
 </div></span>
   
 </li>
@@ -335,7 +451,7 @@ protocol.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#post-instance_method" title="#post (instance method)">- (APIResponse) <strong>post</strong>(path) </a>
+      <a href="#post-instance_method" title="#post (instance method)">- (APIResponse) <strong>post</strong>(api_path, body) </a>
     
 
     
@@ -359,7 +475,7 @@ protocol.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#put-instance_method" title="#put (instance method)">- (APIResponse) <strong>put</strong>(path) </a>
+      <a href="#put-instance_method" title="#put (instance method)">- (APIResponse) <strong>put</strong>(api_path, body) </a>
     
 
     
@@ -397,7 +513,33 @@ protocol.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>OAuth2 value.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rename_object-instance_method" title="#rename_object (instance method)">- (APIResponse) <strong>rename_object</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Rename object, which can be either a file or folder.</p>
+</div></span>
   
 </li>
 
@@ -420,8 +562,7 @@ protocol.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>The scope of the access request, expressed either as an Array or as a
-space-delimited String.</p>
+<p>OAuth2 parameter.</p>
 </div></span>
   
 </li>
@@ -445,8 +586,7 @@ space-delimited String.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>An unguessable random string designed to allow the client to maintain state
-to protect against cross-site request forgery attacks.</p>
+<p>OAuth2 parameter.</p>
 </div></span>
   
 </li>
@@ -470,8 +610,8 @@ to protect against cross-site request forgery attacks.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Used to upload a file or files within a folder to a destination folder
-within a CDN Connect app.</p>
+<p>Upload a file or multiple files from a local machine to a folder within  a
+CDN Connect app.</p>
 </div></span>
   
 </li>
@@ -549,7 +689,15 @@ server.</p>
 request.</p>
 </li><li>
 <p><code>:access_token</code> - The current access token for this client, also
-known as the API Key.</p>
+known as the API Key. access_token and api_key options are interchangeable.</p>
+</li><li>
+<p><code>:api_key</code> - The current access token for this client, also
+known as the access token.  access_token and api_key options are
+interchangeable.</p>
+</li><li>
+<p><code>:app_host</code> - The CDN Connect App host. For example,
+demo.cdnconnect.com is a CDN Connect app host. The app host should not
+include https://, http:// or a URL path.</p>
 </li><li>
 <p><code>:debug</code> - Print out any debugging information. Default is
 false.</p>
@@ -567,16 +715,6 @@ false.</p>
       <pre class="lines">
 
 
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
 73
 74
 75
@@ -592,10 +730,27 @@ false.</p>
 85
 86
 87
-88</pre>
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 73</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='comment'># Normalize key to String to allow indifferent access.
@@ -610,9 +765,16 @@ false.</p>
   <span class='ivar'>@redirect_uri</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>redirect_uri</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>access_token</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>access_token</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>api_key</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='comment'># both work
 </span>  <span class='ivar'>@access_token</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>access_token</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+  <span class='ivar'>@app_host</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>app_host</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
   <span class='ivar'>@debug</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>debug</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='kw'>false</span>
   <span class='ivar'>@prefetched_upload_urls</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='ivar'>@upload_queue</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='ivar'>@failed_uploads</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   
+  <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>api_key</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='kw'>and</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>app_host</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>nil</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>app_host option required when using api_key option</span><span class='tstring_end'>&#39;</span></span>
+  <span class='kw'>end</span>
+
   <span class='comment'># Create the OAuth2 client which will be used to authorize the requests
 </span>  <span class='ivar'>@client</span> <span class='op'>=</span> <span class='const'>Signet</span><span class='op'>::</span><span class='const'>OAuth2</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:client_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_client_id'>client_id</span><span class='comma'>,</span>
                                        <span class='symbol'>:client_secret</span> <span class='op'>=&gt;</span> <span class='ivar'>@client_secret</span><span class='comma'>,</span>
@@ -647,6 +809,9 @@ false.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
+<p>OAuth2 value. An API Key (commonly known as an access_token) which was
+previously  created within CDN Connect&#39;s account for a specific app.</p>
+
 
   </div>
 </div>
@@ -672,12 +837,12 @@ false.</p>
       <pre class="lines">
 
 
-436
-437
-438</pre>
+780
+781
+782</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 436</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 780</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_access_token'>access_token</span>
   <span class='ivar'>@access_token</span>
@@ -688,9 +853,9 @@ false.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="api_key-instance_method">
+  <h3 class="signature " id="app_host-instance_method">
   
-    - (<tt>String</tt>) <strong>api_key</strong> 
+    - (<tt>String</tt>) <strong>app_host</strong> 
   
 
   
@@ -699,6 +864,10 @@ false.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
+<p>The CDN Connect App host. For example, demo.cdnconnect.com is a CDN Connect
+app host. The app host value should not include https://, http:// or a URL
+path.</p>
+
 
   </div>
 </div>
@@ -724,15 +893,15 @@ false.</p>
       <pre class="lines">
 
 
-442
-443
-444</pre>
+790
+791
+792</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 442</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 790</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_api_key'>api_key</span>
-  <span class='ivar'>@access_token</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_app_host'>app_host</span>
+  <span class='ivar'>@app_host</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -751,10 +920,10 @@ false.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>A unique identifier issued to the client to identify itself to CDN
-Connect&#39;s authorization server. This is issued by CDN Connect to
-external clients. This is only needed if an API Key isn&#39;t already
-known.</p>
+<p>OAuth2 parameter. A unique identifier issued to the client to identify
+itself to CDN Connect&#39;s authorization server. This is issued by CDN
+Connect to external clients. This is only needed if an API Key isn&#39;t
+already known.</p>
 
 
   </div>
@@ -781,12 +950,12 @@ known.</p>
       <pre class="lines">
 
 
-384
-385
-386</pre>
+720
+721
+722</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 384</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 720</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_client_id'>client_id</span>
   <span class='ivar'>@client_id</span>
@@ -808,10 +977,10 @@ known.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>A secret issued by the CDN Connect&#39;s authorization server, which is
-used to authenticate the client. Do not confuse this is an access_token or
-an api_key. This is only required if an API Key isn&#39;t already known. A
-client secret should not be shared.</p>
+<p>OAuth2 parameter. A secret issued by the CDN Connect&#39;s authorization
+server, which is used to authenticate the client. Do not confuse this is an
+access_token or an api_key. This is only required if an API Key isn&#39;t
+already known. A client secret should not be shared.</p>
 
 
   </div>
@@ -838,12 +1007,12 @@ client secret should not be shared.</p>
       <pre class="lines">
 
 
-396
-397
-398</pre>
+732
+733
+734</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 396</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 732</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_client_secret'>client_secret</span>
   <span class='ivar'>@client_secret</span>
@@ -865,6 +1034,9 @@ client secret should not be shared.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
+<p>OAuth2 value. The authorization code received from the authorization
+server.</p>
+
 
   </div>
 </div>
@@ -890,12 +1062,12 @@ client secret should not be shared.</p>
       <pre class="lines">
 
 
-424
-425
-426</pre>
+762
+763
+764</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 424</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 762</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_code'>code</span>
   <span class='ivar'>@code</span>
@@ -906,9 +1078,71 @@ client secret should not be shared.</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="create_path-instance_method">
+  
+    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>create_path</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Create a folder path. If any of the folders within the given path do not
+already exist they will be created.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A response object with helper methods to read the response.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+609
+610
+611
+612</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 609</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_create_path'>create_path</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/create-path.json</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="delete-instance_method">
   
-    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>delete</strong>(url) 
+    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>delete</strong>(api_path) 
   
 
   
@@ -929,7 +1163,7 @@ DELETE requests are used when (you guessed it) deleting data.</p>
   
     <li>
       
-        <span class='name'>path</span>
+        <span class='name'>api_path</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
@@ -970,15 +1204,154 @@ DELETE requests are used when (you guessed it) deleting data.</p>
       <pre class="lines">
 
 
-130
-131
-132</pre>
+654
+655
+656</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 130</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 654</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>DELETE</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>DELETE</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="delete_object-instance_method">
+  
+    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>delete_object</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Delete object info, which can be either a file or folder.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><ul><li>
+<p><code>:path</code> - The path to the CDN Connect object to delete.
+(required)</p>
+</li></ul>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A response object with helper methods to read the response.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+598
+599
+600
+601</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 598</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_delete_object'>delete_object</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.json</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="failed_uploads-instance_method">
+  
+    - (<tt>Array</tt>) <strong>failed_uploads</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>An array of files which failed.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+808
+809
+810</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 808</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_failed_uploads'>failed_uploads</span>
+  <span class='ivar'>@failed_uploads</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -988,7 +1361,7 @@ DELETE requests are used when (you guessed it) deleting data.</p>
       <div class="method_details ">
   <h3 class="signature " id="get-instance_method">
   
-    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>get</strong>(path) 
+    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>get</strong>(api_path) 
   
 
   
@@ -1009,7 +1382,7 @@ requests are used when reading data.</p>
   
     <li>
       
-        <span class='name'>path</span>
+        <span class='name'>api_path</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
@@ -1050,15 +1423,15 @@ requests are used when reading data.</p>
       <pre class="lines">
 
 
-97
-98
-99</pre>
+621
+622
+623</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 621</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>GET</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>GET</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1066,9 +1439,9 @@ requests are used when reading data.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="post-instance_method">
+  <h3 class="signature " id="get_object-instance_method">
   
-    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>post</strong>(path) 
+    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>get_object</strong>(options = {}) 
   
 
   
@@ -1077,334 +1450,7 @@ requests are used when reading data.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Executes a POST request to an API URL and returns a response object.  POST
-requests are used when creating data.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>path</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>The API path to send the POST request to.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>A response object with helper methods to read the response.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-108
-109
-110</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 108</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>POST</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="put-instance_method">
-  
-    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>put</strong>(path) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Executes a PUT request to an API URL and returns a response object. PUT
-requests are used when updating data.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>path</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>The API path to send the POST request to.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>A response object with helper methods to read the response.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-119
-120
-121</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 119</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PUT</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="redirect_uri-instance_method">
-  
-    - (<tt>String</tt>) <strong>redirect_uri</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-430
-431
-432</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 430</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_redirect_uri'>redirect_uri</span>
-  <span class='ivar'>@redirect_uri</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="scope-instance_method">
-  
-    - (<tt>String</tt>) <strong>scope</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>The scope of the access request, expressed either as an Array or as a
-space-delimited String. This is only required if an API Key isn&#39;t
-already known.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-407
-408
-409</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 407</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_scope'>scope</span>
-  <span class='ivar'>@scope</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="state-instance_method">
-  
-    - (<tt>String</tt>) <strong>state</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>An unguessable random string designed to allow the client to maintain state
-to protect against cross-site request forgery attacks.  This is only
-required if an API Key isn&#39;t already known.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-418
-419
-420</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 418</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_state'>state</span>
-  <span class='ivar'>@state</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="upload-instance_method">
-  
-    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>upload</strong>(options = {}) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Used to upload a file or files within a folder to a destination folder
-within a CDN Connect app. This method requires either a CDN Connect URL, or
-both an app_id and obj_id. If you are uploading many files be sure to use
-the same client instance.</p>
+<p>Get object info, which can be either a file or folder.</p>
 
 
   </div>
@@ -1425,21 +1471,8 @@ the same client instance.</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>The configuration parameters for the client.</p>
-<ul><li>
-<p><code>:destination_folder_url</code> - The URL of the folder to upload to.
-If the destination folder URL option  is not provided then you must use the
-app_id and obj_id options.</p>
-</li><li>
-<p><code>:app_id</code> - The app_id of the app to upload to. If the app_id or
-obj_id options  are not provided then you must use the url option.</p>
-</li><li>
-<p><code>:obj_id</code> - The obj_id of the folder to upload to. If the app_id
-or obj_id options  are not provided then you must use the url option.</p>
-</li><li>
-<p><code>:source_file_local_path</code> - A string of a source file&#39;s
-local paths to upload.</p>
+        <div class='inline'><ul><li>
+<p><code>:path</code> - The path to the CDN Connect object to get. (required)</p>
 </li></ul>
 </div>
       
@@ -1472,7 +1505,559 @@ local paths to upload.</p>
       <pre class="lines">
 
 
-154
+569
+570
+571
+572</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 569</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_get_object'>get_object</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.json</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="post-instance_method">
+  
+    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>post</strong>(api_path, body) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Executes a POST request to an API URL and returns a response object.  POST
+requests are used when creating data.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>api_path</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The API path to send the POST request to.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A response object with helper methods to read the response.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+632
+633
+634</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 632</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='id identifier rubyid_body'>body</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>POST</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:body</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_body'>body</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="put-instance_method">
+  
+    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>put</strong>(api_path, body) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Executes a PUT request to an API URL and returns a response object. PUT
+requests are used when updating data.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>api_path</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The API path to send the POST request to.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A response object with helper methods to read the response.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+643
+644
+645</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 643</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='id identifier rubyid_body'>body</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PUT</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:body</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_body'>body</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="redirect_uri-instance_method">
+  
+    - (<tt>String</tt>) <strong>redirect_uri</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>OAuth2 value. The redirection URI used in the initial request.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+770
+771
+772</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 770</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_redirect_uri'>redirect_uri</span>
+  <span class='ivar'>@redirect_uri</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="rename_object-instance_method">
+  
+    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>rename_object</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Rename object, which can be either a file or folder.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><ul><li>
+<p><code>:path</code> - The path to the CDN Connect object to get. (required)</p>
+</li><li>
+<p><code>:new_name</code> - The new filename or folder name for the object.
+(required)</p>
+</li></ul>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A response object with helper methods to read the response.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+584
+585
+586
+587
+588</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 584</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_rename_object'>rename_object</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/rename.json</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='symbol'>:new_name</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:new_name</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="scope-instance_method">
+  
+    - (<tt>String</tt>) <strong>scope</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>OAuth2 parameter. The scope of the access request, expressed either as an
+Array or as a space-delimited String. This is only required if an API Key
+isn&#39;t already known.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+743
+744
+745</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 743</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_scope'>scope</span>
+  <span class='ivar'>@scope</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="state-instance_method">
+  
+    - (<tt>String</tt>) <strong>state</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>OAuth2 parameter. An unguessable random string designed to allow the client
+to maintain state to protect against cross-site request forgery attacks. 
+This is only required if an API Key isn&#39;t already known.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+754
+755
+756</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 754</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_state'>state</span>
+  <span class='ivar'>@state</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="upload-instance_method">
+  
+    - (<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>upload</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Upload a file or multiple files from a local machine to a folder within  a
+CDN Connect app. The upload method provides numerous ways to upload files
+or files,  to include recursively drilling down through local folders and
+uploading only files  that match your chosen extensions. If any of the
+folders within the upload path do not  already exist then they will be
+created automatically.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The configuration parameters for the client.</p>
+<ul><li>
+<p><code>:destination_path</code> - The path of the CDN Connect folder to
+upload to. If the destination folder does not already exist it will
+automatically be created.</p>
+</li><li>
+<p><code>:source_file_path</code> - A string of a source file&#39;s local path
+to upload to the destination folder.  If you have more than one file to
+upload it&#39;d be better to use  `source_file_paths` or
+`source_folder_path` instead.</p>
+</li><li>
+<p><code>:source_file_paths</code> - A list of a source file&#39;s local paths
+to upload. This option uploads all of  the files to the destination folder.
+If you want to upload files in a  local folder then `source_folder_path`
+option may would be easier  than listing out files manually.</p>
+</li><li>
+<p><code>:source_folder_path</code> - A string of a source folder&#39;s local
+path to upload. This will upload all of the files in this source folder to
+the destination url. By using the `valid_extensions` parameter you can also
+restrict which files should be uploaded according to extension.</p>
+</li><li>
+<p><code>:valid_extensions</code> - An array of valid extensions which should
+be uploaded. This is only applied when the `source_folder_path` options is
+used. If nothing is provided, which is the default, all files within the
+folder are uploaded. The extensions should be in all  lower case, and they
+should not contain a period or asterisks. Example `valid_extensions` array
+=&gt; [&#39;js&#39;, &#39;css&#39;, &#39;jpg&#39;, jpeg&#39;,
+&#39;png&#39;, &#39;gif&#39;, &#39;webp&#39;]</p>
+</li><li>
+<p><code>:recursive_local_folders</code> - A true or false value indicating if
+this call should recursively upload all of the  local folder&#39;s
+sub-folders, and their sub-folders, etc. This option is only used when the
+`source_folder_path` option is used. Default is true.</p>
+</li><li>
+<p><code>:async</code> - A true or false value indicating if the processing of
+the data should be asynchronous</p>
+
+<p>or not. The default value is false. An async response will be faster
+because</p>
+
+<p>the resposne doesn&#39;t wait on the system to complete processing the
+data. However,  because an async response does not wait for the data to
+complete processing then the  response will not contain any information
+about the data which was just uploaded.  Use async only if you do not need
+to know the details of the upload.</p>
+</li><li>
+<p><code>:webhook_url</code> - A URL which the system should `POST` the
+response to. This works for both synchronous and asynchronous calls. The
+data sent to the `webhook_url` will be the same as the data that is sent in
+a synchronous response. By default there is not webhook URL.</p>
+</li></ul>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="APIResponse.html" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A response object with helper methods to read the response.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
 155
 156
 157
@@ -1532,71 +2117,130 @@ local paths to upload.</p>
 211
 212
 213
-214</pre>
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 154</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 155</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_upload'>upload</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='comment'># Make sure we&#39;ve got good data before starting the upload
-</span>  <span class='id identifier rubyid_prepare_upload'>prepare_upload</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+    <span class='comment'># Make sure we&#39;ve got good source data before starting the upload
+</span>    <span class='id identifier rubyid_prepare_upload'>prepare_upload</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
 
-  <span class='id identifier rubyid_i'>i</span> <span class='op'>=</span> <span class='int'>1</span>
-  <span class='kw'>begin</span>
-
-    <span class='comment'># Check if we have a prefetched upload url before requesting a new one
-</span>    <span class='id identifier rubyid_upload_url'>upload_url</span> <span class='op'>=</span> <span class='id identifier rubyid_get_prefetched_upload_url'>get_prefetched_upload_url</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:destination_folder_url</span><span class='rbracket'>]</span><span class='comma'>,</span> 
-                                           <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:app_id</span><span class='rbracket'>]</span><span class='comma'>,</span> 
-                                           <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:obj_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_upload_url'>upload_url</span> <span class='op'>==</span> <span class='kw'>nil</span>
-      <span class='comment'># We do not already have an upload url created. The first upload request
-</span>      <span class='comment'># will need to make a request for an upload url. After the first upload
-</span>      <span class='comment'># each upload response will also include a new upload url which can be used 
-</span>      <span class='comment'># for the next upload when uploading to the same folder.
-</span>      <span class='id identifier rubyid_upload_url_response'>upload_url_response</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_upload_url'>get_upload_url</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
-      <span class='kw'>if</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span><span class='period'>.</span><span class='id identifier rubyid_is_error'>is_error</span>
-        <span class='kw'>return</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span>
-      <span class='kw'>end</span>
-      <span class='id identifier rubyid_upload_url'>upload_url</span> <span class='op'>=</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span><span class='period'>.</span><span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>upload_url</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-    <span class='kw'>end</span>
-
-    <span class='comment'># Create the POST data that gets sent in the request
-</span>    <span class='id identifier rubyid_post_data'>post_data</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
-    <span class='id identifier rubyid_post_data'>post_data</span><span class='lbracket'>[</span><span class='symbol'>:create_upload_url</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>true</span><span class='tstring_end'>&#39;</span></span> <span class='comment'># have the API also create the next upload url
-</span>    <span class='id identifier rubyid_post_data'>post_data</span><span class='lbracket'>[</span><span class='symbol'>:file</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>Faraday</span><span class='op'>::</span><span class='const'>UploadIO</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:source_file_local_path</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:mime_type</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-
-    <span class='comment'># Build the request to the API
-</span>    <span class='id identifier rubyid_conn'>conn</span> <span class='op'>=</span> <span class='const'>Faraday</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_req'>req</span><span class='op'>|</span>
-      <span class='comment'># https://github.com/lostisland/faraday
-</span>      <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>User-Agent</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='cvar'>@@user_agent</span>
-      <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Authorization</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Bearer </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='ivar'>@access_token</span>
-      <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span> <span class='symbol'>:multipart</span>
-      <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_adapter'>adapter</span> <span class='symbol'>:net_http</span>
-    <span class='kw'>end</span>
-
-    <span class='comment'># Kick it off!
-</span>    <span class='kw'>if</span> <span class='ivar'>@debug</span>
-      <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>upload, source: </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:source_file_local_path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>, destination: </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:destination_folder_url</span><span class='rbracket'>]</span>
-    <span class='kw'>end</span>
-    <span class='id identifier rubyid_api_response'>api_response</span> <span class='op'>=</span> <span class='id identifier rubyid_conn'>conn</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='id identifier rubyid_upload_url'>upload_url</span><span class='comma'>,</span> <span class='id identifier rubyid_post_data'>post_data</span>
-
-    <span class='comment'># Woot! Convert the response to our model and see what&#39;s up
-</span>    <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='const'>APIResponse</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_api_response'>api_response</span><span class='rparen'>)</span>
-
-    <span class='comment'># an upload response also contains a new upload url. Save it for the next upload.
-</span>    <span class='id identifier rubyid_set_prefetched_upload_url'>set_prefetched_upload_url</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:destination_folder_url</span><span class='rbracket'>]</span><span class='comma'>,</span> 
-                              <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:app_id</span><span class='rbracket'>]</span><span class='comma'>,</span> 
-                              <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:obj_id</span><span class='rbracket'>]</span><span class='comma'>,</span>
-                              <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>upload_url</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
-
-    <span class='comment'># Rettempt the upload a max of two times if there was a server error
-</span>    <span class='comment'># Otherwise return the response data
-</span>    <span class='kw'>if</span> <span class='kw'>not</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_is_server_error'>is_server_error</span> <span class='kw'>or</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>&gt;</span> <span class='int'>2</span>
-      <span class='kw'>return</span> <span class='id identifier rubyid_response'>response</span>
-    <span class='kw'>end</span>
-    <span class='id identifier rubyid_i'>i</span> <span class='op'>+=</span> <span class='int'>1</span>
-  <span class='kw'>end</span> <span class='kw'>while</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>&lt;=</span> <span class='int'>3</span>
+    <span class='comment'># Place all of the source files in an upload queue for each destination folder.
+</span>    <span class='comment'># Up to 25 files can be sent in one POST request. As uploads are successful
+</span>    <span class='comment'># the files will be removed from the queue and uploading will stop when
+</span>    <span class='comment'># each directory&#39;s upload queue is empty.
+</span>    <span class='id identifier rubyid_build_upload_queue'>build_upload_queue</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+    
+    <span class='comment'># The returning response object. Its empty to start with then as 
+</span>    <span class='comment'># uploads complete it fills this up with each upload&#39;s response info
+</span>    <span class='id identifier rubyid_api_response'>api_response</span> <span class='op'>=</span> <span class='const'>CDNConnect</span><span class='op'>::</span><span class='const'>APIResponse</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='rparen'>)</span>
+    
+    <span class='comment'># If there are files in the upload_queue then start the upload process
+</span>    <span class='kw'>while</span> <span class='ivar'>@upload_queue</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+        
+        <span class='comment'># Get the destination_path in the list of upload queues
+</span>        <span class='id identifier rubyid_destination_path'>destination_path</span> <span class='op'>=</span> <span class='ivar'>@upload_queue</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>
+        <span class='kw'>if</span> <span class='ivar'>@debug</span>
+            <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Upload destination_path: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+        <span class='kw'>end</span>
   
+        <span class='comment'># Check if we have a prefetched upload url before requesting a new one
+</span>        <span class='id identifier rubyid_upload_url'>upload_url</span> <span class='op'>=</span> <span class='id identifier rubyid_get_prefetched_upload_url'>get_prefetched_upload_url</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='rparen'>)</span>
+        <span class='kw'>if</span> <span class='id identifier rubyid_upload_url'>upload_url</span> <span class='op'>==</span> <span class='kw'>nil</span>
+          <span class='comment'># We do not already have an upload url created. The first upload request
+</span>          <span class='comment'># will need to make a request for an upload url. After the first upload
+</span>          <span class='comment'># each upload response will also include a new upload url which can be used 
+</span>          <span class='comment'># for the next upload when uploading to the same folder.
+</span>          <span class='id identifier rubyid_upload_url_response'>upload_url_response</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_upload_url'>get_upload_url</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='rparen'>)</span>
+          <span class='kw'>if</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span><span class='period'>.</span><span class='id identifier rubyid_is_error'>is_error</span>
+            <span class='kw'>return</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span>
+          <span class='kw'>end</span>
+          <span class='id identifier rubyid_upload_url'>upload_url</span> <span class='op'>=</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span><span class='period'>.</span><span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>upload_url</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+          <span class='kw'>if</span> <span class='ivar'>@debug</span>
+            <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Received upload url</span><span class='tstring_end'>&quot;</span></span>
+          <span class='kw'>end</span>
+        <span class='kw'>end</span>
+
+        <span class='comment'># Build the data that gets sent in the POST request
+</span>        <span class='id identifier rubyid_post_data'>post_data</span> <span class='op'>=</span> <span class='id identifier rubyid_build_post_data'>build_post_data</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='comma'>,</span> 
+                                    <span class='id identifier rubyid_max_files_per_request'>max_files_per_request</span> <span class='op'>=</span> <span class='int'>25</span><span class='comma'>,</span> 
+                                    <span class='id identifier rubyid_max_request_size'>max_request_size</span> <span class='op'>=</span> <span class='int'>25165824</span><span class='comma'>,</span> 
+                                    <span class='id identifier rubyid_async'>async</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:async</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+        <span class='comment'># Build the request to send to the API
+</span>        <span class='comment'># Uses the Faraday: https://github.com/lostisland/faraday
+</span>        <span class='id identifier rubyid_conn'>conn</span> <span class='op'>=</span> <span class='const'>Faraday</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_req'>req</span><span class='op'>|</span>
+          <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>User-Agent</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='cvar'>@@user_agent</span>
+          <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Authorization</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Bearer </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='ivar'>@access_token</span>
+          <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span> <span class='symbol'>:multipart</span>
+          <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_adapter'>adapter</span> <span class='symbol'>:net_http</span>
+        <span class='kw'>end</span>
+
+        <span class='comment'># Kick off the request!
+</span>        <span class='id identifier rubyid_http_response'>http_response</span> <span class='op'>=</span> <span class='id identifier rubyid_conn'>conn</span><span class='period'>.</span><span class='id identifier rubyid_post'>post</span> <span class='id identifier rubyid_upload_url'>upload_url</span><span class='comma'>,</span> <span class='id identifier rubyid_post_data'>post_data</span>
+
+        <span class='comment'># w00t! Convert the http response into APIResponse and see what&#39;s up
+</span>        <span class='id identifier rubyid_upload_response'>upload_response</span> <span class='op'>=</span> <span class='const'>APIResponse</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_http_response'>http_response</span><span class='rparen'>)</span>
+        <span class='kw'>if</span> <span class='ivar'>@debug</span>
+          <span class='kw'>for</span> <span class='id identifier rubyid_msg'>msg</span> <span class='kw'>in</span> <span class='id identifier rubyid_upload_response'>upload_response</span><span class='period'>.</span><span class='id identifier rubyid_msgs'>msgs</span>
+            <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Upload </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_msg'>msg</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>status</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_msg'>msg</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>text</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+          <span class='kw'>end</span>
+        <span class='kw'>end</span>
+
+        <span class='comment'># merge the two together so we build one awesome response
+</span>        <span class='comment'># object with everything you need to know about every upload
+</span>        <span class='id identifier rubyid_api_response'>api_response</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_upload_response'>upload_response</span><span class='rparen'>)</span>
+        
+        <span class='comment'># Read the response and see what we got
+</span>        <span class='kw'>if</span> <span class='id identifier rubyid_upload_response'>upload_response</span><span class='period'>.</span><span class='id identifier rubyid_is_server_error'>is_server_error</span>
+            <span class='comment'># There was a server error, empty the active upload queue
+</span>            <span class='id identifier rubyid_failed_upload_attempt'>failed_upload_attempt</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='rparen'>)</span>            
+            
+        <span class='kw'>else</span>
+            <span class='comment'># successful upload, clear out the active upload queue
+</span>            <span class='comment'># and remove uploaded files from the upload queue
+</span>            <span class='id identifier rubyid_successful_upload_attempt'>successful_upload_attempt</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='rparen'>)</span>
+            
+            <span class='comment'># an upload response also contains a new upload url. 
+</span>            <span class='comment'># Save it for the next upload to the same destination.
+</span>            <span class='id identifier rubyid_set_prefetched_upload_url'>set_prefetched_upload_url</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='comma'>,</span>
+                                      <span class='id identifier rubyid_upload_response'>upload_response</span><span class='period'>.</span><span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>upload_url</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+        <span class='kw'>end</span>
+  
+    <span class='kw'>end</span> 
+    
+    <span class='kw'>return</span> <span class='id identifier rubyid_api_response'>api_response</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1608,7 +2252,7 @@ local paths to upload.</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Mar 18 22:37:28 2013 by
+  Generated on Tue Jun 18 23:26:30 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.5.2 (ruby-2.0.0).
 </div>

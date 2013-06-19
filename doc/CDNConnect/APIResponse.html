@@ -102,9 +102,9 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Used to simpilfy things by creating easy to use helper functions to read
-response data. Responses from the API are all structured the same way, and
-this class is used as a small wrapper to make it easier to get data.</p>
+<p>Used to simpilfy things with helper functions to read response  data.
+Responses from the API are all structured the same way, and this class is
+used as a wrapper to make it easier to read  resposne data.</p>
 
 
   </div>
@@ -130,7 +130,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#body-instance_method" title="#body (instance method)">- (Object) <strong>body</strong> </a>
+      <a href="#body-instance_method" title="#body (instance method)">- (String) <strong>body</strong> </a>
     
 
     
@@ -144,7 +144,9 @@ this class is used as a small wrapper to make it easier to get data.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Content body of the http response.</p>
+</div></span>
   
 </li>
 
@@ -152,7 +154,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#data-instance_method" title="#data (instance method)">- (Object) <strong>data</strong> </a>
+      <a href="#data-instance_method" title="#data (instance method)">- (Hash) <strong>data</strong> </a>
     
 
     
@@ -166,7 +168,9 @@ this class is used as a small wrapper to make it easier to get data.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Decode the response body from JSON into a hash.</p>
+</div></span>
   
 </li>
 
@@ -174,7 +178,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#format-instance_method" title="#format (instance method)">- (Object) <strong>format</strong> </a>
+      <a href="#files-instance_method" title="#files (instance method)">- (array) <strong>files</strong> </a>
     
 
     
@@ -188,7 +192,9 @@ this class is used as a small wrapper to make it easier to get data.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>A list of all the files that were uploaded.</p>
+</div></span>
   
 </li>
 
@@ -210,7 +216,9 @@ this class is used as a small wrapper to make it easier to get data.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>A helper method to read a key within the results.</p>
+</div></span>
   
 </li>
 
@@ -218,7 +226,55 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">- (APIResponse) <strong>initialize</strong>(response) </a>
+      <a href="#has_errors-instance_method" title="#has_errors (instance method)">- (bool) <strong>has_errors</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A boolean indicating if this response has messages or not.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#has_msgs-instance_method" title="#has_msgs (instance method)">- (bool) <strong>has_msgs</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A boolean indicating if this response has messages or not.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (APIResponse) <strong>initialize</strong>(http_response = nil) </a>
     
 
     
@@ -244,7 +300,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_bad_gateway-instance_method" title="#is_bad_gateway (instance method)">- (Object) <strong>is_bad_gateway</strong> </a>
+      <a href="#is_bad_gateway-instance_method" title="#is_bad_gateway (instance method)">- (bool) <strong>is_bad_gateway</strong> </a>
     
 
     
@@ -266,7 +322,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_bad_request-instance_method" title="#is_bad_request (instance method)">- (Object) <strong>is_bad_request</strong> </a>
+      <a href="#is_bad_request-instance_method" title="#is_bad_request (instance method)">- (bool) <strong>is_bad_request</strong> </a>
     
 
     
@@ -288,7 +344,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_client_error-instance_method" title="#is_client_error (instance method)">- (Object) <strong>is_client_error</strong> </a>
+      <a href="#is_client_error-instance_method" title="#is_client_error (instance method)">- (bool) <strong>is_client_error</strong> </a>
     
 
     
@@ -310,7 +366,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_error-instance_method" title="#is_error (instance method)">- (Object) <strong>is_error</strong> </a>
+      <a href="#is_error-instance_method" title="#is_error (instance method)">- (bool) <strong>is_error</strong> </a>
     
 
     
@@ -332,7 +388,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_forbidden-instance_method" title="#is_forbidden (instance method)">- (Object) <strong>is_forbidden</strong> </a>
+      <a href="#is_forbidden-instance_method" title="#is_forbidden (instance method)">- (bool) <strong>is_forbidden</strong> </a>
     
 
     
@@ -354,7 +410,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_method_not_allowed-instance_method" title="#is_method_not_allowed (instance method)">- (Object) <strong>is_method_not_allowed</strong> </a>
+      <a href="#is_method_not_allowed-instance_method" title="#is_method_not_allowed (instance method)">- (bool) <strong>is_method_not_allowed</strong> </a>
     
 
     
@@ -376,7 +432,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_not_found-instance_method" title="#is_not_found (instance method)">- (Object) <strong>is_not_found</strong> </a>
+      <a href="#is_not_found-instance_method" title="#is_not_found (instance method)">- (bool) <strong>is_not_found</strong> </a>
     
 
     
@@ -398,7 +454,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_server_error-instance_method" title="#is_server_error (instance method)">- (Object) <strong>is_server_error</strong> </a>
+      <a href="#is_server_error-instance_method" title="#is_server_error (instance method)">- (bool) <strong>is_server_error</strong> </a>
     
 
     
@@ -420,7 +476,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_service_unavailable-instance_method" title="#is_service_unavailable (instance method)">- (Object) <strong>is_service_unavailable</strong> </a>
+      <a href="#is_service_unavailable-instance_method" title="#is_service_unavailable (instance method)">- (bool) <strong>is_service_unavailable</strong> </a>
     
 
     
@@ -442,7 +498,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_success-instance_method" title="#is_success (instance method)">- (Object) <strong>is_success</strong> </a>
+      <a href="#is_success-instance_method" title="#is_success (instance method)">- (bool) <strong>is_success</strong> </a>
     
 
     
@@ -464,7 +520,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_unauthorized-instance_method" title="#is_unauthorized (instance method)">- (Object) <strong>is_unauthorized</strong> </a>
+      <a href="#is_unauthorized-instance_method" title="#is_unauthorized (instance method)">- (bool) <strong>is_unauthorized</strong> </a>
     
 
     
@@ -486,7 +542,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#msgs-instance_method" title="#msgs (instance method)">- (Object) <strong>msgs</strong> </a>
+      <a href="#merge-instance_method" title="#merge (instance method)">- (APIResponse) <strong>merge</strong>(updating_response) </a>
     
 
     
@@ -500,7 +556,9 @@ this class is used as a small wrapper to make it easier to get data.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Used to merge two responses into one APIResponse.</p>
+</div></span>
   
 </li>
 
@@ -508,7 +566,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#results-instance_method" title="#results (instance method)">- (Object) <strong>results</strong> </a>
+      <a href="#msgs-instance_method" title="#msgs (instance method)">- (array) <strong>msgs</strong> </a>
     
 
     
@@ -522,7 +580,9 @@ this class is used as a small wrapper to make it easier to get data.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>An array of messages, and each message is a hash.</p>
+</div></span>
   
 </li>
 
@@ -530,7 +590,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#status-instance_method" title="#status (instance method)">- (Object) <strong>status</strong> </a>
+      <a href="#object-instance_method" title="#object (instance method)">- (hash) <strong>object</strong> </a>
     
 
     
@@ -544,7 +604,58 @@ this class is used as a small wrapper to make it easier to get data.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Can be either a file or folder object, or the first file in the files
+array.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#results-instance_method" title="#results (instance method)">- (Hash) <strong>results</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Helper method to read the results hash.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#status-instance_method" title="#status (instance method)">- (int) <strong>status</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The HTTP response status.</p>
+</div></span>
   
 </li>
 
@@ -558,7 +669,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>initialize</strong>(response) 
+    - (<tt><span class='object_link'><a href="" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>initialize</strong>(http_response = nil) 
   
 
   
@@ -581,18 +692,30 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <pre class="lines">
 
 
-23
-24
-25
 26
-27</pre>
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 26</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='rparen'>)</span>
-  <span class='ivar'>@response</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span>
-  <span class='ivar'>@data</span> <span class='op'>=</span> <span class='kw'>nil</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_http_response'>http_response</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='ivar'>@http_response</span> <span class='op'>=</span> <span class='id identifier rubyid_http_response'>http_response</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_http_response'>http_response</span> <span class='op'>!=</span> <span class='kw'>nil</span>
+    <span class='ivar'>@status</span> <span class='op'>=</span> <span class='id identifier rubyid_http_response'>http_response</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span>
+    <span class='ivar'>@data</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='kw'>else</span>
+    <span class='ivar'>@status</span> <span class='op'>=</span> <span class='int'>0</span>
+    <span class='ivar'>@data</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>results</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>msgs</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+  <span class='kw'>end</span>
   <span class='kw'>return</span> <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -610,27 +733,58 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details first">
   <h3 class="signature first" id="body-instance_method">
   
-    - (<tt>Object</tt>) <strong>body</strong> 
+    - (<tt>String</tt>) <strong>body</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Content body of the http response. This will be read by the data method so
+the body can be parsed into a hash.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-29
-30
-31</pre>
+70
+71
+72
+73
+74
+75</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 70</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_body'>body</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='ivar'>@response</span><span class='period'>.</span><span class='id identifier rubyid_body'>body</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_body'>body</span>
+  <span class='kw'>if</span> <span class='ivar'>@http_response</span> <span class='op'>!=</span> <span class='kw'>nil</span> 
+    <span class='kw'>return</span> <span class='ivar'>@http_response</span><span class='period'>.</span><span class='id identifier rubyid_body'>body</span>
+  <span class='kw'>end</span>
+  <span class='kw'>nil</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -640,44 +794,62 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="data-instance_method">
   
-    - (<tt>Object</tt>) <strong>data</strong> 
+    - (<tt>Hash</tt>) <strong>data</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Decode the response body from JSON into a hash. Store the parsed data in an
+instance variable (@data) so we  don&#39;t keep parsing it every time we
+reference data.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45</pre>
+84
+85
+86
+87
+88
+89
+90
+91
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 84</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_data'>data</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='comment'># Decode the response body from JSON into an object.
-</span>  <span class='comment'># Keep the parsed data in an instance variable so we 
-</span>  <span class='comment'># don&#39;t keep parsing it every time we reference data()
-</span>  <span class='kw'>if</span> <span class='ivar'>@data</span> <span class='op'>==</span> <span class='kw'>nil</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_format'>format</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&#39;</span></span>
-      <span class='ivar'>@data</span> <span class='op'>=</span> <span class='const'>ActiveSupport</span><span class='op'>::</span><span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_decode'>decode</span><span class='lparen'>(</span><span class='id identifier rubyid_body'>body</span><span class='rparen'>)</span>
-    <span class='kw'>else</span>
-      <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Data response type must be JSON</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>def</span> <span class='id identifier rubyid_data'>data</span>
+  <span class='kw'>if</span> <span class='ivar'>@data</span> <span class='op'>==</span> <span class='kw'>nil</span> <span class='kw'>and</span> <span class='id identifier rubyid_body'>body</span> <span class='op'>!=</span> <span class='kw'>nil</span>
+    <span class='kw'>begin</span>
+      <span class='ivar'>@data</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_body'>body</span><span class='rparen'>)</span>
+    <span class='kw'>rescue</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
   <span class='ivar'>@data</span>
@@ -688,29 +860,59 @@ this class is used as a small wrapper to make it easier to get data.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="format-instance_method">
+  <h3 class="signature " id="files-instance_method">
   
-    - (<tt>Object</tt>) <strong>format</strong> 
-  
-
+    - (<tt>array</tt>) <strong>files</strong> 
   
 
   
-</h3><table class="source_code">
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>A list of all the files that were uploaded. Each file in the array is a
+hash.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>An array of hashes each representing a CDN Connect object.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-77
-78
-79</pre>
+43
+44
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 43</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_format'>format</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='ivar'>@response</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>content-type</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_files'>files</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>files</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -726,31 +928,38 @@ this class is used as a small wrapper to make it easier to get data.</p>
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>A helper method to read a key within the results.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-57
-58
-59
-60
-61
-62
-63
-64
-65</pre>
+110
+111
+112
+113
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 110</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
-  <span class='comment'># A helper method so you don&#39;t have to do any nil checking
-</span>  <span class='comment'># as you dig through the response results
-</span>  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_results'>results</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_results'>results</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span> <span class='op'>!=</span> <span class='kw'>nil</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_results'>results</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
   <span class='kw'>nil</span>
 <span class='kw'>end</span></pre>
@@ -760,29 +969,183 @@ this class is used as a small wrapper to make it easier to get data.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="is_bad_gateway-instance_method">
+  <h3 class="signature " id="has_errors-instance_method">
   
-    - (<tt>Object</tt>) <strong>is_bad_gateway</strong> 
-  
-
+    - (<tt>bool</tt>) <strong>has_errors</strong> 
   
 
   
-</h3><table class="source_code">
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>A boolean indicating if this response has messages or not.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A boolean indicating if this response has messages or not.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-121
-122
-123</pre>
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 121</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 143</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_bad_gateway'>is_bad_gateway</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>502</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_has_errors'>has_errors</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_msgs'>msgs</span> <span class='kw'>and</span> <span class='id identifier rubyid_msgs'>msgs</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+    <span class='kw'>for</span> <span class='id identifier rubyid_msg'>msg</span> <span class='kw'>in</span> <span class='id identifier rubyid_msgs'>msgs</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_msg'>msg</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>status</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>error</span><span class='tstring_end'>&quot;</span></span>
+        <span class='kw'>return</span> <span class='kw'>true</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='kw'>false</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="has_msgs-instance_method">
+  
+    - (<tt>bool</tt>) <strong>has_msgs</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>A boolean indicating if this response has messages or not.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A boolean indicating if this response has messages or not.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+136
+137
+138</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 136</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_has_msgs'>has_msgs</span>
+  <span class='id identifier rubyid_msgs'>msgs</span> <span class='kw'>and</span> <span class='id identifier rubyid_msgs'>msgs</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="is_bad_gateway-instance_method">
+  
+    - (<tt>bool</tt>) <strong>is_bad_gateway</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+251
+252
+253</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 251</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_is_bad_gateway'>is_bad_gateway</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>502</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -792,27 +1155,49 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="is_bad_request-instance_method">
   
-    - (<tt>Object</tt>) <strong>is_bad_request</strong> 
+    - (<tt>bool</tt>) <strong>is_bad_request</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-97
-98
-99</pre>
+215
+216
+217</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 215</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_bad_request'>is_bad_request</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>400</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_bad_request'>is_bad_request</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>400</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -822,27 +1207,49 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="is_client_error-instance_method">
   
-    - (<tt>Object</tt>) <strong>is_client_error</strong> 
+    - (<tt>bool</tt>) <strong>is_client_error</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-93
-94
-95</pre>
+209
+210
+211</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 209</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_client_error'>is_client_error</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>400</span> <span class='kw'>and</span> <span class='id identifier rubyid_status'>status</span> <span class='op'>&lt;</span> <span class='int'>500</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_client_error'>is_client_error</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>400</span> <span class='kw'>and</span> <span class='id identifier rubyid_status'>status</span> <span class='op'>&lt;</span> <span class='int'>500</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -852,27 +1259,49 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="is_error-instance_method">
   
-    - (<tt>Object</tt>) <strong>is_error</strong> 
+    - (<tt>bool</tt>) <strong>is_error</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-89
-90
-91</pre>
+203
+204
+205</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 89</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 203</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_error'>is_error</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>400</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_error'>is_error</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>400</span> <span class='kw'>or</span> <span class='id identifier rubyid_has_errors'>has_errors</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -882,27 +1311,49 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="is_forbidden-instance_method">
   
-    - (<tt>Object</tt>) <strong>is_forbidden</strong> 
+    - (<tt>bool</tt>) <strong>is_forbidden</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-105
-106
-107</pre>
+227
+228
+229</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 105</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 227</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_forbidden'>is_forbidden</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>403</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_forbidden'>is_forbidden</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>403</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -912,27 +1363,49 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="is_method_not_allowed-instance_method">
   
-    - (<tt>Object</tt>) <strong>is_method_not_allowed</strong> 
+    - (<tt>bool</tt>) <strong>is_method_not_allowed</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-113
-114
-115</pre>
+239
+240
+241</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 113</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 239</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_method_not_allowed'>is_method_not_allowed</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>405</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_method_not_allowed'>is_method_not_allowed</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>405</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -942,27 +1415,49 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="is_not_found-instance_method">
   
-    - (<tt>Object</tt>) <strong>is_not_found</strong> 
+    - (<tt>bool</tt>) <strong>is_not_found</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-109
-110
-111</pre>
+233
+234
+235</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 109</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 233</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_not_found'>is_not_found</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>404</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_not_found'>is_not_found</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>404</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -972,27 +1467,49 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="is_server_error-instance_method">
   
-    - (<tt>Object</tt>) <strong>is_server_error</strong> 
+    - (<tt>bool</tt>) <strong>is_server_error</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-117
-118
-119</pre>
+245
+246
+247</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 117</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 245</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_server_error'>is_server_error</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>500</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_server_error'>is_server_error</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>500</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1002,27 +1519,49 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="is_service_unavailable-instance_method">
   
-    - (<tt>Object</tt>) <strong>is_service_unavailable</strong> 
+    - (<tt>bool</tt>) <strong>is_service_unavailable</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-125
-126
-127</pre>
+257
+258
+259</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 125</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 257</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_service_unavailable'>is_service_unavailable</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>503</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_service_unavailable'>is_service_unavailable</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>503</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1032,27 +1571,49 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="is_success-instance_method">
   
-    - (<tt>Object</tt>) <strong>is_success</strong> 
+    - (<tt>bool</tt>) <strong>is_success</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-85
-86
-87</pre>
+197
+198
+199</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 197</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_success'>is_success</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>200</span> <span class='kw'>and</span> <span class='id identifier rubyid_status'>status</span> <span class='op'>&lt;</span> <span class='int'>300</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_success'>is_success</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>200</span> <span class='kw'>and</span> <span class='id identifier rubyid_status'>status</span> <span class='op'>&lt;</span> <span class='int'>300</span> <span class='kw'>and</span> <span class='kw'>not</span> <span class='id identifier rubyid_has_errors'>has_errors</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1062,27 +1623,152 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="is_unauthorized-instance_method">
   
-    - (<tt>Object</tt>) <strong>is_unauthorized</strong> 
+    - (<tt>bool</tt>) <strong>is_unauthorized</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>bool</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-101
-102
-103</pre>
+221
+222
+223</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 101</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 221</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_unauthorized'>is_unauthorized</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='lparen'>(</span><span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>401</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_unauthorized'>is_unauthorized</span>
+  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>401</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="merge-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>) <strong>merge</strong>(updating_response) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Used to merge two responses into one APIResponse. This is done
+automatically when uploading numerous files.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="CDNConnect::APIResponse (class)">APIResponse</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 160</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_updating_response'>updating_response</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_updating_response'>updating_response</span> <span class='op'>==</span> <span class='kw'>nil</span> <span class='kw'>or</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span> <span class='op'>==</span> <span class='kw'>nil</span>
+    <span class='kw'>return</span> <span class='kw'>self</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>if</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_status'>status</span>
+    <span class='ivar'>@status</span> <span class='op'>=</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span> <span class='op'>==</span> <span class='kw'>nil</span>
+    <span class='ivar'>@data</span> <span class='op'>=</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span>
+    <span class='kw'>return</span> <span class='kw'>self</span>
+  <span class='kw'>end</span>
+        
+  <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>msgs</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_msgs'>msgs</span>
+  
+  <span class='kw'>if</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_files'>files</span> <span class='op'>!=</span> <span class='kw'>nil</span>
+      <span class='id identifier rubyid_f'>f</span> <span class='op'>=</span> <span class='id identifier rubyid_files'>files</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_f'>f</span> <span class='op'>!=</span> <span class='kw'>nil</span>
+        <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>results</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>files</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_files'>files</span>
+      <span class='kw'>else</span>
+        <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>results</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>files</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_files'>files</span>
+      <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1092,37 +1778,140 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="msgs-instance_method">
   
-    - (<tt>Object</tt>) <strong>msgs</strong> 
+    - (<tt>array</tt>) <strong>msgs</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>An array of messages, and each message is a hash. Example message within
+the msgs array:  “text” =&gt; “info about the message”, “status” =&gt;
+“error”</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A response object with helper methods to read the response.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-67
-68
-69
-70
-71
-72
-73
-74
-75</pre>
+125
+126
+127
+128
+129
+130
+131</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 67</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 125</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_msgs'>msgs</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='comment'># this is just double checking the msgs data
-</span>  <span class='comment'># exists and is built with the correct structure
-</span>  <span class='id identifier rubyid_d'>d</span> <span class='op'>=</span> <span class='id identifier rubyid_data'>data</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_d'>d</span><span class='period'>.</span><span class='id identifier rubyid_has_key?'>has_key?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>msgs</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_d'>d</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>msgs</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_msgs'>msgs</span>
+  <span class='id identifier rubyid_d'>d</span> <span class='op'>=</span> <span class='id identifier rubyid_data'>data</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_d'>d</span> <span class='op'>!=</span> <span class='kw'>nil</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_d'>d</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>msgs</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="object-instance_method">
+  
+    - (<tt>hash</tt>) <strong>object</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Can be either a file or folder object, or the first file in the files
+array.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A hash representing a CDN Connect object.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 52</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_object'>object</span>
+  <span class='id identifier rubyid_obj'>obj</span> <span class='op'>=</span> <span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>object</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_obj'>obj</span> <span class='op'>!=</span> <span class='kw'>nil</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_obj'>obj</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_fs'>fs</span> <span class='op'>=</span> <span class='id identifier rubyid_files'>files</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_fs'>fs</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='kw'>and</span> <span class='id identifier rubyid_fs'>fs</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_fs'>fs</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>
   <span class='kw'>end</span>
   <span class='kw'>nil</span>
 <span class='kw'>end</span></pre>
@@ -1134,36 +1923,56 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="results-instance_method">
   
-    - (<tt>Object</tt>) <strong>results</strong> 
+    - (<tt>Hash</tt>) <strong>results</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Helper method to read the results hash.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-47
-48
-49
-50
-51
-52
-53
-54
-55</pre>
+99
+100
+101
+102
+103
+104
+105</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 99</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_results'>results</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='comment'># this is just double checking the results data
-</span>  <span class='comment'># exists and is built with the correct structure
-</span>  <span class='id identifier rubyid_d'>d</span> <span class='op'>=</span> <span class='id identifier rubyid_data'>data</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_d'>d</span><span class='period'>.</span><span class='id identifier rubyid_has_key?'>has_key?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>results</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_results'>results</span>
+  <span class='id identifier rubyid_d'>d</span> <span class='op'>=</span> <span class='id identifier rubyid_data'>data</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_d'>d</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='kw'>and</span> <span class='id identifier rubyid_d'>d</span><span class='period'>.</span><span class='id identifier rubyid_has_key?'>has_key?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>results</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_d'>d</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>results</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
   <span class='kw'>end</span>
   <span class='kw'>nil</span>
@@ -1176,27 +1985,56 @@ this class is used as a small wrapper to make it easier to get data.</p>
       <div class="method_details ">
   <h3 class="signature " id="status-instance_method">
   
-    - (<tt>Object</tt>) <strong>status</strong> 
+    - (<tt>int</tt>) <strong>status</strong> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The HTTP response status.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>int</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The HTTP response status.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-81
-82
-83</pre>
+191
+192
+193</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 81</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 191</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='rparen'>)</span>
-  <span class='ivar'>@response</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_status'>status</span>
+  <span class='ivar'>@status</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1208,7 +2046,7 @@ this class is used as a small wrapper to make it easier to get data.</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Mar 18 22:37:28 2013 by
+  Generated on Tue Jun 18 23:26:30 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.5.2 (ruby-2.0.0).
 </div>

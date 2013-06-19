@@ -12,118 +12,250 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'json'
+
 module CDNConnect
 
   ##
-  # Used to simpilfy things by creating easy to use helper functions to read
-  # response data. Responses from the API are all structured the same way,
-  # and this class is used as a small wrapper to make it easier to get data.
+  # Used to simpilfy things with helper functions to read response 
+  # data. Responses from the API are all structured the same way, and
+  # this class is used as a wrapper to make it easier to read 
+  # resposne data.
   class APIResponse
 
-    def initialize(response)
-      @response = response
-      @data = nil
+    def initialize(http_response=nil)
+      @http_response = http_response
+      if http_response != nil
+        @status = http_response.status
+        @data = nil
+      else
+        @status = 0
+        @data = {"results" => {}, "msgs" => []}
+      end
       return self
     end
 
-    def body()
-      @response.body
+    
+    ##
+    # A list of all the files that were uploaded. Each file in the array is a hash.
+    #
+    # @return [array] An array of hashes each representing a CDN Connect object.
+    def files
+      return get_result('files')
     end
 
-    def data()
-      # Decode the response body from JSON into an object.
-      # Keep the parsed data in an instance variable so we 
-      # don't keep parsing it every time we reference data()
-      if @data == nil
-        if format.include? 'application/json'
-          @data = ActiveSupport::JSON.decode(body)
-        else
-          raise "Data response type must be JSON"
+    
+    ##
+    # Can be either a file or folder object, or the first file in the files array.
+    #
+    # @return [hash] A hash representing a CDN Connect object.
+    def object
+      obj = get_result('object')
+      if obj != nil
+        return obj
+      end
+      fs = files
+      if fs != nil and fs.length > 0
+        return fs[0]
+      end
+      nil
+    end
+    
+
+    ##
+    # Content body of the http response. This will be read by the
+    # data method so the body can be parsed into a hash.
+    #
+    # @return [String]
+    def body
+      if @http_response != nil 
+        return @http_response.body
+      end
+      nil
+    end
+
+
+    ## 
+    # Decode the response body from JSON into a hash.
+    # Store the parsed data in an instance variable (@data) so we 
+    # don't keep parsing it every time we reference data.
+    #
+    # @return [Hash]
+    def data
+      if @data == nil and body != nil
+        begin
+          @data = JSON.parse(body)
+        rescue
         end
       end
       @data
     end
 
-    def results()
-      # this is just double checking the results data
-      # exists and is built with the correct structure
+
+    ##
+    # Helper method to read the results hash.
+    #
+    # @return [Hash]
+    def results
       d = data
-      if d.has_key?('results')
+      if d != nil and d.has_key?('results')
         return d['results']
       end
       nil
     end
 
+
+    ##
+    # A helper method to read a key within the results.
     def get_result(key)
-      # A helper method so you don't have to do any nil checking
-      # as you dig through the response results
       r = results
       if r != nil
-        return results[key]
+        return r.fetch(key, nil)
       end
       nil
     end
 
-    def msgs()
-      # this is just double checking the msgs data
-      # exists and is built with the correct structure
+
+    ##
+    # An array of messages, and each message is a hash.
+    # Example message within the msgs array: 
+    # "text" => "info about the message", "status" => "error"
+    #
+    # @return [array] A response object with helper methods to read the response.
+    def msgs
       d = data
-      if d.has_key?('msgs')
-        return d['msgs']
+      if d != nil
+        return d.fetch('msgs', [])
       end
-      nil
+      return []
+    end
+    
+
+    ##
+    # @return [bool] A boolean indicating if this response has messages or not.
+    def has_msgs
+      msgs and msgs.length > 0
+    end
+    
+
+    ##
+    # @return [bool] A boolean indicating if this response has messages or not.
+    def has_errors
+      if msgs and msgs.length > 0
+        for msg in msgs
+          if msg["status"] == "error"
+            return true
+          end
+        end
+      end
+      false
     end
 
-    def format()
-      @response.headers['content-type']
+
+    ##
+    # Used to merge two responses into one APIResponse. This is
+    # done automatically when uploading numerous files.
+    #
+    # @return [APIResponse]
+    def merge(updating_response)
+      if updating_response == nil or updating_response.data == nil
+        return self
+      end
+      
+      if updating_response.status > status
+        @status = updating_response.status
+      end
+      
+      if data == nil
+        @data = updating_response.data
+        return self
+      end
+            
+      @data['msgs'] += updating_response.msgs
+      
+      if updating_response.files != nil
+          f = files
+          if f != nil
+            @data['results']['files'] += updating_response.files
+          else
+            @data['results']['files'] = updating_response.files
+          end
+      end
+      
+      return self
     end
 
-    def status()
-      @response.status
+
+    ##
+    # @return [int] The HTTP response status.
+    def status
+      @status
     end
 
-    def is_success()
-      (status >= 200 and status < 300)
+    ##
+    # @return [bool]
+    def is_success
+      status >= 200 and status < 300 and not has_errors
     end
 
-    def is_error()
-      (status >= 400)
+    ##
+    # @return [bool]
+    def is_error
+      status >= 400 or has_errors
     end
 
-    def is_client_error()
-      (status >= 400 and status < 500)
+    ##
+    # @return [bool]
+    def is_client_error
+      status >= 400 and status < 500
     end
 
-    def is_bad_request()
-      (status == 400)
+    ##
+    # @return [bool]
+    def is_bad_request
+      status == 400
     end
 
-    def is_unauthorized()
-      (status == 401)
+    ##
+    # @return [bool]
+    def is_unauthorized
+      status == 401
     end
 
-    def is_forbidden()
-      (status == 403)
+    ##
+    # @return [bool]
+    def is_forbidden
+      status == 403
     end
 
-    def is_not_found()
-      (status == 404)
+    ##
+    # @return [bool]
+    def is_not_found
+      status == 404
     end
 
-    def is_method_not_allowed()
-      (status == 405)
+    ##
+    # @return [bool]
+    def is_method_not_allowed
+      status == 405
     end
 
-    def is_server_error()
-      (status >= 500)
+    ##
+    # @return [bool]
+    def is_server_error
+      status >= 500
     end
 
-    def is_bad_gateway()
-      (status >= 502)
+    ##
+    # @return [bool]
+    def is_bad_gateway
+      status == 502
     end
 
-    def is_service_unavailable()
-      (status >= 503)
+    ##
+    # @return [bool]
+    def is_service_unavailable
+      status == 503
     end
 
   end

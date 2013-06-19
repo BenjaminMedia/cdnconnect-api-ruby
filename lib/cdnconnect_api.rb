@@ -20,12 +20,15 @@ require 'cdnconnect_api/response'
 
 module CDNConnect
 
+  ##
+  # Used to easily interact with CDN Connect API.
   class APIClient
   
     @@application_name = 'cdnconnect-api-ruby'
-    @@application_version = '0.1.2'
-    @@api_host = 'https://api.cdnconnect.com'
+    @@application_version = '0.2.0'
     @@user_agent = @@application_name + ' v' + @@application_version
+    @@api_host = 'https://api.cdnconnect.com'
+    @@api_version = 'v1'
 
     ##
     # Creates a client to authorize interactions with the API using the OAuth 2.0 protocol.
@@ -58,6 +61,13 @@ module CDNConnect
     #     The redirection URI used in the initial request.
     #   - <code>:access_token</code> -
     #     The current access token for this client, also known as the API Key.
+    #     access_token and api_key options are interchangeable.
+    #   - <code>:api_key</code> -
+    #     The current access token for this client, also known as the access token. 
+    #     access_token and api_key options are interchangeable.
+    #   - <code>:app_host</code> -
+    #     The CDN Connect App host. For example, demo.cdnconnect.com is a CDN Connect
+    #     app host. The app host should not include https://, http:// or a URL path.
     #   - <code>:debug</code> -
     #     Print out any debugging information. Default is false.
     def initialize(options={})
@@ -73,9 +83,16 @@ module CDNConnect
       @redirect_uri = options["redirect_uri"]
       options["access_token"] = options["access_token"] || options["api_key"] # both work
       @access_token = options["access_token"]
+      @app_host = options["app_host"]
       @debug = options["debug"] || false
       @prefetched_upload_urls = {}
+      @upload_queue = {}
+      @failed_uploads = []
       
+      if options["api_key"] != nil and options["app_host"] == nil
+        raise ArgumentError, 'app_host option required when using api_key option'
+      end
+
       # Create the OAuth2 client which will be used to authorize the requests
       @client = Signet::OAuth2::Client.new(:client_id => client_id,
                                            :client_secret => @client_secret,
@@ -89,174 +106,426 @@ module CDNConnect
 
 
     ##
-    # Executes a GET request to an API URL and returns a response object.
-    # GET requests are used when reading data.
-    #
-    # @param path [String] The API path to send the GET request to.
-    # @return [APIResponse] A response object with helper methods to read the response.
-    def get(path)
-      return self.fetch(:path => path, :method => 'GET')
-    end
-
-
-    ##
-    # Executes a POST request to an API URL and returns a response object. 
-    # POST requests are used when creating data.
-    #
-    # @param path [String] The API path to send the POST request to.
-    # @return [APIResponse] A response object with helper methods to read the response.
-    def post(path)
-      return self.fetch(:path => path, :method => 'POST')
-    end
-
-
-    ##
-    # Executes a PUT request to an API URL and returns a response object.
-    # PUT requests are used when updating data.
-    #
-    # @param path [String] The API path to send the POST request to.
-    # @return [APIResponse] A response object with helper methods to read the response.
-    def put(path)
-      return self.fetch(:path => path, :method => 'PUT')
-    end
-
-
-    ##
-    # Executes a DELETE request to an API URL and returns a response object.
-    # DELETE requests are used when (you guessed it) deleting data.
-    #
-    # @param path [String] The API path to send the DELETE request to.
-    # @return [APIResponse] A response object with helper methods to read the response.
-    def delete(url)
-      return self.fetch(:path => path, :method => 'DELETE')
-    end
-
-
-    ##
-    # Used to upload a file or files within a folder to a destination folder within
-    # a CDN Connect app. This method requires either a CDN Connect URL, or both an app_id
-    # and obj_id. If you are uploading many files be sure to use the same client instance.
+    # Upload a file or multiple files from a local machine to a folder within 
+    # a CDN Connect app. The upload method provides numerous ways to upload files or files, 
+    # to include recursively drilling down through local folders and uploading only files 
+    # that match your chosen extensions. If any of the folders within the upload path do not 
+    # already exist then they will be created automatically.
     #
     # @param [Hash] options
     #   The configuration parameters for the client.
-    #   - <code>:destination_folder_url</code> -
-    #     The URL of the folder to upload to. If the destination folder URL option 
-    #     is not provided then you must use the app_id and obj_id options.
-    #   - <code>:app_id</code> -
-    #     The app_id of the app to upload to. If the app_id or obj_id options 
-    #     are not provided then you must use the url option.
-    #   - <code>:obj_id</code> -
-    #     The obj_id of the folder to upload to. If the app_id or obj_id options 
-    #     are not provided then you must use the url option.
-    #   - <code>:source_file_local_path</code> -
-    #     A string of a source file's local paths to upload.
+    #   - <code>:destination_path</code> -
+    #     The path of the CDN Connect folder to upload to. If the destination folder does
+    #     not already exist it will automatically be created.
+    #   - <code>:source_file_path</code> -
+    #     A string of a source file's local path to upload to the destination folder. 
+    #     If you have more than one file to upload it'd be better to use 
+    #     `source_file_paths` or `source_folder_path` instead.
+    #   - <code>:source_file_paths</code> -
+    #     A list of a source file's local paths to upload. This option uploads all of 
+    #     the files to the destination folder. If you want to upload files in a 
+    #     local folder then `source_folder_path` option may would be easier 
+    #     than listing out files manually.
+    #   - <code>:source_folder_path</code> -
+    #     A string of a source folder's local path to upload. This will upload all of the
+    #     files in this source folder to the destination url. By using the `valid_extensions`
+    #     parameter you can also restrict which files should be uploaded according to extension.
+    #   - <code>:valid_extensions</code> -
+    #     An array of valid extensions which should be uploaded. This is only applied when the
+    #     `source_folder_path` options is used. If nothing is provided, which is the
+    #     default, all files within the folder are uploaded. The extensions should be in all 
+    #     lower case, and they should not contain a period or asterisks.
+    #     Example `valid_extensions` array => ['js', 'css', 'jpg', jpeg', 'png', 'gif', 'webp']
+    #   - <code>:recursive_local_folders</code> -
+    #     A true or false value indicating if this call should recursively upload all of the 
+    #     local folder's sub-folders, and their sub-folders, etc. This option is only used
+    #     when the `source_folder_path` option is used. Default is true.
+    #   - <code>:async</code> -
+    #     A true or false value indicating if the processing of the data should be asynchronous  
+    #     or not. The default value is false. An async response will be faster because  
+    #     the resposne doesn't wait on the system to complete processing the data. However, 
+    #     because an async response does not wait for the data to complete processing then the 
+    #     response will not contain any information about the data which was just uploaded. 
+    #     Use async only if you do not need to know the details of the upload.
+    #   - <code>:webhook_url</code> -
+    #     A URL which the system should `POST` the response to. This works for both synchronous
+    #     and asynchronous calls. The data sent to the `webhook_url` will be the same as the
+    #     data that is sent in a synchronous response. By default there is not webhook URL.
     # @return [APIResponse] A response object with helper methods to read the response.
     def upload(options={})
-      # Make sure we've got good data before starting the upload
-      prepare_upload(options)
+        # Make sure we've got good source data before starting the upload
+        prepare_upload(options)
 
-      i = 1
-      begin
-
-        # Check if we have a prefetched upload url before requesting a new one
-        upload_url = get_prefetched_upload_url(options[:destination_folder_url], 
-                                               options[:app_id], 
-                                               options[:obj_id])
-        if upload_url == nil
-          # We do not already have an upload url created. The first upload request
-          # will need to make a request for an upload url. After the first upload
-          # each upload response will also include a new upload url which can be used 
-          # for the next upload when uploading to the same folder.
-          upload_url_response = self.get_upload_url(options)
-          if upload_url_response.is_error
-            return upload_url_response
-          end
-          upload_url = upload_url_response.get_result('upload_url')
-        end
-
-        # Create the POST data that gets sent in the request
-        post_data = {}
-        post_data[:create_upload_url] = 'true' # have the API also create the next upload url
-        post_data[:file] = Faraday::UploadIO.new(options[:source_file_local_path], options[:mime_type])
-
-        # Build the request to the API
-        conn = Faraday.new() do |req|
-          # https://github.com/lostisland/faraday
-          req.headers['User-Agent'] = @@user_agent
-          req.headers['Authorization'] = 'Bearer ' + @access_token
-          req.request :multipart
-          req.adapter :net_http
-        end
-
-        # Kick it off!
-        if @debug
-          puts 'upload, source: ' + options[:source_file_local_path] + ', destination: ' + options[:destination_folder_url]
-        end
-        api_response = conn.post upload_url, post_data
-
-        # Woot! Convert the response to our model and see what's up
-        response = APIResponse.new(api_response)
-
-        # an upload response also contains a new upload url. Save it for the next upload.
-        set_prefetched_upload_url(options[:destination_folder_url], 
-                                  options[:app_id], 
-                                  options[:obj_id],
-                                  response.get_result('upload_url'))
-
-        # Rettempt the upload a max of two times if there was a server error
-        # Otherwise return the response data
-        if not response.is_server_error or i > 2
-          return response
-        end
-        i += 1
-      end while i <= 3
+        # Place all of the source files in an upload queue for each destination folder.
+        # Up to 25 files can be sent in one POST request. As uploads are successful
+        # the files will be removed from the queue and uploading will stop when
+        # each directory's upload queue is empty.
+        build_upload_queue(options)
+        
+        # The returning response object. Its empty to start with then as 
+        # uploads complete it fills this up with each upload's response info
+        api_response = CDNConnect::APIResponse.new()
+        
+        # If there are files in the upload_queue then start the upload process
+        while @upload_queue.length > 0
+            
+            # Get the destination_path in the list of upload queues
+            destination_path = @upload_queue.keys[0]
+            if @debug
+                puts "Upload destination_path: #{destination_path}"
+            end
       
-    end
+            # Check if we have a prefetched upload url before requesting a new one
+            upload_url = get_prefetched_upload_url(destination_path)
+            if upload_url == nil
+              # We do not already have an upload url created. The first upload request
+              # will need to make a request for an upload url. After the first upload
+              # each upload response will also include a new upload url which can be used 
+              # for the next upload when uploading to the same folder.
+              upload_url_response = self.get_upload_url(destination_path)
+              if upload_url_response.is_error
+                return upload_url_response
+              end
+              upload_url = upload_url_response.get_result('upload_url')
+              if @debug
+                puts "Received upload url"
+              end
+            end
 
+            # Build the data that gets sent in the POST request
+            post_data = build_post_data(destination_path, 
+                                        max_files_per_request = 25, 
+                                        max_request_size = 25165824, 
+                                        async = options.fetch(:async, false))
+
+            # Build the request to send to the API
+            # Uses the Faraday: https://github.com/lostisland/faraday
+            conn = Faraday.new() do |req|
+              req.headers['User-Agent'] = @@user_agent
+              req.headers['Authorization'] = 'Bearer ' + @access_token
+              req.request :multipart
+              req.adapter :net_http
+            end
+
+            # Kick off the request!
+            http_response = conn.post upload_url, post_data
+
+            # w00t! Convert the http response into APIResponse and see what's up
+            upload_response = APIResponse.new(http_response)
+            if @debug
+              for msg in upload_response.msgs
+                puts "Upload " + msg["status"] + ": " + msg["text"]
+              end
+            end
+
+            # merge the two together so we build one awesome response
+            # object with everything you need to know about every upload
+            api_response.merge(upload_response)
+            
+            # Read the response and see what we got
+            if upload_response.is_server_error
+                # There was a server error, empty the active upload queue
+                failed_upload_attempt(destination_path)            
+                
+            else
+                # successful upload, clear out the active upload queue
+                # and remove uploaded files from the upload queue
+                successful_upload_attempt(destination_path)
+                
+                # an upload response also contains a new upload url. 
+                # Save it for the next upload to the same destination.
+                set_prefetched_upload_url(destination_path,
+                                          upload_response.get_result('upload_url'))
+            end
+      
+        end 
+        
+        return api_response
+    end
+    
+    
+    ##
+    # Build the POST data that gets sent in the request
+    # @!visibility private
+    def build_post_data(destination_path, max_files_per_request = 25, max_request_size = 25165824, async = false)
+        # @active_uploads will hold all of the upload keys  
+        # which are actively being uploaded.
+        @active_uploads = []
+        
+        # post_data will contain all of the data that gets sent
+        post_data = {}
+        
+        # have the API also create the next upload url
+        post_data[:create_upload_url] = 'true'
+        
+        # Processing of the data can be async. However, an async response will
+        # not contain any information about the data uploaded.
+        post_data[:async] = async
+        
+        # Mime type doesn't matter because it gets figured out on the server-side
+        # using the file extension. So be sure file extensions are valid!
+        mime_type = 'application/octet-stream'
+        
+        # the 'file' parameter will hold the actual file data
+        post_data[:file] = []
+        
+        # tally up how large of a request this will be (in bytes)
+        total_request_size = 0
+
+        total_files = 0
+        
+        # Add each source file in the queue to the request as multipart-post data
+        @upload_queue[destination_path].each_pair do |source_file_path, value|
+        
+            # Figure out how large this file is
+            file_size = File.stat(source_file_path).size
+
+            # Add this file's size to the overall request size total
+            total_request_size += file_size
+        
+            # Increment the upload attempts for this file
+            @upload_queue[destination_path][source_file_path]['attempts'] += 1
+            
+            # Set that this file is actively being uploaded
+            @upload_queue[destination_path][source_file_path]['active'] = true
+        
+            # Add the source file it to the request's post data
+            post_data[:file].push( Faraday::UploadIO.new(source_file_path, mime_type) )
+            
+            total_files = post_data[:file].length
+
+            if total_request_size > max_request_size
+                # If the total request size is larger than the max
+                # then do not add any more files
+                break
+            elsif total_files >= max_files_per_request
+                # only add XX files per post request
+                # any left over will be picked up in the next upload
+                break
+            end
+        end
+        
+        if @debug
+            puts "Upload request, File Count: #{total_files}, File Size: #{total_request_size} bytes"
+        end
+
+        return post_data
+    end
+    
+    
+    ##
+    # Upload was successful, clear it out from the upload queue.
+    # @!visibility private
+    def successful_upload_attempt(destination_path)
+        # Loop through each active upload for the destination folder url
+        if @upload_queue.has_key?(destination_path)
+            # Loop through each file for this destination folder
+            @upload_queue[destination_path].each_pair do |source_file_path, value|
+                # If the file was actively being uploaded then remove it
+                if @upload_queue[destination_path][source_file_path]['active']
+                    remove_source_from_queue(destination_path, source_file_path)
+                end
+            end        
+        end
+    end
+    
+    
+    ##
+    # Upload failed, clear it out from the active upload queue.
+    # If it was attempted too many times then remove it from the queue.
+    # @!visibility private
+    def failed_upload_attempt(destination_path)
+        if @debug
+            puts "failed_upload_attempt: #{destination_path}"
+        end
+        # Loop through each active upload for the destination folder url
+        if @upload_queue.has_key?(destination_path)
+            # Loop through each file for this destination folder
+            @upload_queue[destination_path].each_pair do |source_file_path, value|
+                # If the file was actively being uploaded then reset it to false
+                if @upload_queue[destination_path][source_file_path]['active']
+                    @upload_queue[destination_path][source_file_path]['active'] = false
+                    # If it was attempted too many times, then remove it
+                    if @upload_queue[destination_path][source_file_path]['attempts'] >= 3
+                        @failed_uploads.push(source_file_path)
+                        remove_source_from_queue(destination_path, source_file_path)
+                    end
+                end
+            end        
+        end
+    end
+    
+    
+    ##
+    # Add source files to an upload queue for each destination folder.
+    # Up to 25 files can be sent in one POST request. As uploads are successful
+    # the files will be removed from the queue and uploading will stop when
+    # each directory's upload queue is empty.
+    # @!visibility private
+    def build_upload_queue(options)
+    
+      if options[:source_folder_path] != nil
+        # Queue from all of the files in a folder
+        build_upload_queue_from_folder(options[:destination_path], 
+                                       options[:source_folder_path], 
+                                       options[:valid_extensions], 
+                                       options.fetch(:recursive_local_folders, true))
+        
+      elsif options[:source_file_paths] != nil
+        # Queue from all of the files in an array
+        for source_file_path in options[:source_file_paths]
+            add_source_to_upload_queue(options[:destination_path],
+                                       source_file_path)
+        end
+        
+      elsif options[:source_file_path] != nil
+        # Queue from just one path
+        add_source_to_upload_queue(options[:destination_path],
+                                   options[:source_file_path])
+                                   
+      end
+    
+    end
+    
+    
+    ##
+    # Add files to the destination folder's upload queue by going through the given 
+    # local folder. By default all files will be added, but with the regex you can
+    # narrow down which files within the folder should be uploaded.
+    # @!visibility private
+    def build_upload_queue_from_folder(destination_path, source_folder_path, valid_extensions, recursive_local_folders)
+        # Queue from all of the files in a folder
+
+        Dir.foreach(source_folder_path) do |name|
+            # Ignore certain names and don't bother uploading them
+            next if name == '.' or name == '..' or name == '.DS_Store' or name == 'Thumbs.db'
+
+            # Build the full local path for the item
+            full_local_path = source_folder_path + '/' + name
+            
+            if File.file?(full_local_path)
+                # This item is a file
+                                
+                # Get this file's extension
+                file_extension = File.extname(full_local_path)
+                
+                # only upload if it has a file extension (required by cdn connect)
+                if file_extension != nil and file_extension != ''
+                    # normalize the extension, lower case and remove the dot
+                    file_extension = file_extension.downcase
+                    file_extension.slice! "."
+                    
+                    if valid_extensions == nil or valid_extensions.include? file_extension
+                        add_source_to_upload_queue(destination_path, full_local_path)
+                    end 
+                    
+                end          
+                
+            elsif recursive_local_folders and File.directory?(full_local_path)
+                # This item is a folder and we want to recursively drill down through it
+                destination_sub_folder_url = destination_path + '/' + name
+                build_upload_queue_from_folder(destination_sub_folder_url, full_local_path, valid_extensions, recursive_local_folders)
+                
+            end
+            
+        end
+    end
+    
+
+    ##
+    # Add a source file to the upload queue for its destination folder.
+    # @!visibility private
+    def add_source_to_upload_queue(destination_path, source_file_path)
+        # Build a unique key for the destination folder for the @upload_queue. 
+        # Each destination folder holds its own list of files to upload.
+        if not @upload_queue.has_key?(destination_path)
+            # Create an array for this destination to hold all of its uploads
+            @upload_queue[destination_path] = {}
+        end
+
+        # Check if this source file has already been added for this destination
+        if @upload_queue[destination_path].has_key?(source_file_path)
+            # This upload already exists for this destination, don't add it again
+            return
+        end
+        
+        # add to this local path to this destination's upload queue
+        # Its valud is the number of times its been attempted to upload
+        @upload_queue[destination_path][source_file_path] = { 'attempts' => 0, 'active' => false }
+    end
+    
+    
+    ##
+    # Remove a source file from the destination folders upload queue
+    # @!visibility private
+    def remove_source_from_queue(destination_path, source_file_path)
+        if @upload_queue.has_key?(destination_path)
+            if @upload_queue[destination_path].has_key?(source_file_path)
+                # remove from the upload_queue
+                @upload_queue[destination_path].delete(source_file_path)
+            end
+            if @upload_queue[destination_path].length == 0
+                @upload_queue.delete(destination_path)
+            end
+        end
+    end
+    
 
     ##
     # This method should not be called directly, but is used by the upload method
     # to get the options all ready to go and validated before uploading a file(s).
     # @!visibility private
     def prepare_upload(options={})
-      # Validate we've got a source file
-      source_file_local_path = options[:source_file_local_path]
-      if source_file_local_path == nil
-        raise ArgumentError, 'source_file_local_path required'
+
+      # Check if we've got valid source files
+      if options[:source_folder_path] != nil
+        # Check that the source folder exists
+        if not File.directory?(options[:source_folder_path])
+            raise ArgumentError, 'source_folder_path "' + options[:source_folder_path] + '" is not a valid directory'
+        end
+        
+      elsif options[:source_file_paths] != nil
+        # Check that source_file_paths is an array
+        if not options[:source_file_paths].kind_of?(Array)
+            raise ArgumentError, 'source_file_paths must be an array of strings'
+        end
+        # Check that each source file in the array exists
+        for source_file_path in options[:source_file_paths]
+            if not File.file?(source_file_path)
+                raise ArgumentError, 'source_file_path "' + source_file_path + '" is not a valid file'
+            end
+        end
+        
+      elsif options[:source_file_path] != nil
+        # Check that the single file exists
+        if not File.file?(options[:source_file_path])
+            raise ArgumentError, 'source_file_path "' + options[:source_file_path] + '" is not a valid file'
+        end
+        
+      else
+        # Did not pass in any of the valid options for source files, raise error
+        raise ArgumentError, 'source file(s) required'
+        
       end
 
       # Validate we've got a destination folder to upload to
-      destination_folder_url = options[:destination_folder_url]
-      app_id = options[:app_id]
-      obj_id = options[:obj_id]
-      if destination_folder_url == nil and (app_id == nil or obj_id == nil)
-        raise ArgumentError, 'destination_folder_url or app_id/obj_id required'
+      destination_path = options[:destination_path]
+      if destination_path == nil 
+        raise ArgumentError, 'destination_path required'
       end      
 
-      # Ideally it'd be awesome to already set what the mime type is, but getting that
-      # info accurately is a pain. If you do not send in the mime_type we will 
-      # figure it out for you by the file extension (so ALWAYS have an extension)
-      # This will only work when using the source_file option, and will not 
-      # work with the source_files or source_folder option.
-      if options[:mime_type] == nil
-        options[:mime_type] = 'application/octet-stream'
-      end
-
-      options
+      return options
     end
-
+    
 
     ##
     # This method should not be called directly, but is used to check if we
     # already have an upload url ready to go for the folder we're uploading to.
     # @!visibility private
-    def get_prefetched_upload_url(destination_url, app_id, obj_id)
+    def get_prefetched_upload_url(destination_path)
       # Build a unique key for the folder which was used to save an new upload url
-      key = destination_url || ''
-      key += app_id || ''
-      key += obj_id || ''
-      rtn_url = @prefetched_upload_urls[key]
-      @prefetched_upload_urls[key] = nil
+      rtn_url = @prefetched_upload_urls[destination_path]
+      @prefetched_upload_urls[destination_path] = nil
       return rtn_url
     end
 
@@ -265,12 +534,9 @@ module CDNConnect
     # This method should not be called directly, but is used to remember an upload url 
     # for the next upload to this folder.
     # @!visibility private
-    def set_prefetched_upload_url(destination_url, app_id, obj_id, upload_url)
+    def set_prefetched_upload_url(destination_path, upload_url)
       # Build a unique key for the folder to save an new upload url value to
-      key = destination_url || ''
-      key += app_id || ''
-      key += obj_id || ''
-      @prefetched_upload_urls[key] = upload_url
+      @prefetched_upload_urls[destination_path] = upload_url
     end
 
 
@@ -279,21 +545,12 @@ module CDNConnect
     # upload url is received, all upload responses contain another upload which can be
     # used to eliminate the need to do seperate requests for an upload url.
     # @!visibility private
-    def get_upload_url(options={})
-      destination_folder_url = options[:destination_folder_url]
-
-      path = nil
-      if destination_folder_url != nil
-        path = destination_folder_url + '/upload'
-      else
-        path = generate_obj_path(options) + '/upload'
-      end
-
-      path = '/v1/' + path + '.json'
+    def get_upload_url(destination_path)
+      api_path = destination_path + '/upload.json'
 
       i = 1
       begin
-        response = self.fetch(:path => path)
+        response = get(api_path)
         if not response.is_server_error or i > 2
           return response
         end
@@ -301,53 +558,119 @@ module CDNConnect
       end while i <= 3
     end
 
-
+    
     ##
-    # This method should not be called directly, but is used to build the api
-    # path common needed by a few methods.
-    # @!visibility private
-    def generate_obj_path(options={})
-      path = options[:path]
-      if path != nil
-        return path
-      end
-
-      app_id = options[:app_id]
-      obj_id = options[:obj_id]
-      uri = options[:uri] || options[:url]
-      path = nil
-
-      # An object's path can either be made up of an app_id and an obj_id
-      # Or it can be made up of the entire URI
-      if app_id != nil and obj_id != nil
-        path = 'apps/' + app_id + '/objects/' + obj_id
-      elsif uri != nil
-        path = uri
-      end
-
-      if path == nil
-        raise ArgumentError, "missing url or both app_id and obj_id"
-      end
-
-      return path
+    # Get object info, which can be either a file or folder.
+    #
+    # @param [Hash] options
+    #   - <code>:path</code> -
+    #     The path to the CDN Connect object to get. (required)
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def get_object(options={})
+        api_path = options[:path] + '.json'
+        get(api_path)
     end
 
+    
+    ##
+    # Rename object, which can be either a file or folder.
+    #
+    # @param [Hash] options
+    #   - <code>:path</code> -
+    #     The path to the CDN Connect object to get. (required)
+    #   - <code>:new_name</code> -
+    #     The new filename or folder name for the object. (required)
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def rename_object(options={})
+        api_path = options[:path] + '/rename.json'
+        data = { :new_name => options[:new_name] }
+        put(api_path, data)
+    end
+
+    
+    ##
+    # Delete object info, which can be either a file or folder.
+    #
+    # @param [Hash] options
+    #   - <code>:path</code> -
+    #     The path to the CDN Connect object to delete. (required)
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def delete_object(options={})
+        api_path = options[:path] + '.json'
+        delete(api_path)
+    end
+
+    
+    ##
+    # Create a folder path. If any of the folders within the given path do not
+    # already exist they will be created.
+    #
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def create_path(options={})
+        api_path = options[:path] + '/create-path.json'
+        get(api_path)
+    end
+    
+
+    ##
+    # Executes a GET request to an API URL and returns a response object.
+    # GET requests are used when reading data.
+    #
+    # @param api_path [String] The API path to send the GET request to.
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def get(api_path)
+      fetch(:api_path => api_path, :method => 'GET')
+    end
+
+
+    ##
+    # Executes a POST request to an API URL and returns a response object. 
+    # POST requests are used when creating data.
+    #
+    # @param api_path [String] The API path to send the POST request to.
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def post(api_path, body)
+      fetch(:api_path => api_path, :method => 'POST', :body => body)
+    end
+
+
+    ##
+    # Executes a PUT request to an API URL and returns a response object.
+    # PUT requests are used when updating data.
+    #
+    # @param api_path [String] The API path to send the POST request to.
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def put(api_path, body)
+      fetch(:api_path => api_path, :method => 'PUT', :body => body)
+    end
+
+
+    ##
+    # Executes a DELETE request to an API URL and returns a response object.
+    # DELETE requests are used when (you guessed it) deleting data.
+    #
+    # @param api_path [String] The API path to send the DELETE request to.
+    # @return [APIResponse] A response object with helper methods to read the response.
+    def delete(api_path)
+      fetch(:api_path => api_path, :method => 'DELETE')
+    end
+    
 
     ##
     # This method should not be called directly, but is used to validate data
     # and make it all pretty before firing off the request to the API.
     # @!visibility private
     def prepare(options={})
-      if options[:path] == nil
+      if options[:api_path] == nil
         raise ArgumentError, 'missing api path'
       end
 
       options[:headers] = { 'User-Agent' => @@user_agent }
-      options[:uri] = @@api_host + options[:path]
+      options[:uri] = @@api_host + '/' + @@api_version + '/' + @app_host + options[:api_path]
       options[:url] = options[:uri]
       options[:method] = options[:method] || 'GET'
-
-      return options
+      
+      options
     end
 
 
@@ -356,27 +679,40 @@ module CDNConnect
     # @!visibility private
     def fetch(options={})
       # Prepare the data to be shipped in the request
-      options = self.prepare(options)
+      options = prepare(options)
 
       if @debug
-        puts 'fetch: ' + options[:uri]
+        puts options[:method] + ': ' + options[:uri]
       end
 
       begin
         # Send the request and get the response
-        response = @client.fetch_protected_resource(options)
+        http_response = @client.fetch_protected_resource(options)
 
         # Return the API response
-        return APIResponse.new(response)
-      rescue Signet::AuthorizationError => detail
-        return APIResponse.new(detail.response)
+        api_response = APIResponse.new(http_response)
+
+        if @debug
+            for msg in api_response.msgs
+                puts msg["status"] + ": " + msg["text"]
+            end
+        end
+
+        return api_response
+      rescue Signet::AuthorizationError => authorization_error
+        # whoopsy doodle. Probably an incorrect API Key or App Host. 
+        # Validate your authorization info.
+        if @debug
+          puts authorization_error
+        end
+        return APIResponse.new(authorization_error.response)
       end
 
     end
 
 
     ##
-    # A unique identifier issued to the client to identify itself to CDN Connect's
+    # OAuth2 parameter. A unique identifier issued to the client to identify itself to CDN Connect's
     # authorization server. This is issued by CDN Connect to external clients.
     # This is only needed if an API Key isn't already known. 
     #
@@ -387,7 +723,7 @@ module CDNConnect
 
 
     ##
-    # A secret issued by the CDN Connect's authorization server,
+    # OAuth2 parameter. A secret issued by the CDN Connect's authorization server,
     # which is used to authenticate the client. Do not confuse this is an access_token
     # or an api_key. This is only required if an API Key
     # isn't already known. A client secret should not be shared.
@@ -399,7 +735,7 @@ module CDNConnect
 
 
     ##
-    # The scope of the access request, expressed either as an Array
+    # OAuth2 parameter. The scope of the access request, expressed either as an Array
     # or as a space-delimited String. This is only required if an API Key
     # isn't already known. 
     #
@@ -410,7 +746,7 @@ module CDNConnect
 
 
     ##
-    # An unguessable random string designed to allow the client to maintain state
+    # OAuth2 parameter. An unguessable random string designed to allow the client to maintain state
     # to protect against cross-site request forgery attacks. 
     # This is only required if an API Key isn't already known. 
     #
@@ -420,29 +756,58 @@ module CDNConnect
     end
 
 
+    ##
+    # OAuth2 value. The authorization code received from the authorization server.
     # @return [String]
     def code
       @code
     end
 
 
+    ##
+    # OAuth2 value. The redirection URI used in the initial request.
     # @return [String]
     def redirect_uri
       @redirect_uri
     end
 
 
+    ##
+    # OAuth2 value. An API Key (commonly known as an access_token) which was previously 
+    # created within CDN Connect's account for a specific app.
+    #
     # @return [String]
     def access_token
       @access_token
     end
 
 
+    ##
+    # The CDN Connect App host. For example, demo.cdnconnect.com is a CDN Connect app host.
+    # The app host value should not include https://, http:// or a URL path.
+    #
     # @return [String]
-    def api_key
-      @access_token
+    def app_host
+      @app_host
     end
 
+
+    ##
+    # The current files queued to be uploaded.
+    #
+    # @return [Hash]
+    # @!visibility private
+    def upload_queue
+      @upload_queue
+    end
+
+    ##
+    # An array of files which failed.
+    #
+    # @return [Array]
+    def failed_uploads
+      @failed_uploads
+    end
 
   end
 
