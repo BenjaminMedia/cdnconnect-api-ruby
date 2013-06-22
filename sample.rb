@@ -118,11 +118,20 @@ end
 
 
 
-puts "Get a folder's information"
+puts "Get a folder's basic information only"
 response = api_client.get_object(:path => '/sample')
 
 if response.is_success
   puts "Got folder #{response.object["name"]}"
+end
+
+
+
+puts "Get a folder's sub-files and sub-folders"
+response = api_client.get_object(:path => '/sample/entire-folder', :files => true, :folders => true)
+
+if response.is_success
+  puts "Got folder #{response.object["name"]} and its #{response.object["files"].length} files and #{response.object["folders"].length} folders"
 end
 
 

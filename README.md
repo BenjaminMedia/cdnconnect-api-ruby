@@ -1,4 +1,4 @@
-# CDN Connect API Ruby Client, v0.2.0
+# CDN Connect API Ruby Client, v0.2.1
 
 CDN Connect makes it easier to manage production assets for teams of developers and designers, all while serving files from a fast content delivery network. Features include image optimization, resizing, cropping, filters, changing output formats, convert to WebP image format, etc. The CDN Connect API Ruby Client makes it easier to upload files and interact with the API with only a few lines of code.
 
@@ -83,9 +83,14 @@ Both files and folders are considered "objects", and object data contains inform
     response = api_client.get_object(:path => '/images/spacewalk.jpg')
 
 
-#### Get Folder Information
+#### Get Folder's Basic Information
 
     response = api_client.get_object(:path => '/images')
+
+
+#### Get Folder's Sub-Files and Sub-Folders
+
+    response = api_client.get_object(:path => '/images', :files => true, :folders => true)
 
 
 ## Rename File or Folder
