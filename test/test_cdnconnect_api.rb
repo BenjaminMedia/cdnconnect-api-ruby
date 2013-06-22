@@ -330,9 +330,9 @@ class CDNConnectApiTest < Test::Unit::TestCase
 
     api_client = CDNConnect::APIClient.new(:api_key => 'API_KEY', :app_host => 'test.cdnconnect.com')
 
-    options = { :api_path => 'ME_PATH.json' }
+    options = { :api_path => '/ME_PATH.json' }
     rtn = api_client.prepare(options)
-    assert_equal 'https://api.cdnconnect.com/v1/ME_PATH.json', rtn[:url]
+    assert_equal 'https://api.cdnconnect.com/v1/test.cdnconnect.com/ME_PATH.json', rtn[:url]
     assert_equal 'GET', rtn[:method]
 
     headers = rtn[:headers]
