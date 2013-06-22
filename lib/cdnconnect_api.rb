@@ -25,7 +25,7 @@ module CDNConnect
   class APIClient
   
     @@application_name = 'cdnconnect-api-ruby'
-    @@application_version = '0.2.0'
+    @@application_version = '0.2.1'
     @@user_agent = @@application_name + ' v' + @@application_version
     @@api_host = 'https://api.cdnconnect.com'
     @@api_version = 'v1'
@@ -565,10 +565,23 @@ module CDNConnect
     # @param [Hash] options
     #   - <code>:path</code> -
     #     The path to the CDN Connect object to get. (required)
+    #   - <code>:files</code> -
+    #     True or false value indicating if a folder's response should contain
+    #     its sub-files or not. Default is false.
+    #   - <code>:folders</code> -
+    #     True or false value indicating if a folder's response should contain
+    #     its sub-folders or not. Default is false.
     # @return [APIResponse] A response object with helper methods to read the response.
     def get_object(options={})
         api_path = options[:path] + '.json'
-        get(api_path)
+        data = {}
+        if options[:files] == true
+            data[:files] = true
+        end
+        if options[:folders] == true
+            data[:folders] = true
+        end
+        get(api_path, data)
     end
 
     
@@ -617,9 +630,10 @@ module CDNConnect
     # GET requests are used when reading data.
     #
     # @param api_path [String] The API path to send the GET request to.
+    # @param data [Hash] Data which will be placed in the GET request's querystring. (Optional)
     # @return [APIResponse] A response object with helper methods to read the response.
-    def get(api_path)
-      fetch(:api_path => api_path, :method => 'GET')
+    def get(api_path, data={})
+      fetch(:api_path => api_path, :method => 'GET', :data => data)
     end
 
 
@@ -628,9 +642,10 @@ module CDNConnect
     # POST requests are used when creating data.
     #
     # @param api_path [String] The API path to send the POST request to.
+    # @param data [Hash] Data which will be sent in the POST request.
     # @return [APIResponse] A response object with helper methods to read the response.
-    def post(api_path, body)
-      fetch(:api_path => api_path, :method => 'POST', :body => body)
+    def post(api_path, data)
+      fetch(:api_path => api_path, :method => 'POST', :data => data)
     end
 
 
@@ -638,10 +653,11 @@ module CDNConnect
     # Executes a PUT request to an API URL and returns a response object.
     # PUT requests are used when updating data.
     #
-    # @param api_path [String] The API path to send the POST request to.
+    # @param api_path [String] The API path to send the PUT request to.
+    # @param data [Hash] Data which will be sent in the PUT request.
     # @return [APIResponse] A response object with helper methods to read the response.
-    def put(api_path, body)
-      fetch(:api_path => api_path, :method => 'PUT', :body => body)
+    def put(api_path, data)
+      fetch(:api_path => api_path, :method => 'PUT', :data => data)
     end
 
 
@@ -666,9 +682,19 @@ module CDNConnect
       end
 
       options[:headers] = { 'User-Agent' => @@user_agent }
-      options[:uri] = @@api_host + '/' + @@api_version + '/' + @app_host + options[:api_path]
-      options[:url] = options[:uri]
+      options[:uri] = "#{@@api_host}/#{@@api_version}/#{@app_host}#{options[:api_path]}"
+
       options[:method] = options[:method] || 'GET'
+
+      if options[:method] == 'GET' and options[:data] != nil and options[:data].length > 0
+        require "addressable/uri"
+        uri = Addressable::URI.new
+        uri.query_values = options[:data]
+        options[:uri] = "#{options[:uri]}?#{uri.query}"
+        options[:data] = nil
+      end
+
+      options[:url] = options[:uri]
       
       options
     end
@@ -687,6 +713,7 @@ module CDNConnect
 
       begin
         # Send the request and get the response
+        options[:body] = options[:data]
         http_response = @client.fetch_protected_resource(options)
 
         # Return the API response
