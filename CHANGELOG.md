@@ -1,3 +1,8 @@
+# 0.2.1
+
+* Support for receiving a files and folders within a folder
+
+
 # 0.2.0
 
 * Group multiple files into one request
