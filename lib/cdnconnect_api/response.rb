@@ -258,6 +258,10 @@ module CDNConnect
       status == 503
     end
 
+    def to_s # called with print / puts
+      "Status: #{status}\nBody: #{body}"
+    end
+
   end
 
 end
