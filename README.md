@@ -1,4 +1,4 @@
-# CDN Connect API Ruby Client, v0.2.1
+# CDN Connect API Ruby Client, v0.2.2
 
 CDN Connect makes it easier to manage production assets for teams of developers and designers, all while serving files from a fast content delivery network. Features include image optimization, resizing, cropping, filters, changing output formats, convert to WebP image format, etc. The CDN Connect API Ruby Client makes it easier to upload files and interact with the API with only a few lines of code.
 
@@ -44,7 +44,8 @@ Below are the possible parameters for the `upload` method. You must set `destina
  - `valid_extensions` : An array of valid extensions which should be uploaded. This is only applied when the `source_folder_path` options is used. If nothing is provided, which is the default, all files within the folder are uploaded. The extensions should be in all lower case, and they should not contain a period or asterisks. Example `valid_extensions => ['js', 'css', 'jpg', jpeg', 'png', 'gif', 'webp']`
  - `recursive_local_folders` : A true or false value indicating if this call should recursively upload all of the local folder's sub-folders, and their sub-folders, etc. This option is only used when the `source_folder_path` option is used.
  - `async` : A true or false value indicating if the processing of the data should be asynchronous or not. The default value is false meaning that the processing of the data will be synchronous. An async response will be faster because the resposne doesn't wait on the system to complete processing the data. However, because an async response does not wait for the data to complete processing then the response will not contain any information about the data which was just uploaded. Use async only if you do not need to know the details of the upload.
- - `webhook_url` : A URL which the system should `POST` the response to. This works for both synchronous and asynchronous calls. The data sent to the `webhook_url` will be the same as the data that is sent in a synchronous response. By default there is not webhook URL.
+ - `webhook_url` : A URL which the system should `POST` the response to. This works for both synchronous and asynchronous calls. The data sent to the `webhook_url` will be the same as the data that is responded in a synchronous response, and is sent within the `data` parameter. The format sent can be in either `json` or `xml` by using the `webhook_format` parameter. By default there is no webhook URL.
+ - `webhook_format` : When a `webhook_url` is provided, you can have the data formatted as either `json` or `xml`. The defautl format is `json`.
 
 ### Upload One File: `source_file_path`
 
