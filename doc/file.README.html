@@ -61,7 +61,7 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><div id='filecontents'><h1>CDN Connect API Ruby Client, v0.2.1</h1>
+    <div id="content"><div id='filecontents'><h1>CDN Connect API Ruby Client, v0.2.2</h1>
 
 <p>CDN Connect makes it easier to manage production assets for teams of developers and designers, all while serving files from a fast content delivery network. Features include image optimization, resizing, cropping, filters, changing output formats, convert to WebP image format, etc. The CDN Connect API Ruby Client makes it easier to upload files and interact with the API with only a few lines of code.</p>
 
@@ -108,7 +108,8 @@
 <li><code>valid_extensions</code> : An array of valid extensions which should be uploaded. This is only applied when the <code>source_folder_path</code> options is used. If nothing is provided, which is the default, all files within the folder are uploaded. The extensions should be in all lower case, and they should not contain a period or asterisks. Example <code>valid_extensions =&gt; [&#39;js&#39;, &#39;css&#39;, &#39;jpg&#39;, jpeg&#39;, &#39;png&#39;, &#39;gif&#39;, &#39;webp&#39;]</code></li>
 <li><code>recursive_local_folders</code> : A true or false value indicating if this call should recursively upload all of the local folder&#39;s sub-folders, and their sub-folders, etc. This option is only used when the <code>source_folder_path</code> option is used.</li>
 <li><code>async</code> : A true or false value indicating if the processing of the data should be asynchronous or not. The default value is false meaning that the processing of the data will be synchronous. An async response will be faster because the resposne doesn&#39;t wait on the system to complete processing the data. However, because an async response does not wait for the data to complete processing then the response will not contain any information about the data which was just uploaded. Use async only if you do not need to know the details of the upload.</li>
-<li><code>webhook_url</code> : A URL which the system should <code>POST</code> the response to. This works for both synchronous and asynchronous calls. The data sent to the <code>webhook_url</code> will be the same as the data that is sent in a synchronous response. By default there is not webhook URL.</li>
+<li><code>webhook_url</code> : A URL which the system should <code>POST</code> the response to. This works for both synchronous and asynchronous calls. The data sent to the <code>webhook_url</code> will be the same as the data that is responded in a synchronous response, and is sent within the <code>data</code> parameter. The format sent can be in either <code>json</code> or <code>xml</code> by using the <code>webhook_format</code> parameter. By default there is no webhook URL.</li>
+<li><code>webhook_format</code> : When a <code>webhook_url</code> is provided, you can have the data formatted as either <code>json</code> or <code>xml</code>. The defautl format is <code>json</code>.</li>
 </ul>
 
 <h3>Upload One File: <code>source_file_path</code></h3>
@@ -149,9 +150,14 @@ in a folder.</p>
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_get_object'>get_object</span><span class='lparen'>(</span><span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/images/spacewalk.jpg</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 </code></pre>
 
-<h4>Get Folder Information</h4>
+<h4>Get Folder&#39;s Basic Information</h4>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_get_object'>get_object</span><span class='lparen'>(</span><span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/images</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<h4>Get Folder&#39;s Sub-Files and Sub-Folders</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_api_client'>api_client</span><span class='period'>.</span><span class='id identifier rubyid_get_object'>get_object</span><span class='lparen'>(</span><span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/images</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:files</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:folders</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rparen'>)</span>
 </code></pre>
 
 <h2>Rename File or Folder</h2>
@@ -229,7 +235,7 @@ in a folder.</p>
 </div></div>
 
     <div id="footer">
-  Generated on Fri Jun 21 20:02:36 2013 by
+  Generated on Sat Jul 20 19:13:10 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.5.2 (ruby-2.0.0).
 </div>

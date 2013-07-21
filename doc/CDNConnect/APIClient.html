@@ -837,12 +837,12 @@ previously  created within CDN Connect&#39;s account for a specific app.</p>
       <pre class="lines">
 
 
-807
-808
-809</pre>
+824
+825
+826</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 807</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 824</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_access_token'>access_token</span>
   <span class='ivar'>@access_token</span>
@@ -893,12 +893,12 @@ path.</p>
       <pre class="lines">
 
 
-817
-818
-819</pre>
+834
+835
+836</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 817</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 834</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_app_host'>app_host</span>
   <span class='ivar'>@app_host</span>
@@ -950,12 +950,12 @@ already known.</p>
       <pre class="lines">
 
 
-747
-748
-749</pre>
+764
+765
+766</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 747</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 764</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_client_id'>client_id</span>
   <span class='ivar'>@client_id</span>
@@ -1007,12 +1007,12 @@ already known. A client secret should not be shared.</p>
       <pre class="lines">
 
 
-759
-760
-761</pre>
+776
+777
+778</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 759</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 776</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_client_secret'>client_secret</span>
   <span class='ivar'>@client_secret</span>
@@ -1062,12 +1062,12 @@ server.</p>
       <pre class="lines">
 
 
-789
-790
-791</pre>
+806
+807
+808</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 789</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 806</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_code'>code</span>
   <span class='ivar'>@code</span>
@@ -1122,13 +1122,13 @@ already exist they will be created.</p>
       <pre class="lines">
 
 
-622
-623
-624
-625</pre>
+639
+640
+641
+642</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 622</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 639</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_path'>create_path</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/create-path.json</span><span class='tstring_end'>&#39;</span></span>
@@ -1204,12 +1204,12 @@ DELETE requests are used when (you guessed it) deleting data.</p>
       <pre class="lines">
 
 
-670
-671
-672</pre>
+687
+688
+689</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 670</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 687</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>DELETE</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -1287,13 +1287,13 @@ DELETE requests are used when (you guessed it) deleting data.</p>
       <pre class="lines">
 
 
-611
-612
-613
-614</pre>
+628
+629
+630
+631</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 611</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 628</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_delete_object'>delete_object</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.json</span><span class='tstring_end'>&#39;</span></span>
@@ -1343,12 +1343,12 @@ DELETE requests are used when (you guessed it) deleting data.</p>
       <pre class="lines">
 
 
-835
-836
-837</pre>
+852
+853
+854</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 835</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 852</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_failed_uploads'>failed_uploads</span>
   <span class='ivar'>@failed_uploads</span>
@@ -1441,12 +1441,12 @@ requests are used when reading data.</p>
       <pre class="lines">
 
 
-635
-636
-637</pre>
+652
+653
+654</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 635</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 652</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>GET</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:data</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
@@ -1529,20 +1529,20 @@ response should contain its sub-folders or not. Default is false.</p>
       <pre class="lines">
 
 
-575
-576
-577
-578
-579
-580
-581
-582
-583
-584
-585</pre>
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 575</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 592</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_object'>get_object</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.json</span><span class='tstring_end'>&#39;</span></span>
@@ -1641,12 +1641,12 @@ requests are used when creating data.</p>
       <pre class="lines">
 
 
-647
-648
-649</pre>
+664
+665
+666</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 647</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 664</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>POST</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:data</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
@@ -1737,12 +1737,12 @@ requests are used when updating data.</p>
       <pre class="lines">
 
 
-659
-660
-661</pre>
+676
+677
+678</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 659</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 676</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PUT</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:data</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
@@ -1791,12 +1791,12 @@ requests are used when updating data.</p>
       <pre class="lines">
 
 
-797
-798
-799</pre>
+814
+815
+816</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 797</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 814</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_redirect_uri'>redirect_uri</span>
   <span class='ivar'>@redirect_uri</span>
@@ -1876,14 +1876,14 @@ requests are used when updating data.</p>
       <pre class="lines">
 
 
-597
-598
-599
-600
-601</pre>
+614
+615
+616
+617
+618</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 597</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 614</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_rename_object'>rename_object</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/rename.json</span><span class='tstring_end'>&#39;</span></span>
@@ -1936,12 +1936,12 @@ isn&#39;t already known.</p>
       <pre class="lines">
 
 
-770
-771
-772</pre>
+787
+788
+789</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 770</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 787</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_scope'>scope</span>
   <span class='ivar'>@scope</span>
@@ -1992,12 +1992,12 @@ This is only required if an API Key isn&#39;t already known.</p>
       <pre class="lines">
 
 
-781
-782
-783</pre>
+798
+799
+800</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 781</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 798</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_state'>state</span>
   <span class='ivar'>@state</span>
@@ -2094,8 +2094,14 @@ to know the details of the upload.</p>
 </li><li>
 <p><code>:webhook_url</code> - A URL which the system should `POST` the
 response to. This works for both synchronous and asynchronous calls. The
-data sent to the `webhook_url` will be the same as the data that is sent in
-a synchronous response. By default there is not webhook URL.</p>
+data sent to the `webhook_url` will be the same as the data that is
+responded in a synchronous response, and is sent within the `data` 
+parameter. The format sent can be in either `json` or `xml` by using the 
+`webhook_format` parameter. By default there is no webhook URL.</p>
+</li><li>
+<p><code>:webhook_format</code> - When a `webhook_url` is provided, you can
+have the data formatted as either `json` or `xml`. The defautl format is
+`json`.</p>
 </li></ul>
 </div>
       
@@ -2128,12 +2134,6 @@ a synchronous response. By default there is not webhook URL.</p>
       <pre class="lines">
 
 
-155
-156
-157
-158
-159
-160
 161
 162
 163
@@ -2217,10 +2217,18 @@ a synchronous response. By default there is not webhook URL.</p>
 241
 242
 243
-244</pre>
+244
+245
+246
+247
+248
+249
+250
+251
+252</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 155</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 161</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_upload'>upload</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='comment'># Make sure we&#39;ve got good source data before starting the upload
@@ -2266,7 +2274,9 @@ a synchronous response. By default there is not webhook URL.</p>
 </span>        <span class='id identifier rubyid_post_data'>post_data</span> <span class='op'>=</span> <span class='id identifier rubyid_build_post_data'>build_post_data</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='comma'>,</span> 
                                     <span class='id identifier rubyid_max_files_per_request'>max_files_per_request</span> <span class='op'>=</span> <span class='int'>25</span><span class='comma'>,</span> 
                                     <span class='id identifier rubyid_max_request_size'>max_request_size</span> <span class='op'>=</span> <span class='int'>25165824</span><span class='comma'>,</span> 
-                                    <span class='id identifier rubyid_async'>async</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:async</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span><span class='rparen'>)</span>
+                                    <span class='id identifier rubyid_async'>async</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:async</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span><span class='comma'>,</span>
+                                    <span class='id identifier rubyid_webhook_url'>webhook_url</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:webhook_url</span><span class='rbracket'>]</span><span class='comma'>,</span>
+                                    <span class='id identifier rubyid_webhook_format'>webhook_format</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:webhook_format</span><span class='rbracket'>]</span><span class='rparen'>)</span>
 
         <span class='comment'># Build the request to send to the API
 </span>        <span class='comment'># Uses the Faraday: https://github.com/lostisland/faraday
@@ -2322,7 +2332,7 @@ a synchronous response. By default there is not webhook URL.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Jun 21 20:02:36 2013 by
+  Generated on Sat Jul 20 19:13:11 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.5.2 (ruby-2.0.0).
 </div>
