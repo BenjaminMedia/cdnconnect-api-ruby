@@ -1,3 +1,11 @@
+# 0.2.3
+
+* Authentication header no longer required on upload POST.
+  The upload url contains encrypted information, can only
+  be used once, and if its not used it expires.
+
+
+
 # 0.2.2
 
 * Correctly send webhook_url and webhook_format

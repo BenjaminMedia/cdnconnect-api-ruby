@@ -25,7 +25,7 @@ module CDNConnect
   class APIClient
   
     @@application_name = 'cdnconnect-api-ruby'
-    @@application_version = '0.2.2'
+    @@application_version = '0.2.3'
     @@user_agent = @@application_name + ' v' + @@application_version
     @@api_host = 'https://api.cdnconnect.com'
     @@api_version = 'v1'
@@ -210,7 +210,6 @@ module CDNConnect
             # Uses the Faraday: https://github.com/lostisland/faraday
             conn = Faraday.new() do |req|
               req.headers['User-Agent'] = @@user_agent
-              req.headers['Authorization'] = 'Bearer ' + @access_token
               req.request :multipart
               req.adapter :net_http
             end
