@@ -1,3 +1,8 @@
+# 0.2.2
+
+* Correctly send webhook_url and webhook_format
+
+
 # 0.2.1
 
 * Support for receiving a files and folders within a folder

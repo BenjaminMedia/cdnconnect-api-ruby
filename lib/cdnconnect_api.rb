@@ -150,7 +150,13 @@ module CDNConnect
     #   - <code>:webhook_url</code> -
     #     A URL which the system should `POST` the response to. This works for both synchronous
     #     and asynchronous calls. The data sent to the `webhook_url` will be the same as the
-    #     data that is sent in a synchronous response. By default there is not webhook URL.
+    #     data that is responded in a synchronous response, and is sent within the `data` 
+    #     parameter. The format sent can be in either `json` or `xml` by using the 
+    #     `webhook_format` parameter. By default there is no webhook URL.
+    #   - <code>:webhook_format</code> -
+    #     When a `webhook_url` is provided, you can have the data formatted as either `json`
+    #     or `xml`. The defautl format is `json`.
+    #
     # @return [APIResponse] A response object with helper methods to read the response.
     def upload(options={})
         # Make sure we've got good source data before starting the upload
@@ -196,7 +202,9 @@ module CDNConnect
             post_data = build_post_data(destination_path, 
                                         max_files_per_request = 25, 
                                         max_request_size = 25165824, 
-                                        async = options.fetch(:async, false))
+                                        async = options.fetch(:async, false),
+                                        webhook_url = options[:webhook_url],
+                                        webhook_format = options[:webhook_format])
 
             # Build the request to send to the API
             # Uses the Faraday: https://github.com/lostisland/faraday
@@ -247,7 +255,7 @@ module CDNConnect
     ##
     # Build the POST data that gets sent in the request
     # @!visibility private
-    def build_post_data(destination_path, max_files_per_request = 25, max_request_size = 25165824, async = false)
+    def build_post_data(destination_path, max_files_per_request = 25, max_request_size = 25165824, async = false, webhook_url = nil, webhook_format = nil)
         # @active_uploads will hold all of the upload keys  
         # which are actively being uploaded.
         @active_uploads = []
@@ -261,6 +269,15 @@ module CDNConnect
         # Processing of the data can be async. However, an async response will
         # not contain any information about the data uploaded.
         post_data[:async] = async
+
+        # send with the post data the webhook_url if there is one
+        if webhook_url != nil
+            post_data[:webhook_url] = webhook_url
+            # send in the webhook_format, but defaults to json if nothing sent
+            if webhook_format != nil
+                post_data[:webhook_format] = webhook_format
+            end
+        end
         
         # Mime type doesn't matter because it gets figured out on the server-side
         # using the file extension. So be sure file extensions are valid!
