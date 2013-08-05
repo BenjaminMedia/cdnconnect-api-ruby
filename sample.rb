@@ -106,29 +106,17 @@ end
 
 
 
-puts "Upload multiple files and asynchronously process the data"
-# Response will not contain uploaded file data but uploads will be quicker
-response = api_client.upload(:destination_path => '/sample/async', 
-                             :source_folder_path => '/Users/adambradley/workspace/cdnconnect-api-ruby/test/testfiles',
-                             :async => true)
-
-if response.is_success
-  puts "Async upload completed"
-end
-
-
-
-puts "Upload multiple files and asynchronously process the data, send response to webhook"
+puts "Upload multiple files and queue the processing of the data, then send response to webhook"
 # Response will not contain uploaded file data but uploads will be quicker
 # In this example, when the files are done processing the data will be sent via POST
 # to the webhook_url
 response = api_client.upload(:destination_path => '/sample/async', 
                              :source_folder_path => '/Users/adambradley/workspace/cdnconnect-api-ruby/test/testfiles',
-                             :async => true,
+                             :queue_processing => true,
                              :webhook_url => 'http://yousite.com/webhook')
 
 if response.is_success
-  puts "Async upload completed"
+  puts "Queued processing upload completed"
 end
 
 

@@ -25,7 +25,7 @@ module CDNConnect
   class APIClient
   
     @@application_name = 'cdnconnect-api-ruby'
-    @@application_version = '0.2.3'
+    @@application_version = '0.2.4'
     @@user_agent = @@application_name + ' v' + @@application_version
     @@api_host = 'https://api.cdnconnect.com'
     @@api_version = 'v1'
@@ -140,19 +140,25 @@ module CDNConnect
     #     A true or false value indicating if this call should recursively upload all of the 
     #     local folder's sub-folders, and their sub-folders, etc. This option is only used
     #     when the `source_folder_path` option is used. Default is true.
-    #   - <code>:async</code> -
-    #     A true or false value indicating if the processing of the data should be asynchronous  
-    #     or not. The default value is false. An async response will be faster because  
-    #     the resposne doesn't wait on the system to complete processing the data. However, 
-    #     because an async response does not wait for the data to complete processing then the 
-    #     response will not contain any information about the data which was just uploaded. 
-    #     Use async only if you do not need to know the details of the upload.
+    #   - <code>:destination_file_name</code> -
+    #     The name which the uploaded file should be renamed to. By default the file name
+    #     will be the same as the file being uploaded. The `destination_file_name` option is
+    #     only used for a single file upload, it does not work for multiple file requests.
+    #   - <code>queue_processing/code> -
+    #     A true or false value indicating if the processing of the data should be queued or 
+    #     processed immediately. A response with "queued_processing" 
+    #     will be faster because the resposne doesn't wait on the system to complete 
+    #     processing the data. However, because an queued processing response does not wait 
+    #     for the data to complete processing then the response will not contain any information 
+    #     about the data which was just uploaded. Use queued processing only if you do not 
+    #     need to know the details of the upload. Additionally you can use the `webhook_url` 
+    #     to post back the uploads details once it's processed. Default is false.
     #   - <code>:webhook_url</code> -
-    #     A URL which the system should `POST` the response to. This works for both synchronous
-    #     and asynchronous calls. The data sent to the `webhook_url` will be the same as the
-    #     data that is responded in a synchronous response, and is sent within the `data` 
-    #     parameter. The format sent can be in either `json` or `xml` by using the 
-    #     `webhook_format` parameter. By default there is no webhook URL.
+    #     A URL which the system should `POST` the response to. This works for both immediate 
+    #     processing or queued processing calls. The data sent to the `webhook_url` will be 
+    #     the same as the data that is responded in a synchronous response, and is sent 
+    #     within the `data` parameter. The format sent can be in either `json` or `xml` by 
+    #     using the `webhook_format` parameter. By default there is no webhook URL.
     #   - <code>:webhook_format</code> -
     #     When a `webhook_url` is provided, you can have the data formatted as either `json`
     #     or `xml`. The defautl format is `json`.
@@ -200,9 +206,10 @@ module CDNConnect
 
             # Build the data that gets sent in the POST request
             post_data = build_post_data(destination_path, 
+                                        destination_file_name = options[:destination_file_name],
                                         max_files_per_request = 25, 
                                         max_request_size = 25165824, 
-                                        async = options.fetch(:async, false),
+                                        queue_processing = options.fetch(:queue_processing, false),
                                         webhook_url = options[:webhook_url],
                                         webhook_format = options[:webhook_format])
 
@@ -254,7 +261,7 @@ module CDNConnect
     ##
     # Build the POST data that gets sent in the request
     # @!visibility private
-    def build_post_data(destination_path, max_files_per_request = 25, max_request_size = 25165824, async = false, webhook_url = nil, webhook_format = nil)
+    def build_post_data(destination_path, destination_file_name = nil, max_files_per_request = 25, max_request_size = 25165824, queue_processing = false, webhook_url = nil, webhook_format = nil)
         # @active_uploads will hold all of the upload keys  
         # which are actively being uploaded.
         @active_uploads = []
@@ -265,9 +272,13 @@ module CDNConnect
         # have the API also create the next upload url
         post_data[:create_upload_url] = 'true'
         
-        # Processing of the data can be async. However, an async response will
-        # not contain any information about the data uploaded.
-        post_data[:async] = async
+        # the set what the file name will be. By default it will be named the same as
+        # the uploaded file. This will only work for single file uploads.
+        post_data[:destination_file_name] = destination_file_name
+
+        # Processing of the data can be queued. However, an `queue_processing` response
+        # will not contain any information about the data uploaded.
+        post_data[:queue_processing] = queue_processing
 
         # send with the post data the webhook_url if there is one
         if webhook_url != nil
