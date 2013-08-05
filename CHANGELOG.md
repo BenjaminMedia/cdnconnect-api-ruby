@@ -1,9 +1,15 @@
+# 0.2.4
+
+* Renamed "async" parameter to "queue_processing"
+* Added "destination_file_name" parameter so you can specify what
+  a file's name will be once it's uploaded
+
+
 # 0.2.3
 
 * Authentication header no longer required on upload POST.
   The upload url contains encrypted information, can only
   be used once, and if its not used it expires.
-
 
 
 # 0.2.2
