@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.summary = "Package Summary"
 
   s.add_dependency(%q<faraday>, [">= 0.8.7"])
-  s.add_dependency(%q<signet>, [">= 0.5.0"])
+  s.add_dependency(%q<signet>, [">= 0.4.5"])
   s.add_dependency(%q<json>)
 
 end
