@@ -1,4 +1,4 @@
-# CDN Connect API Ruby Client, v0.2.4
+# CDN Connect API Ruby Client, v0.2.5
 
 CDN Connect makes it easier to manage production assets for teams of developers and designers, all while serving files from a fast content delivery network. Features include image optimization, resizing, cropping, filters, changing output formats, convert to WebP image format, etc. The CDN Connect API Ruby Client makes it easier to upload files and interact with the API with only a few lines of code.
 

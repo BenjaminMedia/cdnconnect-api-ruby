@@ -1,3 +1,9 @@
+# 0.2.5
+
+* Relaxed signet dependency to version 0.4.5 so it works
+  with Ruby 1.8.7
+
+
 # 0.2.4
 
 * Renamed "async" parameter to "queue_processing"
