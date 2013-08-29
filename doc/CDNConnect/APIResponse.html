@@ -6,13 +6,13 @@
 <title>
   Class: CDNConnect::APIResponse
   
-    &mdash; Documentation by YARD 0.8.5.2
+    &mdash; Documentation by YARD 0.8.7
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
   hasFrames = window.top.frames.main ? true : false;
@@ -702,7 +702,7 @@ array.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>A new instance of APIResponse</p>
+<p>Returns a new instance of APIResponse</p>
 
 
   </div>
@@ -731,17 +731,18 @@ array.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 26</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_http_response'>http_response</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='ivar'>@http_response</span> <span class='op'>=</span> <span class='id identifier rubyid_http_response'>http_response</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_http_response'>http_response</span> <span class='op'>!=</span> <span class='kw'>nil</span>
-    <span class='ivar'>@status</span> <span class='op'>=</span> <span class='id identifier rubyid_http_response'>http_response</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span>
-    <span class='ivar'>@data</span> <span class='op'>=</span> <span class='kw'>nil</span>
-  <span class='kw'>else</span>
-    <span class='ivar'>@status</span> <span class='op'>=</span> <span class='int'>0</span>
-    <span class='ivar'>@data</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>results</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>msgs</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
-  <span class='kw'>end</span>
-  <span class='kw'>return</span> <span class='kw'>self</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='rubyid_http_response identifier id'>http_response</span><span class='assign token'>=</span><span class='rubyid_nil nil kw'>nil</span><span class='rparen token'>)</span>
+  <span class='rubyid_@http_response ivar id'>@http_response</span> <span class='assign token'>=</span> <span class='rubyid_http_response identifier id'>http_response</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_http_response identifier id'>http_response</span> <span class='neq op'>!=</span> <span class='rubyid_nil nil kw'>nil</span>
+    <span class='rubyid_@status ivar id'>@status</span> <span class='assign token'>=</span> <span class='rubyid_http_response identifier id'>http_response</span><span class='dot token'>.</span><span class='rubyid_status identifier id'>status</span>
+    <span class='rubyid_@data ivar id'>@data</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span>
+  <span class='rubyid_else else kw'>else</span>
+    <span class='rubyid_@status ivar id'>@status</span> <span class='assign token'>=</span> <span class='integer val'>0</span>
+    <span class='rubyid_@data ivar id'>@data</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='string val'>&quot;results&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='comma token'>,</span> <span class='string val'>&quot;msgs&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span><span class='rbrace token'>}</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_return return kw'>return</span> <span class='rubyid_self self kw'>self</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -804,12 +805,13 @@ the body can be parsed into a hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 70</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_body'>body</span>
-  <span class='kw'>if</span> <span class='ivar'>@http_response</span> <span class='op'>!=</span> <span class='kw'>nil</span> 
-    <span class='kw'>return</span> <span class='ivar'>@http_response</span><span class='period'>.</span><span class='id identifier rubyid_body'>body</span>
-  <span class='kw'>end</span>
-  <span class='kw'>nil</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_body identifier id'>body</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_@http_response ivar id'>@http_response</span> <span class='neq op'>!=</span> <span class='rubyid_nil nil kw'>nil</span> 
+    <span class='rubyid_return return kw'>return</span> <span class='rubyid_@http_response ivar id'>@http_response</span><span class='dot token'>.</span><span class='rubyid_body identifier id'>body</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_nil nil kw'>nil</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -828,7 +830,7 @@ the body can be parsed into a hash.</p>
   <div class="discussion">
     
 <p>Decode the response body from JSON into a hash. Store the parsed data in an
-instance variable (@data) so we  don&#39;t keep parsing it every time we
+instance variable (@data) so we  don’t keep parsing it every time we
 reference data.</p>
 
 
@@ -869,15 +871,16 @@ reference data.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 84</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_data'>data</span>
-  <span class='kw'>if</span> <span class='ivar'>@data</span> <span class='op'>==</span> <span class='kw'>nil</span> <span class='kw'>and</span> <span class='id identifier rubyid_body'>body</span> <span class='op'>!=</span> <span class='kw'>nil</span>
-    <span class='kw'>begin</span>
-      <span class='ivar'>@data</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_body'>body</span><span class='rparen'>)</span>
-    <span class='kw'>rescue</span>
-    <span class='kw'>end</span>
-  <span class='kw'>end</span>
-  <span class='ivar'>@data</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_data identifier id'>data</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_@data ivar id'>@data</span> <span class='eq op'>==</span> <span class='rubyid_nil nil kw'>nil</span> <span class='rubyid_and and kw'>and</span> <span class='rubyid_body identifier id'>body</span> <span class='neq op'>!=</span> <span class='rubyid_nil nil kw'>nil</span>
+    <span class='rubyid_begin begin kw'>begin</span>
+      <span class='rubyid_@data ivar id'>@data</span> <span class='assign token'>=</span> <span class='rubyid_JSON constant id'>JSON</span><span class='dot token'>.</span><span class='rubyid_parse identifier id'>parse</span><span class='lparen token'>(</span><span class='rubyid_body identifier id'>body</span><span class='rparen token'>)</span>
+    <span class='rubyid_rescue rescue kw'>rescue</span>
+    <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_@data ivar id'>@data</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -935,9 +938,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 43</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_files'>files</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>files</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_files identifier id'>files</span>
+  <span class='rubyid_return return kw'>return</span> <span class='rubyid_get_result identifier id'>get_result</span><span class='lparen token'>(</span><span class='string val'>'files'</span><span class='rparen token'>)</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -980,13 +984,14 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 110</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_results'>results</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span> <span class='op'>!=</span> <span class='kw'>nil</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
-  <span class='kw'>nil</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_get_result identifier id'>get_result</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='rparen token'>)</span>
+  <span class='rubyid_r identifier id'>r</span> <span class='assign token'>=</span> <span class='rubyid_results identifier id'>results</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_r identifier id'>r</span> <span class='neq op'>!=</span> <span class='rubyid_nil nil kw'>nil</span>
+    <span class='rubyid_return return kw'>return</span> <span class='rubyid_r identifier id'>r</span><span class='dot token'>.</span><span class='rubyid_fetch identifier id'>fetch</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_nil nil kw'>nil</span><span class='rparen token'>)</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_nil nil kw'>nil</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1004,7 +1009,7 @@ hash.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>A boolean indicating if this response has messages or not.</p>
+<p>Returns A boolean indicating if this response has messages or not.</p>
 
 
   </div>
@@ -1050,16 +1055,17 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 143</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_has_errors'>has_errors</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_msgs'>msgs</span> <span class='kw'>and</span> <span class='id identifier rubyid_msgs'>msgs</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
-    <span class='kw'>for</span> <span class='id identifier rubyid_msg'>msg</span> <span class='kw'>in</span> <span class='id identifier rubyid_msgs'>msgs</span>
-      <span class='kw'>if</span> <span class='id identifier rubyid_msg'>msg</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>status</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>error</span><span class='tstring_end'>&quot;</span></span>
-        <span class='kw'>return</span> <span class='kw'>true</span>
-      <span class='kw'>end</span>
-    <span class='kw'>end</span>
-  <span class='kw'>end</span>
-  <span class='kw'>false</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_has_errors identifier id'>has_errors</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_msgs identifier id'>msgs</span> <span class='rubyid_and and kw'>and</span> <span class='rubyid_msgs identifier id'>msgs</span><span class='dot token'>.</span><span class='rubyid_length identifier id'>length</span> <span class='gt op'>&gt;</span> <span class='integer val'>0</span>
+    <span class='rubyid_for for kw'>for</span> <span class='rubyid_msg identifier id'>msg</span> <span class='rubyid_in in kw'>in</span> <span class='rubyid_msgs identifier id'>msgs</span>
+      <span class='rubyid_if if kw'>if</span> <span class='rubyid_msg identifier id'>msg</span><span class='lbrack token'>[</span><span class='string val'>&quot;status&quot;</span><span class='rbrack token'>]</span> <span class='eq op'>==</span> <span class='string val'>&quot;error&quot;</span>
+        <span class='rubyid_return return kw'>return</span> <span class='rubyid_true true kw'>true</span>
+      <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_false false kw'>false</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1077,7 +1083,7 @@ hash.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>A boolean indicating if this response has messages or not.</p>
+<p>Returns A boolean indicating if this response has messages or not.</p>
 
 
   </div>
@@ -1116,9 +1122,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 136</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_has_msgs'>has_msgs</span>
-  <span class='id identifier rubyid_msgs'>msgs</span> <span class='kw'>and</span> <span class='id identifier rubyid_msgs'>msgs</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_has_msgs identifier id'>has_msgs</span>
+  <span class='rubyid_msgs identifier id'>msgs</span> <span class='rubyid_and and kw'>and</span> <span class='rubyid_msgs identifier id'>msgs</span><span class='dot token'>.</span><span class='rubyid_length identifier id'>length</span> <span class='gt op'>&gt;</span> <span class='integer val'>0</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1168,9 +1175,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 251</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_bad_gateway'>is_bad_gateway</span>
-  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>502</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_is_bad_gateway identifier id'>is_bad_gateway</span>
+  <span class='rubyid_status identifier id'>status</span> <span class='eq op'>==</span> <span class='integer val'>502</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1220,9 +1228,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 215</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_bad_request'>is_bad_request</span>
-  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>400</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_is_bad_request identifier id'>is_bad_request</span>
+  <span class='rubyid_status identifier id'>status</span> <span class='eq op'>==</span> <span class='integer val'>400</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1272,9 +1281,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 209</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_client_error'>is_client_error</span>
-  <span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>400</span> <span class='kw'>and</span> <span class='id identifier rubyid_status'>status</span> <span class='op'>&lt;</span> <span class='int'>500</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_is_client_error identifier id'>is_client_error</span>
+  <span class='rubyid_status identifier id'>status</span> <span class='geq op'>&gt;=</span> <span class='integer val'>400</span> <span class='rubyid_and and kw'>and</span> <span class='rubyid_status identifier id'>status</span> <span class='lt op'>&lt;</span> <span class='integer val'>500</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1324,9 +1334,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 203</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_error'>is_error</span>
-  <span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>400</span> <span class='kw'>or</span> <span class='id identifier rubyid_has_errors'>has_errors</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_is_error identifier id'>is_error</span>
+  <span class='rubyid_status identifier id'>status</span> <span class='geq op'>&gt;=</span> <span class='integer val'>400</span> <span class='rubyid_or or kw'>or</span> <span class='rubyid_has_errors identifier id'>has_errors</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1376,9 +1387,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 227</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_forbidden'>is_forbidden</span>
-  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>403</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_is_forbidden identifier id'>is_forbidden</span>
+  <span class='rubyid_status identifier id'>status</span> <span class='eq op'>==</span> <span class='integer val'>403</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1428,9 +1440,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 239</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_method_not_allowed'>is_method_not_allowed</span>
-  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>405</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_is_method_not_allowed identifier id'>is_method_not_allowed</span>
+  <span class='rubyid_status identifier id'>status</span> <span class='eq op'>==</span> <span class='integer val'>405</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1480,9 +1493,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 233</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_not_found'>is_not_found</span>
-  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>404</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_is_not_found identifier id'>is_not_found</span>
+  <span class='rubyid_status identifier id'>status</span> <span class='eq op'>==</span> <span class='integer val'>404</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1532,9 +1546,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 245</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_server_error'>is_server_error</span>
-  <span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>500</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_is_server_error identifier id'>is_server_error</span>
+  <span class='rubyid_status identifier id'>status</span> <span class='geq op'>&gt;=</span> <span class='integer val'>500</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1584,9 +1599,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 257</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_service_unavailable'>is_service_unavailable</span>
-  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>503</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_is_service_unavailable identifier id'>is_service_unavailable</span>
+  <span class='rubyid_status identifier id'>status</span> <span class='eq op'>==</span> <span class='integer val'>503</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1636,9 +1652,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 197</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_success'>is_success</span>
-  <span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;=</span> <span class='int'>200</span> <span class='kw'>and</span> <span class='id identifier rubyid_status'>status</span> <span class='op'>&lt;</span> <span class='int'>300</span> <span class='kw'>and</span> <span class='kw'>not</span> <span class='id identifier rubyid_has_errors'>has_errors</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_is_success identifier id'>is_success</span>
+  <span class='rubyid_status identifier id'>status</span> <span class='geq op'>&gt;=</span> <span class='integer val'>200</span> <span class='rubyid_and and kw'>and</span> <span class='rubyid_status identifier id'>status</span> <span class='lt op'>&lt;</span> <span class='integer val'>300</span> <span class='rubyid_and and kw'>and</span> <span class='rubyid_not not kw'>not</span> <span class='rubyid_has_errors identifier id'>has_errors</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1688,9 +1705,10 @@ hash.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 221</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_unauthorized'>is_unauthorized</span>
-  <span class='id identifier rubyid_status'>status</span> <span class='op'>==</span> <span class='int'>401</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_is_unauthorized identifier id'>is_unauthorized</span>
+  <span class='rubyid_status identifier id'>status</span> <span class='eq op'>==</span> <span class='integer val'>401</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1767,33 +1785,34 @@ automatically when uploading numerous files.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 160</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_updating_response'>updating_response</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_updating_response'>updating_response</span> <span class='op'>==</span> <span class='kw'>nil</span> <span class='kw'>or</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span> <span class='op'>==</span> <span class='kw'>nil</span>
-    <span class='kw'>return</span> <span class='kw'>self</span>
-  <span class='kw'>end</span>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_merge identifier id'>merge</span><span class='lparen token'>(</span><span class='rubyid_updating_response identifier id'>updating_response</span><span class='rparen token'>)</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_updating_response identifier id'>updating_response</span> <span class='eq op'>==</span> <span class='rubyid_nil nil kw'>nil</span> <span class='rubyid_or or kw'>or</span> <span class='rubyid_updating_response identifier id'>updating_response</span><span class='dot token'>.</span><span class='rubyid_data identifier id'>data</span> <span class='eq op'>==</span> <span class='rubyid_nil nil kw'>nil</span>
+    <span class='rubyid_return return kw'>return</span> <span class='rubyid_self self kw'>self</span>
+  <span class='rubyid_end end kw'>end</span>
   
-  <span class='kw'>if</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_status'>status</span>
-    <span class='ivar'>@status</span> <span class='op'>=</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span>
-  <span class='kw'>end</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_updating_response identifier id'>updating_response</span><span class='dot token'>.</span><span class='rubyid_status identifier id'>status</span> <span class='gt op'>&gt;</span> <span class='rubyid_status identifier id'>status</span>
+    <span class='rubyid_@status ivar id'>@status</span> <span class='assign token'>=</span> <span class='rubyid_updating_response identifier id'>updating_response</span><span class='dot token'>.</span><span class='rubyid_status identifier id'>status</span>
+  <span class='rubyid_end end kw'>end</span>
   
-  <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span> <span class='op'>==</span> <span class='kw'>nil</span>
-    <span class='ivar'>@data</span> <span class='op'>=</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span>
-    <span class='kw'>return</span> <span class='kw'>self</span>
-  <span class='kw'>end</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_data identifier id'>data</span> <span class='eq op'>==</span> <span class='rubyid_nil nil kw'>nil</span>
+    <span class='rubyid_@data ivar id'>@data</span> <span class='assign token'>=</span> <span class='rubyid_updating_response identifier id'>updating_response</span><span class='dot token'>.</span><span class='rubyid_data identifier id'>data</span>
+    <span class='rubyid_return return kw'>return</span> <span class='rubyid_self self kw'>self</span>
+  <span class='rubyid_end end kw'>end</span>
         
-  <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>msgs</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_msgs'>msgs</span>
+  <span class='rubyid_@data ivar id'>@data</span><span class='lbrack token'>[</span><span class='string val'>'msgs'</span><span class='rbrack token'>]</span> <span class='opasgn op'>+=</span> <span class='rubyid_updating_response identifier id'>updating_response</span><span class='dot token'>.</span><span class='rubyid_msgs identifier id'>msgs</span>
   
-  <span class='kw'>if</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_files'>files</span> <span class='op'>!=</span> <span class='kw'>nil</span>
-      <span class='id identifier rubyid_f'>f</span> <span class='op'>=</span> <span class='id identifier rubyid_files'>files</span>
-      <span class='kw'>if</span> <span class='id identifier rubyid_f'>f</span> <span class='op'>!=</span> <span class='kw'>nil</span>
-        <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>results</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>files</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_files'>files</span>
-      <span class='kw'>else</span>
-        <span class='ivar'>@data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>results</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>files</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_updating_response'>updating_response</span><span class='period'>.</span><span class='id identifier rubyid_files'>files</span>
-      <span class='kw'>end</span>
-  <span class='kw'>end</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_updating_response identifier id'>updating_response</span><span class='dot token'>.</span><span class='rubyid_files identifier id'>files</span> <span class='neq op'>!=</span> <span class='rubyid_nil nil kw'>nil</span>
+      <span class='rubyid_f identifier id'>f</span> <span class='assign token'>=</span> <span class='rubyid_files identifier id'>files</span>
+      <span class='rubyid_if if kw'>if</span> <span class='rubyid_f identifier id'>f</span> <span class='neq op'>!=</span> <span class='rubyid_nil nil kw'>nil</span>
+        <span class='rubyid_@data ivar id'>@data</span><span class='lbrack token'>[</span><span class='string val'>'results'</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>'files'</span><span class='rbrack token'>]</span> <span class='opasgn op'>+=</span> <span class='rubyid_updating_response identifier id'>updating_response</span><span class='dot token'>.</span><span class='rubyid_files identifier id'>files</span>
+      <span class='rubyid_else else kw'>else</span>
+        <span class='rubyid_@data ivar id'>@data</span><span class='lbrack token'>[</span><span class='string val'>'results'</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>'files'</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_updating_response identifier id'>updating_response</span><span class='dot token'>.</span><span class='rubyid_files identifier id'>files</span>
+      <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_end end kw'>end</span>
   
-  <span class='kw'>return</span> <span class='kw'>self</span>
-<span class='kw'>end</span></pre>
+  <span class='rubyid_return return kw'>return</span> <span class='rubyid_self self kw'>self</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1812,8 +1831,8 @@ automatically when uploading numerous files.</p>
   <div class="discussion">
     
 <p>An array of messages, and each message is a hash. Example message within
-the msgs array:  “text” =&gt; “info about the message”, “status” =&gt;
-“error”</p>
+the msgs array:  “text” =&gt; “info about the message”,
+“status” =&gt; “error”</p>
 
 
   </div>
@@ -1856,13 +1875,14 @@ the msgs array:  “text” =&gt; “info about the message”, “status” =&g
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 125</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_msgs'>msgs</span>
-  <span class='id identifier rubyid_d'>d</span> <span class='op'>=</span> <span class='id identifier rubyid_data'>data</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_d'>d</span> <span class='op'>!=</span> <span class='kw'>nil</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_d'>d</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>msgs</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
-  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_msgs identifier id'>msgs</span>
+  <span class='rubyid_d identifier id'>d</span> <span class='assign token'>=</span> <span class='rubyid_data identifier id'>data</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_d identifier id'>d</span> <span class='neq op'>!=</span> <span class='rubyid_nil nil kw'>nil</span>
+    <span class='rubyid_return return kw'>return</span> <span class='rubyid_d identifier id'>d</span><span class='dot token'>.</span><span class='rubyid_fetch identifier id'>fetch</span><span class='lparen token'>(</span><span class='string val'>'msgs'</span><span class='comma token'>,</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_return return kw'>return</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1928,17 +1948,18 @@ array.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 52</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_object'>object</span>
-  <span class='id identifier rubyid_obj'>obj</span> <span class='op'>=</span> <span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>object</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_obj'>obj</span> <span class='op'>!=</span> <span class='kw'>nil</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_obj'>obj</span>
-  <span class='kw'>end</span>
-  <span class='id identifier rubyid_fs'>fs</span> <span class='op'>=</span> <span class='id identifier rubyid_files'>files</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_fs'>fs</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='kw'>and</span> <span class='id identifier rubyid_fs'>fs</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_fs'>fs</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>
-  <span class='kw'>end</span>
-  <span class='kw'>nil</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_object identifier id'>object</span>
+  <span class='rubyid_obj identifier id'>obj</span> <span class='assign token'>=</span> <span class='rubyid_get_result identifier id'>get_result</span><span class='lparen token'>(</span><span class='string val'>'object'</span><span class='rparen token'>)</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_obj identifier id'>obj</span> <span class='neq op'>!=</span> <span class='rubyid_nil nil kw'>nil</span>
+    <span class='rubyid_return return kw'>return</span> <span class='rubyid_obj identifier id'>obj</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_fs identifier id'>fs</span> <span class='assign token'>=</span> <span class='rubyid_files identifier id'>files</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_fs identifier id'>fs</span> <span class='neq op'>!=</span> <span class='rubyid_nil nil kw'>nil</span> <span class='rubyid_and and kw'>and</span> <span class='rubyid_fs identifier id'>fs</span><span class='dot token'>.</span><span class='rubyid_length identifier id'>length</span> <span class='gt op'>&gt;</span> <span class='integer val'>0</span>
+    <span class='rubyid_return return kw'>return</span> <span class='rubyid_fs identifier id'>fs</span><span class='lbrack token'>[</span><span class='integer val'>0</span><span class='rbrack token'>]</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_nil nil kw'>nil</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -1994,13 +2015,14 @@ array.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 99</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_results'>results</span>
-  <span class='id identifier rubyid_d'>d</span> <span class='op'>=</span> <span class='id identifier rubyid_data'>data</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_d'>d</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='kw'>and</span> <span class='id identifier rubyid_d'>d</span><span class='period'>.</span><span class='id identifier rubyid_has_key?'>has_key?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>results</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_d'>d</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>results</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
-  <span class='kw'>end</span>
-  <span class='kw'>nil</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_results identifier id'>results</span>
+  <span class='rubyid_d identifier id'>d</span> <span class='assign token'>=</span> <span class='rubyid_data identifier id'>data</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_d identifier id'>d</span> <span class='neq op'>!=</span> <span class='rubyid_nil nil kw'>nil</span> <span class='rubyid_and and kw'>and</span> <span class='rubyid_d identifier id'>d</span><span class='dot token'>.</span><span class='rubyid_has_key? fid id'>has_key?</span><span class='lparen token'>(</span><span class='string val'>'results'</span><span class='rparen token'>)</span>
+    <span class='rubyid_return return kw'>return</span> <span class='rubyid_d identifier id'>d</span><span class='lbrack token'>[</span><span class='string val'>'results'</span><span class='rbrack token'>]</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_nil nil kw'>nil</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -2018,7 +2040,7 @@ array.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>The HTTP response status.</p>
+<p>Returns The HTTP response status.</p>
 
 
   </div>
@@ -2057,9 +2079,10 @@ array.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 191</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_status'>status</span>
-  <span class='ivar'>@status</span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_status identifier id'>status</span>
+  <span class='rubyid_@status ivar id'>@status</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -2098,9 +2121,10 @@ array.</p>
     <td>
       <pre class="code"><span class="info file"># File 'lib/cdnconnect_api/response.rb', line 261</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span> <span class='comment'># called with print / puts
-</span>  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Status: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_status'>status</span><span class='embexpr_end'>}</span><span class='tstring_content'>\nBody: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_body'>body</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
-<span class='kw'>end</span></pre>
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_to_s identifier id'>to_s</span> 
+  <span class='dstring node'>&quot;Status: #{status}\nBody: #{body}&quot;</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
     </td>
   </tr>
 </table>
@@ -2111,9 +2135,9 @@ array.</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  4 20:09:52 2013 by
+  Generated on Thu Aug 29 08:30:59 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.5.2 (ruby-2.0.0).
+  0.8.7 (ruby-1.8.7).
 </div>
 
   </body>
