@@ -13,7 +13,6 @@
 # limitations under the License.
 
 require 'faraday'
-require 'faraday/utils'
 require 'signet/oauth_2/client'
 require 'cdnconnect_api/response'
 
