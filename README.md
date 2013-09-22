@@ -1,4 +1,4 @@
-# CDN Connect API Ruby Client, v0.2.5
+# CDN Connect API Ruby Client, v0.3.0
 
 CDN Connect makes it easier to manage production assets for teams of developers and designers, all while serving files from a fast content delivery network. Features include image optimization, resizing, cropping, filters, changing output formats, convert to WebP image format, etc. The CDN Connect API Ruby Client makes it easier to upload files and interact with the API with only a few lines of code.
 
@@ -44,7 +44,7 @@ Below are the possible parameters for the `upload` method. You must set `destina
  - `valid_extensions` : An array of valid extensions which should be uploaded. This is only applied when the `source_folder_path` options is used. If nothing is provided, which is the default, all files within the folder are uploaded. The extensions should be in all lower case, and they should not contain a period or asterisks. Example `valid_extensions => ['js', 'css', 'jpg', jpeg', 'png', 'gif', 'webp']`
  - `recursive_local_folders` : A true or false value indicating if this call should recursively upload all of the local folder's sub-folders, and their sub-folders, etc. This option is only used when the `source_folder_path` option is used.
  - `destination_file_name` : The name which the uploaded file should be renamed to. By default the file name will be the same as the file being uploaded. The `destination_file_name` option is only used for a single file upload, it does not work for multiple file requests.
- - `queue_processing` : A true or false value indicating if the processing of the data should be queued or processed immediately. A response with "queued_processing" will be faster because the resposne doesn't wait on the system to complete processing the data. However, because an queued processing response does not wait for the data to complete processing then the response will not contain any information about the data which was just uploaded. Use queued processing only if you do not need to know the details of the upload. Additionally you can use the `webhook_url` to post back the uploads details once it's processed. Default is false.
+ - `queue_processing` : A true or false value indicating if the processing of the data should be queued or processed immediately. A response with "queued_processing" will be faster because the resposne doesn't wait on the system to complete processing the data. However, because an queued processing response does not wait for the data to complete processing then the response will not contain any information about the data which was just uploaded. Use queued processing only if you do not need to know the details of the upload. Additionally you can use the `webhook_url` to post back the uploads details once it's processed. Default is true.
  - `webhook_url` : A URL which the system should `POST` the response to. This works for both immediate processing or queued processing calls. The data sent to the `webhook_url` will be the same as the data that is responded in a synchronous response, and is sent within the `data` parameter. The format sent can be in either `json` or `xml` by using the `webhook_format` parameter. By default there is no webhook URL.
  - `webhook_format` : When a `webhook_url` is provided, you can have the data formatted as either `json` or `xml`. The defautl format is `json`.
 
@@ -114,7 +114,7 @@ In the example below, if the folders `images` or `movies` did not already exist 
 
 ## API Response
 
-HTTP responses will be formatted in json, but the library takes the HTTP response and decodes into a hash for the `APIResponse` class. The `APIResponse` class is used to simpilfy things by using helper functions to read response data. Responses from the API are all structured the same way, and this class is used as a small wrapper to make it easier to get data from it.
+HTTP responses will be formatted in json, but the library takes the HTTP response and decodes into a hash for the `APIResponse` class. The `APIResponse` class is used to simpilfy things by using helper functions to read response data. Responses from the API are all structured the same way, and this class is used as a small wrapper to make it easier to get data from it. Note: Be sure to set the :queue_processing => false upload option if you would like to get the upload info the upload's response.
 
 
  - `files` : `array` : A list of all the files that were uploaded. Each file in the array is a hash.
@@ -133,6 +133,7 @@ HTTP responses will be formatted in json, but the library takes the HTTP respons
 
     if response.is_success
 
+        # Be sure to set the :queue_processing => false upload option if you would like to get the upload info like the response below
         for file in response.files
             puts "Uploaded " + file["name"]
         end

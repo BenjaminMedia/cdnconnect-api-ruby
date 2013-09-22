@@ -1,3 +1,14 @@
+# 0.3.0
+
+* Reuse the same upload url if there is an upload error
+* Add an upload_id parameter to the upload url so it 
+  always gets a new one when requested (cannot be querystring!)
+* Added Ruby Logger: 
+  http://www.ruby-doc.org/stdlib-1.8.7/libdoc/logger/rdoc/Logger.html
+* queue_processing is the default
+* build_post_data() method now uses options={} arg
+
+
 # 0.2.5
 
 * Relaxed signet dependency to version 0.4.5 so it works
