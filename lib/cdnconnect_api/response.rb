@@ -28,9 +28,11 @@ module CDNConnect
       if http_response != nil
         @status = http_response.status
         @data = nil
+        @body = nil
       else
         @status = 0
         @data = {"results" => {}, "msgs" => []}
+        @body = nil
       end
       return self
     end
@@ -69,9 +71,9 @@ module CDNConnect
     # @return [String]
     def body
       if @http_response != nil 
-        return @http_response.body
+        @body = @http_response.body
       end
-      nil
+      @body
     end
 
 
@@ -170,7 +172,15 @@ module CDNConnect
         @data = updating_response.data
         return self
       end
-            
+      
+      if updating_response.body != nil
+        if @body == nil
+          @body = updating_response.body
+        else
+          @body += updating_response.body
+        end
+      end
+
       @data['msgs'] += updating_response.msgs
       
       if updating_response.files != nil
@@ -195,7 +205,7 @@ module CDNConnect
     ##
     # @return [bool]
     def is_success
-      status >= 200 and status < 300 and not has_errors
+      @body != nil and status >= 200 and status < 300 and not has_errors
     end
 
     ##

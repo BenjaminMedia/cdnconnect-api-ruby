@@ -123,7 +123,7 @@
         <dt id="application_version-classvariable" class="">@@application_version =
           
         </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0.2.4</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0.3.0</span><span class='tstring_end'>&#39;</span></span></pre></dd>
       
         <dt id="user_agent-classvariable" class="">@@user_agent =
           
@@ -424,6 +424,28 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#human_file_size-instance_method" title="#human_file_size (instance method)">- (Object) <strong>human_file_size</strong>(bytes) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (APIClient) <strong>initialize</strong>(options = {}) </a>
     
 
@@ -699,8 +721,8 @@ interchangeable.</p>
 demo.cdnconnect.com is a CDN Connect app host. The app host should not
 include https://, http:// or a URL path.</p>
 </li><li>
-<p><code>:debug</code> - Print out any debugging information. Default is
-false.</p>
+<p><code>:log_device</code> - Ruby Logger logdev argument in
+Logger.new(logdev). Defaults to STDOUT.</p>
 </li></ul>
 </div>
       
@@ -715,7 +737,6 @@ false.</p>
       <pre class="lines">
 
 
-73
 74
 75
 76
@@ -747,43 +768,60 @@ false.</p>
 102
 103
 104
-105</pre>
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 74</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='comment'># Normalize key to String to allow indifferent access.
-</span>  <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_inject'>inject</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_accu'>accu</span><span class='comma'>,</span> <span class='lparen'>(</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span><span class='op'>|</span> <span class='id identifier rubyid_accu'>accu</span><span class='lbracket'>[</span><span class='id identifier rubyid_k'>k</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span><span class='semicolon'>;</span> <span class='id identifier rubyid_accu'>accu</span> <span class='rbrace'>}</span>
-  
-  <span class='comment'># Initialize all of the options
-</span>  <span class='ivar'>@client_id</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>client_id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-  <span class='ivar'>@client_secret</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>client_secret</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-  <span class='ivar'>@scope</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>scope</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-  <span class='ivar'>@state</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>state</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-  <span class='ivar'>@code</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>code</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-  <span class='ivar'>@redirect_uri</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>redirect_uri</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>access_token</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>access_token</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>api_key</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='comment'># both work
-</span>  <span class='ivar'>@access_token</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>access_token</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-  <span class='ivar'>@app_host</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>app_host</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-  <span class='ivar'>@debug</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>debug</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='kw'>false</span>
-  <span class='ivar'>@prefetched_upload_urls</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
-  <span class='ivar'>@upload_queue</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
-  <span class='ivar'>@failed_uploads</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-  
-  <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>api_key</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='kw'>and</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>app_host</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>nil</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>app_host option required when using api_key option</span><span class='tstring_end'>&#39;</span></span>
-  <span class='kw'>end</span>
+    <span class='comment'># Normalize key to String to allow indifferent access.
+</span>    <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_inject'>inject</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_accu'>accu</span><span class='comma'>,</span> <span class='lparen'>(</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span><span class='op'>|</span> <span class='id identifier rubyid_accu'>accu</span><span class='lbracket'>[</span><span class='id identifier rubyid_k'>k</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_v'>v</span><span class='semicolon'>;</span> <span class='id identifier rubyid_accu'>accu</span> <span class='rbrace'>}</span>
 
-  <span class='comment'># Create the OAuth2 client which will be used to authorize the requests
-</span>  <span class='ivar'>@client</span> <span class='op'>=</span> <span class='const'>Signet</span><span class='op'>::</span><span class='const'>OAuth2</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:client_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_client_id'>client_id</span><span class='comma'>,</span>
-                                       <span class='symbol'>:client_secret</span> <span class='op'>=&gt;</span> <span class='ivar'>@client_secret</span><span class='comma'>,</span>
-                                       <span class='symbol'>:scope</span> <span class='op'>=&gt;</span> <span class='ivar'>@scope</span><span class='comma'>,</span>
-                                       <span class='symbol'>:state</span> <span class='op'>=&gt;</span> <span class='ivar'>@state</span><span class='comma'>,</span>
-                                       <span class='symbol'>:code</span> <span class='op'>=&gt;</span> <span class='ivar'>@code</span><span class='comma'>,</span>
-                                       <span class='symbol'>:redirect_uri</span> <span class='op'>=&gt;</span> <span class='ivar'>@redirect_uri</span><span class='comma'>,</span>
-                                       <span class='symbol'>:access_token</span> <span class='op'>=&gt;</span> <span class='ivar'>@access_token</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>self</span>
+    <span class='comment'># Initialize all of the options
+</span>    <span class='ivar'>@client_id</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>client_id</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='ivar'>@client_secret</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>client_secret</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='ivar'>@scope</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>scope</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='ivar'>@state</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>state</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='ivar'>@code</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>code</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='ivar'>@redirect_uri</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>redirect_uri</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>access_token</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>access_token</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>api_key</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='comment'># both work
+</span>    <span class='ivar'>@access_token</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>access_token</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='ivar'>@app_host</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>app_host</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+    <span class='cvar'>@@api_host</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>api_host</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='cvar'>@@api_host</span>
+    <span class='ivar'>@prefetched_upload_urls</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+    <span class='ivar'>@upload_queue</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+    <span class='ivar'>@failed_uploads</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+
+    <span class='id identifier rubyid_log_device'>log_device</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>log_device</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>STDOUT</span>
+    <span class='ivar'>@logger</span> <span class='op'>=</span> <span class='const'>Logger</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_log_device'>log_device</span><span class='comma'>,</span> <span class='int'>10</span><span class='comma'>,</span> <span class='int'>1024000</span><span class='rparen'>)</span>
+    <span class='ivar'>@logger</span><span class='period'>.</span><span class='id identifier rubyid_sev_threshold'>sev_threshold</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>log_sev_threshold</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>Logger</span><span class='op'>::</span><span class='const'>WARN</span>
+
+    <span class='kw'>if</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>api_key</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='kw'>and</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>app_host</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='kw'>nil</span>
+        <span class='id identifier rubyid_err_msg'>err_msg</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>app_host option required when using api_key option</span><span class='tstring_end'>&#39;</span></span>
+        <span class='ivar'>@logger</span><span class='period'>.</span><span class='id identifier rubyid_error'>error</span><span class='lparen'>(</span><span class='id identifier rubyid_err_msg'>err_msg</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id identifier rubyid_err_msg'>err_msg</span>
+    <span class='kw'>end</span>
+
+    <span class='ivar'>@logger</span><span class='period'>.</span><span class='id identifier rubyid_debug'>debug</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='cvar'>@@user_agent</span><span class='embexpr_end'>}</span><span class='tstring_content'>, </span><span class='embexpr_beg'>#{</span><span class='cvar'>@@api_host</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+    <span class='comment'># Create the OAuth2 client which will be used to authorize the requests
+</span>    <span class='ivar'>@client</span> <span class='op'>=</span> <span class='const'>Signet</span><span class='op'>::</span><span class='const'>OAuth2</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:client_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_client_id'>client_id</span><span class='comma'>,</span>
+                                         <span class='symbol'>:client_secret</span> <span class='op'>=&gt;</span> <span class='ivar'>@client_secret</span><span class='comma'>,</span>
+                                         <span class='symbol'>:scope</span> <span class='op'>=&gt;</span> <span class='ivar'>@scope</span><span class='comma'>,</span>
+                                         <span class='symbol'>:state</span> <span class='op'>=&gt;</span> <span class='ivar'>@state</span><span class='comma'>,</span>
+                                         <span class='symbol'>:code</span> <span class='op'>=&gt;</span> <span class='ivar'>@code</span><span class='comma'>,</span>
+                                         <span class='symbol'>:redirect_uri</span> <span class='op'>=&gt;</span> <span class='ivar'>@redirect_uri</span><span class='comma'>,</span>
+                                         <span class='symbol'>:access_token</span> <span class='op'>=&gt;</span> <span class='ivar'>@access_token</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -837,15 +875,15 @@ previously  created within CDN Connect&#39;s account for a specific app.</p>
       <pre class="lines">
 
 
-834
-835
-836</pre>
+855
+856
+857</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 834</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 855</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_access_token'>access_token</span>
-  <span class='ivar'>@access_token</span>
+    <span class='ivar'>@access_token</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -893,15 +931,15 @@ path.</p>
       <pre class="lines">
 
 
-844
-845
-846</pre>
+865
+866
+867</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 844</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 865</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_app_host'>app_host</span>
-  <span class='ivar'>@app_host</span>
+    <span class='ivar'>@app_host</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -950,15 +988,15 @@ already known.</p>
       <pre class="lines">
 
 
-774
-775
-776</pre>
+795
+796
+797</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 774</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 795</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_client_id'>client_id</span>
-  <span class='ivar'>@client_id</span>
+    <span class='ivar'>@client_id</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1007,15 +1045,15 @@ already known. A client secret should not be shared.</p>
       <pre class="lines">
 
 
-786
-787
-788</pre>
+807
+808
+809</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 786</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 807</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_client_secret'>client_secret</span>
-  <span class='ivar'>@client_secret</span>
+    <span class='ivar'>@client_secret</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1062,15 +1100,15 @@ server.</p>
       <pre class="lines">
 
 
-816
-817
-818</pre>
+837
+838
+839</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 816</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 837</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_code'>code</span>
-  <span class='ivar'>@code</span>
+    <span class='ivar'>@code</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1122,13 +1160,13 @@ already exist they will be created.</p>
       <pre class="lines">
 
 
-649
-650
-651
-652</pre>
+677
+678
+679
+680</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 649</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 677</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_path'>create_path</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/create-path.json</span><span class='tstring_end'>&#39;</span></span>
@@ -1204,15 +1242,15 @@ DELETE requests are used when (you guessed it) deleting data.</p>
       <pre class="lines">
 
 
-697
-698
-699</pre>
+725
+726
+727</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 697</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 725</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>DELETE</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>DELETE</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1287,13 +1325,13 @@ DELETE requests are used when (you guessed it) deleting data.</p>
       <pre class="lines">
 
 
-638
-639
-640
-641</pre>
+666
+667
+668
+669</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 638</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 666</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_delete_object'>delete_object</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.json</span><span class='tstring_end'>&#39;</span></span>
@@ -1343,15 +1381,15 @@ DELETE requests are used when (you guessed it) deleting data.</p>
       <pre class="lines">
 
 
-862
-863
-864</pre>
+883
+884
+885</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 862</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 883</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_failed_uploads'>failed_uploads</span>
-  <span class='ivar'>@failed_uploads</span>
+    <span class='ivar'>@failed_uploads</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1441,15 +1479,15 @@ requests are used when reading data.</p>
       <pre class="lines">
 
 
-662
-663
-664</pre>
+690
+691
+692</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 662</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 690</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>GET</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:data</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>GET</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:data</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1529,20 +1567,20 @@ response should contain its sub-folders or not. Default is false.</p>
       <pre class="lines">
 
 
-602
-603
-604
-605
-606
-607
-608
-609
-610
-611
-612</pre>
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 602</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 630</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_object'>get_object</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.json</span><span class='tstring_end'>&#39;</span></span>
@@ -1554,6 +1592,42 @@ response should contain its sub-folders or not. Default is false.</p>
         <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='symbol'>:folders</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>
     <span class='kw'>end</span>
     <span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="human_file_size-instance_method">
+  
+    - (<tt>Object</tt>) <strong>human_file_size</strong>(bytes) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+887
+888
+889
+890
+891
+892</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 887</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_human_file_size'>human_file_size</span><span class='lparen'>(</span><span class='id identifier rubyid_bytes'>bytes</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_units'>units</span> <span class='op'>=</span> <span class='qwords_beg'>%w{</span><span class='tstring_content'>B</span><span class='words_sep'> </span><span class='tstring_content'>KB</span><span class='words_sep'> </span><span class='tstring_content'>MB</span><span class='words_sep'> </span><span class='tstring_content'>GB</span><span class='words_sep'> </span><span class='tstring_content'>TB</span><span class='words_sep'>}</span>
+    <span class='id identifier rubyid_e'>e</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='const'>Math</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span><span class='lparen'>(</span><span class='id identifier rubyid_bytes'>bytes</span><span class='rparen'>)</span><span class='op'>/</span><span class='const'>Math</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span><span class='lparen'>(</span><span class='int'>1024</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_floor'>floor</span>
+    <span class='id identifier rubyid_s'>s</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%.2f</span><span class='tstring_end'>&quot;</span></span> <span class='op'>%</span> <span class='lparen'>(</span><span class='id identifier rubyid_bytes'>bytes</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span> <span class='op'>/</span> <span class='int'>1024</span><span class='op'>**</span><span class='id identifier rubyid_e'>e</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\.?0*$</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='id identifier rubyid_units'>units</span><span class='lbracket'>[</span><span class='id identifier rubyid_e'>e</span><span class='rbracket'>]</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1641,15 +1715,15 @@ requests are used when creating data.</p>
       <pre class="lines">
 
 
-674
-675
-676</pre>
+702
+703
+704</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 674</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 702</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>POST</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:data</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>POST</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:data</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1737,15 +1811,15 @@ requests are used when updating data.</p>
       <pre class="lines">
 
 
-686
-687
-688</pre>
+714
+715
+716</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 686</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 714</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PUT</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:data</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:api_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_path'>api_path</span><span class='comma'>,</span> <span class='symbol'>:method</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PUT</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:data</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1791,15 +1865,15 @@ requests are used when updating data.</p>
       <pre class="lines">
 
 
-824
-825
-826</pre>
+845
+846
+847</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 824</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 845</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_redirect_uri'>redirect_uri</span>
-  <span class='ivar'>@redirect_uri</span>
+    <span class='ivar'>@redirect_uri</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1876,14 +1950,14 @@ requests are used when updating data.</p>
       <pre class="lines">
 
 
-624
-625
-626
-627
-628</pre>
+652
+653
+654
+655
+656</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 624</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 652</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_rename_object'>rename_object</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_api_path'>api_path</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:path</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/rename.json</span><span class='tstring_end'>&#39;</span></span>
@@ -1936,15 +2010,15 @@ isn&#39;t already known.</p>
       <pre class="lines">
 
 
-797
-798
-799</pre>
+818
+819
+820</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 797</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 818</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_scope'>scope</span>
-  <span class='ivar'>@scope</span>
+    <span class='ivar'>@scope</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1992,15 +2066,15 @@ This is only required if an API Key isn&#39;t already known.</p>
       <pre class="lines">
 
 
-808
-809
-810</pre>
+829
+830
+831</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 808</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 829</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_state'>state</span>
-  <span class='ivar'>@state</span>
+    <span class='ivar'>@state</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2138,15 +2212,6 @@ have the data formatted as either `json` or `xml`. The defautl format is
       <pre class="lines">
 
 
-167
-168
-169
-170
-171
-172
-173
-174
-175
 176
 177
 178
@@ -2229,10 +2294,21 @@ have the data formatted as either `json` or `xml`. The defautl format is
 255
 256
 257
-258</pre>
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 167</span>
+      <pre class="code"><span class="info file"># File 'lib/cdnconnect_api.rb', line 176</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_upload'>upload</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='comment'># Make sure we&#39;ve got good source data before starting the upload
@@ -2253,40 +2329,38 @@ have the data formatted as either `json` or `xml`. The defautl format is
         
         <span class='comment'># Get the destination_path in the list of upload queues
 </span>        <span class='id identifier rubyid_destination_path'>destination_path</span> <span class='op'>=</span> <span class='ivar'>@upload_queue</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>
-        <span class='kw'>if</span> <span class='ivar'>@debug</span>
-            <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Upload destination_path: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
-        <span class='kw'>end</span>
+        <span class='ivar'>@logger</span><span class='period'>.</span><span class='id identifier rubyid_debug'>debug</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>destination_path: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   
         <span class='comment'># Check if we have a prefetched upload url before requesting a new one
 </span>        <span class='id identifier rubyid_upload_url'>upload_url</span> <span class='op'>=</span> <span class='id identifier rubyid_get_prefetched_upload_url'>get_prefetched_upload_url</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='rparen'>)</span>
         <span class='kw'>if</span> <span class='id identifier rubyid_upload_url'>upload_url</span> <span class='op'>==</span> <span class='kw'>nil</span>
-          <span class='comment'># We do not already have an upload url created. The first upload request
-</span>          <span class='comment'># will need to make a request for an upload url. After the first upload
-</span>          <span class='comment'># each upload response will also include a new upload url which can be used 
-</span>          <span class='comment'># for the next upload when uploading to the same folder.
-</span>          <span class='id identifier rubyid_upload_url_response'>upload_url_response</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_upload_url'>get_upload_url</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='rparen'>)</span>
-          <span class='kw'>if</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span><span class='period'>.</span><span class='id identifier rubyid_is_error'>is_error</span>
-            <span class='kw'>return</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span>
-          <span class='kw'>end</span>
-          <span class='id identifier rubyid_upload_url'>upload_url</span> <span class='op'>=</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span><span class='period'>.</span><span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>upload_url</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-          <span class='kw'>if</span> <span class='ivar'>@debug</span>
-            <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Received upload url</span><span class='tstring_end'>&quot;</span></span>
-          <span class='kw'>end</span>
+            <span class='comment'># We do not already have an upload url created. The first upload request
+</span>            <span class='comment'># will need to make a request for an upload url. After the first upload
+</span>            <span class='comment'># each upload response will also include a new upload url which can be used 
+</span>            <span class='comment'># for the next upload when uploading to the same folder.
+</span>            <span class='id identifier rubyid_upload_url_response'>upload_url_response</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_upload_url'>get_upload_url</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='rparen'>)</span>
+            <span class='kw'>if</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span><span class='period'>.</span><span class='id identifier rubyid_is_error'>is_error</span>
+                <span class='kw'>return</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span>
+            <span class='kw'>end</span>
+            <span class='id identifier rubyid_upload_url'>upload_url</span> <span class='op'>=</span> <span class='id identifier rubyid_upload_url_response'>upload_url_response</span><span class='period'>.</span><span class='id identifier rubyid_get_result'>get_result</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>upload_url</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+            <span class='ivar'>@logger</span><span class='period'>.</span><span class='id identifier rubyid_debug'>debug</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Received new upload url</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+        <span class='kw'>else</span>
+            <span class='ivar'>@logger</span><span class='period'>.</span><span class='id identifier rubyid_debug'>debug</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Use prefetched upload url</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
         <span class='kw'>end</span>
 
         <span class='comment'># Build the data that gets sent in the POST request
-</span>        <span class='id identifier rubyid_post_data'>post_data</span> <span class='op'>=</span> <span class='id identifier rubyid_build_post_data'>build_post_data</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='comma'>,</span> 
-                                    <span class='id identifier rubyid_destination_file_name'>destination_file_name</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:destination_file_name</span><span class='rbracket'>]</span><span class='comma'>,</span>
-                                    <span class='id identifier rubyid_max_files_per_request'>max_files_per_request</span> <span class='op'>=</span> <span class='int'>25</span><span class='comma'>,</span> 
-                                    <span class='id identifier rubyid_max_request_size'>max_request_size</span> <span class='op'>=</span> <span class='int'>25165824</span><span class='comma'>,</span> 
-                                    <span class='id identifier rubyid_queue_processing'>queue_processing</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:queue_processing</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span><span class='comma'>,</span>
-                                    <span class='id identifier rubyid_webhook_url'>webhook_url</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:webhook_url</span><span class='rbracket'>]</span><span class='comma'>,</span>
-                                    <span class='id identifier rubyid_webhook_format'>webhook_format</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:webhook_format</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+</span>        <span class='id identifier rubyid_post_data'>post_data</span> <span class='op'>=</span> <span class='id identifier rubyid_build_post_data'>build_post_data</span><span class='lparen'>(</span><span class='symbol'>:destination_path</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_destination_path'>destination_path</span><span class='comma'>,</span>
+                                    <span class='symbol'>:destination_file_name</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:destination_file_name</span><span class='rbracket'>]</span><span class='comma'>,</span>
+                                    <span class='symbol'>:queue_processing</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:queue_processing</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span><span class='comma'>,</span>
+                                    <span class='symbol'>:webhook_url</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:webhook_url</span><span class='rbracket'>]</span><span class='comma'>,</span>
+                                    <span class='symbol'>:webhook_format</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:webhook_format</span><span class='rbracket'>]</span><span class='rparen'>)</span>
 
         <span class='comment'># Build the request to send to the API
 </span>        <span class='comment'># Uses the Faraday: https://github.com/lostisland/faraday
 </span>        <span class='id identifier rubyid_conn'>conn</span> <span class='op'>=</span> <span class='const'>Faraday</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_req'>req</span><span class='op'>|</span>
-          <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>User-Agent</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='cvar'>@@user_agent</span>
+          <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+            <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>User-Agent</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='cvar'>@@user_agent</span>
+          <span class='rbrace'>}</span>
           <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span> <span class='symbol'>:multipart</span>
           <span class='id identifier rubyid_req'>req</span><span class='period'>.</span><span class='id identifier rubyid_adapter'>adapter</span> <span class='symbol'>:net_http</span>
         <span class='kw'>end</span>
@@ -2296,10 +2370,8 @@ have the data formatted as either `json` or `xml`. The defautl format is
 
         <span class='comment'># w00t! Convert the http response into APIResponse and see what&#39;s up
 </span>        <span class='id identifier rubyid_upload_response'>upload_response</span> <span class='op'>=</span> <span class='const'>APIResponse</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_http_response'>http_response</span><span class='rparen'>)</span>
-        <span class='kw'>if</span> <span class='ivar'>@debug</span>
-          <span class='kw'>for</span> <span class='id identifier rubyid_msg'>msg</span> <span class='kw'>in</span> <span class='id identifier rubyid_upload_response'>upload_response</span><span class='period'>.</span><span class='id identifier rubyid_msgs'>msgs</span>
-            <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Upload </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_msg'>msg</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>status</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_msg'>msg</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>text</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-          <span class='kw'>end</span>
+        <span class='kw'>for</span> <span class='id identifier rubyid_msg'>msg</span> <span class='kw'>in</span> <span class='id identifier rubyid_upload_response'>upload_response</span><span class='period'>.</span><span class='id identifier rubyid_msgs'>msgs</span>
+            <span class='ivar'>@logger</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Upload </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_msg'>msg</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>status</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_msg'>msg</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>text</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
         <span class='kw'>end</span>
 
         <span class='comment'># merge the two together so we build one awesome response
@@ -2309,13 +2381,19 @@ have the data formatted as either `json` or `xml`. The defautl format is
         <span class='comment'># Read the response and see what we got
 </span>        <span class='kw'>if</span> <span class='id identifier rubyid_upload_response'>upload_response</span><span class='period'>.</span><span class='id identifier rubyid_is_server_error'>is_server_error</span>
             <span class='comment'># There was a server error, empty the active upload queue
-</span>            <span class='id identifier rubyid_failed_upload_attempt'>failed_upload_attempt</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='rparen'>)</span>            
-            
+</span>            <span class='id identifier rubyid_failed_upload_attempt'>failed_upload_attempt</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='rparen'>)</span>
+            <span class='ivar'>@logger</span><span class='period'>.</span><span class='id identifier rubyid_error'>error</span><span class='lparen'>(</span><span class='id identifier rubyid_upload_response'>upload_response</span><span class='period'>.</span><span class='id identifier rubyid_body'>body</span><span class='rparen'>)</span>
+
+            <span class='comment'># put the upload url back in the list
+</span>            <span class='comment'># of prefetched urls so it can be reused
+</span>            <span class='id identifier rubyid_set_prefetched_upload_url'>set_prefetched_upload_url</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='comma'>,</span> <span class='id identifier rubyid_upload_url'>upload_url</span><span class='rparen'>)</span>
         <span class='kw'>else</span>
             <span class='comment'># successful upload, clear out the active upload queue
 </span>            <span class='comment'># and remove uploaded files from the upload queue
 </span>            <span class='id identifier rubyid_successful_upload_attempt'>successful_upload_attempt</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='rparen'>)</span>
             
+            <span class='ivar'>@logger</span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Successful upload</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
             <span class='comment'># an upload response also contains a new upload url. 
 </span>            <span class='comment'># Save it for the next upload to the same destination.
 </span>            <span class='id identifier rubyid_set_prefetched_upload_url'>set_prefetched_upload_url</span><span class='lparen'>(</span><span class='id identifier rubyid_destination_path'>destination_path</span><span class='comma'>,</span>
@@ -2336,7 +2414,7 @@ have the data formatted as either `json` or `xml`. The defautl format is
 </div>
 
     <div id="footer">
-  Generated on Sun Aug  4 20:09:52 2013 by
+  Generated on Sat Sep 21 21:40:22 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.5.2 (ruby-2.0.0).
 </div>

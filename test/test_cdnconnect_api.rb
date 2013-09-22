@@ -93,7 +93,7 @@ class CDNConnectApiTest < Test::Unit::TestCase
     options = { :destination_path => 'url', :source_file_path => test_files_folder + '/DSCN0251.JPG' }
     api_client.build_upload_queue(options)
     assert_equal 1, api_client.upload_queue.length
-    api_client.build_post_data('url', max_files_per_request = 25, max_request_size = 25165824, async = true)
+    api_client.build_post_data(:destination_path => 'url', :max_files_per_request => 25, :max_request_size => 25165824, :queue_processing => true)
     api_client.successful_upload_attempt('url')
     assert_equal 0, api_client.upload_queue.length
     
@@ -101,7 +101,7 @@ class CDNConnectApiTest < Test::Unit::TestCase
     options = { :destination_path => 'url2', :source_file_paths => [ test_files_folder + '/DSCN0251.JPG', test_files_folder + '/IMAG0355.jpg'] }
     api_client.build_upload_queue(options)
     assert_equal 1, api_client.upload_queue.length
-    api_client.build_post_data('url2')
+    api_client.build_post_data(:destination_path => 'url2')
     api_client.successful_upload_attempt('url2')
     assert_equal 0, api_client.upload_queue.length
     
@@ -116,7 +116,7 @@ class CDNConnectApiTest < Test::Unit::TestCase
     
     api_client.add_source_to_upload_queue('url', test_files_folder + '/DSCN0251.JPG')
     api_client.add_source_to_upload_queue('url', test_files_folder + '/IMAG0355.jpg')
-    post_data = api_client.build_post_data('url')
+    post_data = api_client.build_post_data(:destination_path => 'url')
     assert_equal 2, post_data[:file].length
     assert_equal 1, api_client.upload_queue.length
     
@@ -125,7 +125,7 @@ class CDNConnectApiTest < Test::Unit::TestCase
     assert_equal 0, api_client.failed_uploads.length
     assert_equal 1, api_client.upload_queue.length
     
-    post_data = api_client.build_post_data('url')
+    post_data = api_client.build_post_data(:destination_path => 'url')
     assert_equal 2, post_data[:file].length
     assert_equal 1, api_client.upload_queue.length
     
@@ -134,7 +134,7 @@ class CDNConnectApiTest < Test::Unit::TestCase
     assert_equal 0, api_client.failed_uploads.length
     assert_equal 1, api_client.upload_queue.length
     
-    post_data = api_client.build_post_data('url')
+    post_data = api_client.build_post_data(:destination_path => 'url')
     assert_equal 2, post_data[:file].length
     assert_equal 1, api_client.upload_queue.length
     
@@ -153,27 +153,40 @@ class CDNConnectApiTest < Test::Unit::TestCase
     test_files_folder = Dir.pwd + '/test/testfiles'
     
     api_client.add_source_to_upload_queue('url', test_files_folder + '/IMAG4501.jpg')
-    post_data = api_client.build_post_data('url', max_files_per_request = 2)
+    post_data = api_client.build_post_data(:destination_path => 'url', :max_files_per_request => 2)
     assert_equal 1, post_data[:file].length
     assert_equal 1, api_client.upload_queue.length
     api_client.successful_upload_attempt('url')
     
     api_client.add_source_to_upload_queue('url', test_files_folder + '/DSCN0251.JPG')
     api_client.add_source_to_upload_queue('url', test_files_folder + '/IMAG0355.jpg')
-    post_data = api_client.build_post_data('url', max_files_per_request = 2)
+    post_data = api_client.build_post_data(:destination_path => 'url', :max_files_per_request => 2)
     assert_equal 2, post_data[:file].length
     assert_equal 1, api_client.upload_queue.length
     api_client.successful_upload_attempt('url')
     assert_equal 0, api_client.upload_queue.length
     
     api_client.add_source_to_upload_queue('url', test_files_folder + '/DSCN0251.JPG')
+    assert_equal 1, api_client.upload_queue.length
+    assert_equal 1, api_client.upload_queue['url'].length
+    assert_equal({"attempts"=>0,"active"=>false}, api_client.upload_queue['url'][test_files_folder + '/DSCN0251.JPG'])
+
     api_client.add_source_to_upload_queue('url', test_files_folder + '/IMAG0355.jpg')
+    assert_equal 1, api_client.upload_queue.length
+    assert_equal 2, api_client.upload_queue['url'].length
+    assert_equal({"attempts"=>0,"active"=>false}, api_client.upload_queue['url'][test_files_folder + '/IMAG0355.jpg'])
+
     api_client.add_source_to_upload_queue('url', test_files_folder + '/IMAG4501.jpg')
-    post_data = api_client.build_post_data('url', max_files_per_request = 2)
+    assert_equal 1, api_client.upload_queue.length
+    assert_equal 3, api_client.upload_queue['url'].length
+    assert_equal({"attempts"=>0,"active"=>false}, api_client.upload_queue['url'][test_files_folder + '/IMAG4501.jpg'])
+
+    post_data = api_client.build_post_data(:destination_path => 'url', :max_files_per_request => 2)
     assert_equal 2, post_data[:file].length
+
     api_client.successful_upload_attempt('url')
     assert_equal 1, api_client.upload_queue.length
-    post_data = api_client.build_post_data('url', max_files_per_request = 2)
+    post_data = api_client.build_post_data(:destination_path => 'url', :max_files_per_request => 2)
     assert_equal 1, post_data[:file].length
     assert_equal 1, api_client.upload_queue.length
     api_client.successful_upload_attempt('url')
@@ -181,11 +194,11 @@ class CDNConnectApiTest < Test::Unit::TestCase
     
     api_client.add_source_to_upload_queue('url', test_files_folder + '/DSCN0251.JPG')
     api_client.add_source_to_upload_queue('url', test_files_folder + '/IMAG0355.jpg')
-    post_data = api_client.build_post_data('url', max_files_per_request = 2, max_request_size = 1000)
+    post_data = api_client.build_post_data(:destination_path => 'url', :max_files_per_request => 2, :max_request_size => 1000)
     assert_equal 1, post_data[:file].length
     api_client.successful_upload_attempt('url')
     assert_equal 1, api_client.upload_queue.length
-    post_data = api_client.build_post_data('url', max_files_per_request = 2, max_request_size = 1000)
+    post_data = api_client.build_post_data(:destination_path => 'url', :max_files_per_request => 2, :max_request_size => 1000)
     assert_equal 1, post_data[:file].length
     assert_equal 1, api_client.upload_queue.length
     api_client.successful_upload_attempt('url')
@@ -194,21 +207,21 @@ class CDNConnectApiTest < Test::Unit::TestCase
     api_client.add_source_to_upload_queue('url1', test_files_folder + '/DSCN0251.JPG')
     api_client.add_source_to_upload_queue('url2', test_files_folder + '/IMAG0355.jpg')
     api_client.add_source_to_upload_queue('url3', test_files_folder + '/IMAG4501.jpg')
-    post_data = api_client.build_post_data('url1', max_files_per_request = 2)
+    post_data = api_client.build_post_data(:destination_path => 'url1', :max_files_per_request => 2)
     assert_equal 1, post_data[:file].length
     assert_equal 3, api_client.upload_queue.length
     
     api_client.successful_upload_attempt('url1')
     assert_equal 2, api_client.upload_queue.length
     
-    post_data = api_client.build_post_data('url2', max_files_per_request = 2)
+    post_data = api_client.build_post_data(:destination_path => 'url2', :max_files_per_request => 2)
     assert_equal 1, post_data[:file].length
     assert_equal 2, api_client.upload_queue.length
     
     api_client.successful_upload_attempt('url2')
     assert_equal 1, api_client.upload_queue.length
     
-    post_data = api_client.build_post_data('url3', max_files_per_request = 2)
+    post_data = api_client.build_post_data(:destination_path => 'url3', :max_files_per_request => 2)
     assert_equal 1, post_data[:file].length
     assert_equal 1, api_client.upload_queue.length
     

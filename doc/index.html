@@ -61,7 +61,7 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><div id='filecontents'><h1>CDN Connect API Ruby Client, v0.2.4</h1>
+    <div id="content"><div id='filecontents'><h1>CDN Connect API Ruby Client, v0.3.0</h1>
 
 <p>CDN Connect makes it easier to manage production assets for teams of developers and designers, all while serving files from a fast content delivery network. Features include image optimization, resizing, cropping, filters, changing output formats, convert to WebP image format, etc. The CDN Connect API Ruby Client makes it easier to upload files and interact with the API with only a few lines of code.</p>
 
@@ -108,7 +108,7 @@
 <li><code>valid_extensions</code> : An array of valid extensions which should be uploaded. This is only applied when the <code>source_folder_path</code> options is used. If nothing is provided, which is the default, all files within the folder are uploaded. The extensions should be in all lower case, and they should not contain a period or asterisks. Example <code>valid_extensions =&gt; [&#39;js&#39;, &#39;css&#39;, &#39;jpg&#39;, jpeg&#39;, &#39;png&#39;, &#39;gif&#39;, &#39;webp&#39;]</code></li>
 <li><code>recursive_local_folders</code> : A true or false value indicating if this call should recursively upload all of the local folder&#39;s sub-folders, and their sub-folders, etc. This option is only used when the <code>source_folder_path</code> option is used.</li>
 <li><code>destination_file_name</code> : The name which the uploaded file should be renamed to. By default the file name will be the same as the file being uploaded. The <code>destination_file_name</code> option is only used for a single file upload, it does not work for multiple file requests.</li>
-<li><code>queue_processing</code> : A true or false value indicating if the processing of the data should be queued or processed immediately. A response with &quot;queued_processing&quot; will be faster because the resposne doesn&#39;t wait on the system to complete processing the data. However, because an queued processing response does not wait for the data to complete processing then the response will not contain any information about the data which was just uploaded. Use queued processing only if you do not need to know the details of the upload. Additionally you can use the <code>webhook_url</code> to post back the uploads details once it&#39;s processed. Default is false.</li>
+<li><code>queue_processing</code> : A true or false value indicating if the processing of the data should be queued or processed immediately. A response with &quot;queued_processing&quot; will be faster because the resposne doesn&#39;t wait on the system to complete processing the data. However, because an queued processing response does not wait for the data to complete processing then the response will not contain any information about the data which was just uploaded. Use queued processing only if you do not need to know the details of the upload. Additionally you can use the <code>webhook_url</code> to post back the uploads details once it&#39;s processed. Default is true.</li>
 <li><code>webhook_url</code> : A URL which the system should <code>POST</code> the response to. This works for both immediate processing or queued processing calls. The data sent to the <code>webhook_url</code> will be the same as the data that is responded in a synchronous response, and is sent within the <code>data</code> parameter. The format sent can be in either <code>json</code> or <code>xml</code> by using the <code>webhook_format</code> parameter. By default there is no webhook URL.</li>
 <li><code>webhook_format</code> : When a <code>webhook_url</code> is provided, you can have the data formatted as either <code>json</code> or <code>xml</code>. The defautl format is <code>json</code>.</li>
 </ul>
@@ -180,7 +180,7 @@ in a folder.</p>
 
 <h2>API Response</h2>
 
-<p>HTTP responses will be formatted in json, but the library takes the HTTP response and decodes into a hash for the <code>APIResponse</code> class. The <code>APIResponse</code> class is used to simpilfy things by using helper functions to read response data. Responses from the API are all structured the same way, and this class is used as a small wrapper to make it easier to get data from it.</p>
+<p>HTTP responses will be formatted in json, but the library takes the HTTP response and decodes into a hash for the <code>APIResponse</code> class. The <code>APIResponse</code> class is used to simpilfy things by using helper functions to read response data. Responses from the API are all structured the same way, and this class is used as a small wrapper to make it easier to get data from it. Note: Be sure to set the :queue_processing =&gt; false upload option if you would like to get the upload info the upload&#39;s response.</p>
 
 <ul>
 <li><code>files</code> : <code>array</code> : A list of all the files that were uploaded. Each file in the array is a hash.</li>
@@ -199,7 +199,8 @@ in a folder.</p>
 
 <pre class="code ruby"><code class="ruby"><span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_is_success'>is_success</span>
 
-    <span class='kw'>for</span> <span class='id identifier rubyid_file'>file</span> <span class='kw'>in</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_files'>files</span>
+    <span class='comment'># Be sure to set the :queue_processing =&gt; false upload option if you would like to get the upload info like the response below
+</span>    <span class='kw'>for</span> <span class='id identifier rubyid_file'>file</span> <span class='kw'>in</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_files'>files</span>
         <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Uploaded </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_file'>file</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
     <span class='kw'>end</span>
 
@@ -236,7 +237,7 @@ in a folder.</p>
 </div></div>
 
     <div id="footer">
-  Generated on Sun Aug  4 20:09:52 2013 by
+  Generated on Sat Sep 21 21:40:22 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.5.2 (ruby-2.0.0).
 </div>
