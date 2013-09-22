@@ -26,7 +26,7 @@ module CDNConnect
   class APIClient
   
     @@application_name = 'cdnconnect-api-ruby'
-    @@application_version = '0.3.0'
+    @@application_version = '0.3.1'
     @@user_agent = @@application_name + ' v' + @@application_version
     @@api_host = 'https://api.cdnconnect.com'
     @@api_version = 'v1'
@@ -250,6 +250,9 @@ module CDNConnect
                 # put the upload url back in the list
                 # of prefetched urls so it can be reused
                 set_prefetched_upload_url(destination_path, upload_url)
+
+                # take a breath
+                sleep 1.5
             else
                 # successful upload, clear out the active upload queue
                 # and remove uploaded files from the upload queue
@@ -609,6 +612,8 @@ module CDNConnect
                 return response
             end
             @logger.error(response.body)
+            # take a breath
+            sleep 1.5
             i += 1
         end while i <= 3
     end

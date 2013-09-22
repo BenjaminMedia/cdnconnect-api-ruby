@@ -1,3 +1,8 @@
+# 0.3.1
+
+ * Added timeout of 1.5 seconds after an upload error
+
+
 # 0.3.0
 
 * Reuse the same upload url if there is an upload error
