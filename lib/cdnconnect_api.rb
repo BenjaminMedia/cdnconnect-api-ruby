@@ -15,6 +15,7 @@
 require 'faraday'
 require 'signet/oauth_2/client'
 require 'cdnconnect_api/response'
+require 'logger'
 
 
 module CDNConnect
@@ -24,7 +25,7 @@ module CDNConnect
   class APIClient
   
     @@application_name = 'cdnconnect-api-ruby'
-    @@application_version = '0.2.5'
+    @@application_version = '0.3.1'
     @@user_agent = @@application_name + ' v' + @@application_version
     @@api_host = 'https://api.cdnconnect.com'
     @@api_version = 'v1'
@@ -67,40 +68,48 @@ module CDNConnect
     #   - <code>:app_host</code> -
     #     The CDN Connect App host. For example, demo.cdnconnect.com is a CDN Connect
     #     app host. The app host should not include https://, http:// or a URL path.
-    #   - <code>:debug</code> -
-    #     Print out any debugging information. Default is false.
+    #   - <code>:log_device</code> -
+    #     Ruby Logger logdev argument in Logger.new(logdev). Defaults to STDOUT.
     def initialize(options={})
-      # Normalize key to String to allow indifferent access.
-      options = options.inject({}) { |accu, (k, v)| accu[k.to_s] = v; accu }
-      
-      # Initialize all of the options
-      @client_id = options["client_id"]
-      @client_secret = options["client_secret"]
-      @scope = options["scope"]
-      @state = options["state"]
-      @code = options["code"]
-      @redirect_uri = options["redirect_uri"]
-      options["access_token"] = options["access_token"] || options["api_key"] # both work
-      @access_token = options["access_token"]
-      @app_host = options["app_host"]
-      @debug = options["debug"] || false
-      @prefetched_upload_urls = {}
-      @upload_queue = {}
-      @failed_uploads = []
-      
-      if options["api_key"] != nil and options["app_host"] == nil
-        raise ArgumentError, 'app_host option required when using api_key option'
-      end
+        # Normalize key to String to allow indifferent access.
+        options = options.inject({}) { |accu, (k, v)| accu[k.to_s] = v; accu }
 
-      # Create the OAuth2 client which will be used to authorize the requests
-      @client = Signet::OAuth2::Client.new(:client_id => client_id,
-                                           :client_secret => @client_secret,
-                                           :scope => @scope,
-                                           :state => @state,
-                                           :code => @code,
-                                           :redirect_uri => @redirect_uri,
-                                           :access_token => @access_token)
-      return self
+        # Initialize all of the options
+        @client_id = options["client_id"]
+        @client_secret = options["client_secret"]
+        @scope = options["scope"]
+        @state = options["state"]
+        @code = options["code"]
+        @redirect_uri = options["redirect_uri"]
+        options["access_token"] = options["access_token"] || options["api_key"] # both work
+        @access_token = options["access_token"]
+        @app_host = options["app_host"]
+        @@api_host = options["api_host"] || @@api_host
+        @prefetched_upload_urls = {}
+        @upload_queue = {}
+        @failed_uploads = []
+
+        log_device = options["log_device"] || STDOUT
+        @logger = Logger.new(log_device, 10, 1024000)
+        @logger.sev_threshold = options["log_sev_threshold"] || Logger::WARN
+
+        if options["api_key"] != nil and options["app_host"] == nil
+            err_msg = 'app_host option required when using api_key option'
+            @logger.error(err_msg)
+            raise ArgumentError, err_msg
+        end
+
+        @logger.debug("#{@@user_agent}, #{@@api_host}")
+
+        # Create the OAuth2 client which will be used to authorize the requests
+        @client = Signet::OAuth2::Client.new(:client_id => client_id,
+                                             :client_secret => @client_secret,
+                                             :scope => @scope,
+                                             :state => @state,
+                                             :code => @code,
+                                             :redirect_uri => @redirect_uri,
+                                             :access_token => @access_token)
+        return self
     end
 
 
@@ -182,40 +191,38 @@ module CDNConnect
             
             # Get the destination_path in the list of upload queues
             destination_path = @upload_queue.keys[0]
-            if @debug
-                puts "Upload destination_path: #{destination_path}"
-            end
+            @logger.debug("destination_path: #{destination_path}")
       
             # Check if we have a prefetched upload url before requesting a new one
             upload_url = get_prefetched_upload_url(destination_path)
             if upload_url == nil
-              # We do not already have an upload url created. The first upload request
-              # will need to make a request for an upload url. After the first upload
-              # each upload response will also include a new upload url which can be used 
-              # for the next upload when uploading to the same folder.
-              upload_url_response = self.get_upload_url(destination_path)
-              if upload_url_response.is_error
-                return upload_url_response
-              end
-              upload_url = upload_url_response.get_result('upload_url')
-              if @debug
-                puts "Received upload url"
-              end
+                # We do not already have an upload url created. The first upload request
+                # will need to make a request for an upload url. After the first upload
+                # each upload response will also include a new upload url which can be used 
+                # for the next upload when uploading to the same folder.
+                upload_url_response = self.get_upload_url(destination_path)
+                if upload_url_response.is_error
+                    return upload_url_response
+                end
+                upload_url = upload_url_response.get_result('upload_url')
+                @logger.debug("Received new upload url")
+            else
+                @logger.debug("Use prefetched upload url")
             end
 
             # Build the data that gets sent in the POST request
-            post_data = build_post_data(destination_path, 
-                                        destination_file_name = options[:destination_file_name],
-                                        max_files_per_request = 25, 
-                                        max_request_size = 25165824, 
-                                        queue_processing = options.fetch(:queue_processing, false),
-                                        webhook_url = options[:webhook_url],
-                                        webhook_format = options[:webhook_format])
+            post_data = build_post_data(:destination_path => destination_path,
+                                        :destination_file_name => options[:destination_file_name],
+                                        :queue_processing => options.fetch(:queue_processing, true),
+                                        :webhook_url => options[:webhook_url],
+                                        :webhook_format => options[:webhook_format])
 
             # Build the request to send to the API
             # Uses the Faraday: https://github.com/lostisland/faraday
             conn = Faraday.new() do |req|
-              req.headers['User-Agent'] = @@user_agent
+              req.headers = {
+                'User-Agent' => @@user_agent
+              }
               req.request :multipart
               req.adapter :net_http
             end
@@ -225,10 +232,8 @@ module CDNConnect
 
             # w00t! Convert the http response into APIResponse and see what's up
             upload_response = APIResponse.new(http_response)
-            if @debug
-              for msg in upload_response.msgs
-                puts "Upload " + msg["status"] + ": " + msg["text"]
-              end
+            for msg in upload_response.msgs
+                @logger.info("Upload " + msg["status"] + ": " + msg["text"])
             end
 
             # merge the two together so we build one awesome response
@@ -238,13 +243,22 @@ module CDNConnect
             # Read the response and see what we got
             if upload_response.is_server_error
                 # There was a server error, empty the active upload queue
-                failed_upload_attempt(destination_path)            
-                
+                failed_upload_attempt(destination_path)
+                @logger.error(upload_response.body)
+
+                # put the upload url back in the list
+                # of prefetched urls so it can be reused
+                set_prefetched_upload_url(destination_path, upload_url)
+
+                # take a breath
+                sleep 1.5
             else
                 # successful upload, clear out the active upload queue
                 # and remove uploaded files from the upload queue
                 successful_upload_attempt(destination_path)
                 
+                @logger.info("Successful upload")
+
                 # an upload response also contains a new upload url. 
                 # Save it for the next upload to the same destination.
                 set_prefetched_upload_url(destination_path,
@@ -260,10 +274,14 @@ module CDNConnect
     ##
     # Build the POST data that gets sent in the request
     # @!visibility private
-    def build_post_data(destination_path, destination_file_name = nil, max_files_per_request = 25, max_request_size = 25165824, queue_processing = false, webhook_url = nil, webhook_format = nil)
+    def build_post_data(options)
         # @active_uploads will hold all of the upload keys  
         # which are actively being uploaded.
         @active_uploads = []
+
+        # set defaults
+        max_files_per_request = options[:max_files_per_request] || 25
+        max_request_size = options[:max_request_size] || 25165824
         
         # post_data will contain all of the data that gets sent
         post_data = {}
@@ -273,18 +291,20 @@ module CDNConnect
         
         # the set what the file name will be. By default it will be named the same as
         # the uploaded file. This will only work for single file uploads.
-        post_data[:destination_file_name] = destination_file_name
+        post_data[:destination_file_name] = options[:destination_file_name]
 
         # Processing of the data can be queued. However, an `queue_processing` response
         # will not contain any information about the data uploaded.
-        post_data[:queue_processing] = queue_processing
+        if options[:queue_processing] == true
+            post_data[:queue_processing] = 'true'
+        end
 
         # send with the post data the webhook_url if there is one
-        if webhook_url != nil
-            post_data[:webhook_url] = webhook_url
+        if options[:webhook_url] != nil
+            post_data[:webhook_url] = options[:webhook_url]
             # send in the webhook_format, but defaults to json if nothing sent
-            if webhook_format != nil
-                post_data[:webhook_format] = webhook_format
+            if options[:webhook_format] != nil
+                post_data[:webhook_format] = options[:webhook_format]
             end
         end
         
@@ -301,19 +321,21 @@ module CDNConnect
         total_files = 0
         
         # Add each source file in the queue to the request as multipart-post data
-        @upload_queue[destination_path].each_pair do |source_file_path, value|
+        @upload_queue[ options[:destination_path] ].each_pair do |source_file_path, value|
         
             # Figure out how large this file is
             file_size = File.stat(source_file_path).size
+
+            @logger.debug(" - #{source_file_path} (#{human_file_size(file_size)})")
 
             # Add this file's size to the overall request size total
             total_request_size += file_size
         
             # Increment the upload attempts for this file
-            @upload_queue[destination_path][source_file_path]['attempts'] += 1
+            @upload_queue[ options[:destination_path] ][source_file_path]['attempts'] += 1
             
             # Set that this file is actively being uploaded
-            @upload_queue[destination_path][source_file_path]['active'] = true
+            @upload_queue[ options[:destination_path] ][source_file_path]['active'] = true
         
             # Add the source file it to the request's post data
             post_data[:file].push( Faraday::UploadIO.new(source_file_path, mime_type) )
@@ -323,17 +345,17 @@ module CDNConnect
             if total_request_size > max_request_size
                 # If the total request size is larger than the max
                 # then do not add any more files
+                @logger.debug(" - Reached max request size per request")
                 break
             elsif total_files >= max_files_per_request
                 # only add XX files per post request
                 # any left over will be picked up in the next upload
+                @logger.debug(" - Reached max files per request")
                 break
             end
         end
         
-        if @debug
-            puts "Upload request, File Count: #{total_files}, File Size: #{total_request_size} bytes"
-        end
+        @logger.info(" - Upload, File Count: #{total_files}, File Size: #{human_file_size(total_request_size)}")
 
         return post_data
     end
@@ -361,9 +383,8 @@ module CDNConnect
     # If it was attempted too many times then remove it from the queue.
     # @!visibility private
     def failed_upload_attempt(destination_path)
-        if @debug
-            puts "failed_upload_attempt: #{destination_path}"
-        end
+        @logger.error("failed_upload_attempt: #{destination_path}")
+
         # Loop through each active upload for the destination folder url
         if @upload_queue.has_key?(destination_path)
             # Loop through each file for this destination folder
@@ -549,10 +570,10 @@ module CDNConnect
     # already have an upload url ready to go for the folder we're uploading to.
     # @!visibility private
     def get_prefetched_upload_url(destination_path)
-      # Build a unique key for the folder which was used to save an new upload url
-      rtn_url = @prefetched_upload_urls[destination_path]
-      @prefetched_upload_urls[destination_path] = nil
-      return rtn_url
+        # Build a unique key for the folder which was used to save an new upload url
+        rtn_url = @prefetched_upload_urls[destination_path]
+        @prefetched_upload_urls[destination_path] = nil
+        return rtn_url
     end
 
 
@@ -561,8 +582,8 @@ module CDNConnect
     # for the next upload to this folder.
     # @!visibility private
     def set_prefetched_upload_url(destination_path, upload_url)
-      # Build a unique key for the folder to save an new upload url value to
-      @prefetched_upload_urls[destination_path] = upload_url
+        # Build a unique key for the folder to save an new upload url value to
+        @prefetched_upload_urls[destination_path] = upload_url
     end
 
 
@@ -572,16 +593,28 @@ module CDNConnect
     # used to eliminate the need to do seperate requests for an upload url.
     # @!visibility private
     def get_upload_url(destination_path)
-      api_path = destination_path + '/upload.json'
-
-      i = 1
-      begin
-        response = get(api_path)
-        if not response.is_server_error or i > 2
-          return response
+        if destination_path == "/"
+            destination_path = ""
         end
-        i += 1
-      end while i <= 3
+        upload_id = Random.new.rand(1_000_000..9_999_999)
+        api_path = "#{destination_path}/upload-#{upload_id}.json"
+
+        @logger.debug("get_upload_url: #{api_path}")
+
+        i = 1
+        begin
+            response = get(api_path)
+            if not response.is_server_error
+                return response
+            elsif i > 2
+                @logger.error("Too many get_upload_url attempts")
+                return response
+            end
+            @logger.error(response.body)
+            # take a breath
+            sleep 1.5
+            i += 1
+        end while i <= 3
     end
 
     
@@ -659,7 +692,7 @@ module CDNConnect
     # @param data [Hash] Data which will be placed in the GET request's querystring. (Optional)
     # @return [APIResponse] A response object with helper methods to read the response.
     def get(api_path, data={})
-      fetch(:api_path => api_path, :method => 'GET', :data => data)
+        fetch(:api_path => api_path, :method => 'GET', :data => data)
     end
 
 
@@ -671,7 +704,7 @@ module CDNConnect
     # @param data [Hash] Data which will be sent in the POST request.
     # @return [APIResponse] A response object with helper methods to read the response.
     def post(api_path, data)
-      fetch(:api_path => api_path, :method => 'POST', :data => data)
+        fetch(:api_path => api_path, :method => 'POST', :data => data)
     end
 
 
@@ -683,7 +716,7 @@ module CDNConnect
     # @param data [Hash] Data which will be sent in the PUT request.
     # @return [APIResponse] A response object with helper methods to read the response.
     def put(api_path, data)
-      fetch(:api_path => api_path, :method => 'PUT', :data => data)
+        fetch(:api_path => api_path, :method => 'PUT', :data => data)
     end
 
 
@@ -694,7 +727,7 @@ module CDNConnect
     # @param api_path [String] The API path to send the DELETE request to.
     # @return [APIResponse] A response object with helper methods to read the response.
     def delete(api_path)
-      fetch(:api_path => api_path, :method => 'DELETE')
+        fetch(:api_path => api_path, :method => 'DELETE')
     end
     
 
@@ -703,26 +736,26 @@ module CDNConnect
     # and make it all pretty before firing off the request to the API.
     # @!visibility private
     def prepare(options={})
-      if options[:api_path] == nil
-        raise ArgumentError, 'missing api path'
-      end
+        if options[:api_path] == nil
+            raise ArgumentError, 'missing api path'
+        end
 
-      options[:headers] = { 'User-Agent' => @@user_agent }
-      options[:uri] = "#{@@api_host}/#{@@api_version}/#{@app_host}#{options[:api_path]}"
+        options[:headers] = { 'User-Agent' => @@user_agent }
+        options[:uri] = "#{@@api_host}/#{@@api_version}/#{@app_host}#{options[:api_path]}"
 
-      options[:method] = options[:method] || 'GET'
+        options[:method] = options[:method] || 'GET'
 
-      if options[:method] == 'GET' and options[:data] != nil and options[:data].length > 0
-        require "addressable/uri"
-        uri = Addressable::URI.new
-        uri.query_values = options[:data]
-        options[:uri] = "#{options[:uri]}?#{uri.query}"
-        options[:data] = nil
-      end
+        if options[:method] == 'GET' and options[:data] != nil and options[:data].length > 0
+            require "addressable/uri"
+            uri = Addressable::URI.new
+            uri.query_values = options[:data]
+            options[:uri] = "#{options[:uri]}?#{uri.query}"
+            options[:data] = nil
+        end
 
-      options[:url] = options[:uri]
-      
-      options
+        options[:url] = options[:uri]
+
+        options
     end
 
 
@@ -730,37 +763,30 @@ module CDNConnect
     # Guts of an authorized request. Do not call this directly.
     # @!visibility private
     def fetch(options={})
-      # Prepare the data to be shipped in the request
-      options = prepare(options)
+        # Prepare the data to be shipped in the request
+        options = prepare(options)
 
-      if @debug
-        puts options[:method] + ': ' + options[:uri]
-      end
+        @logger.debug(options[:method] + ': ' + options[:uri])
 
-      begin
-        # Send the request and get the response
-        options[:body] = options[:data]
-        http_response = @client.fetch_protected_resource(options)
+        begin
+            # Send the request and get the response
+            options[:body] = options[:data]
+            http_response = @client.fetch_protected_resource(options)
 
-        # Return the API response
-        api_response = APIResponse.new(http_response)
+            # Return the API response
+            api_response = APIResponse.new(http_response)
 
-        if @debug
             for msg in api_response.msgs
-                puts msg["status"] + ": " + msg["text"]
+                @logger.debug(msg["status"] + ": " + msg["text"])
             end
-        end
 
-        return api_response
-      rescue Signet::AuthorizationError => authorization_error
-        # whoopsy doodle. Probably an incorrect API Key or App Host. 
-        # Validate your authorization info.
-        if @debug
-          puts authorization_error
+            return api_response
+        rescue Signet::AuthorizationError => authorization_error
+            # whoopsy doodle. Probably an incorrect API Key or App Host. 
+            # Validate your authorization info.
+            @logger.error(authorization_error)
+            return APIResponse.new(authorization_error.response)
         end
-        return APIResponse.new(authorization_error.response)
-      end
-
     end
 
 
@@ -771,7 +797,7 @@ module CDNConnect
     #
     # @return [String]
     def client_id
-      @client_id
+        @client_id
     end
 
 
@@ -783,7 +809,7 @@ module CDNConnect
     #
     # @return [String]
     def client_secret
-      @client_secret
+        @client_secret
     end
 
 
@@ -794,7 +820,7 @@ module CDNConnect
     #
     # @return [String]
     def scope
-      @scope
+        @scope
     end
 
 
@@ -805,7 +831,7 @@ module CDNConnect
     #
     # @return [String]
     def state
-      @state
+        @state
     end
 
 
@@ -813,7 +839,7 @@ module CDNConnect
     # OAuth2 value. The authorization code received from the authorization server.
     # @return [String]
     def code
-      @code
+        @code
     end
 
 
@@ -821,7 +847,7 @@ module CDNConnect
     # OAuth2 value. The redirection URI used in the initial request.
     # @return [String]
     def redirect_uri
-      @redirect_uri
+        @redirect_uri
     end
 
 
@@ -831,7 +857,7 @@ module CDNConnect
     #
     # @return [String]
     def access_token
-      @access_token
+        @access_token
     end
 
 
@@ -841,7 +867,7 @@ module CDNConnect
     #
     # @return [String]
     def app_host
-      @app_host
+        @app_host
     end
 
 
@@ -851,7 +877,7 @@ module CDNConnect
     # @return [Hash]
     # @!visibility private
     def upload_queue
-      @upload_queue
+        @upload_queue
     end
 
     ##
@@ -859,7 +885,14 @@ module CDNConnect
     #
     # @return [Array]
     def failed_uploads
-      @failed_uploads
+        @failed_uploads
+    end
+
+    def human_file_size(bytes)
+        units = %w{B KB MB GB TB}
+        e = (Math.log(bytes)/Math.log(1024)).floor
+        s = "%.2f" % (bytes.to_f / 1024**e)
+        s.sub(/\.?0*$/, units[e])
     end
 
   end
