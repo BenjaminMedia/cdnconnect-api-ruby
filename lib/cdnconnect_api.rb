@@ -596,7 +596,11 @@ module CDNConnect
         if destination_path == "/"
             destination_path = ""
         end
-        upload_id = Random.new.rand(1_000_000..9_999_999)
+        if RUBY_VERSION >= '1.9'
+            upload_id = Random.new.rand(1_000_000..9_999_999)
+        else
+            upload_id = ((9_999_999 - 1_000_000) * rand + 1_000_000).to_i
+        end
         api_path = "#{destination_path}/upload-#{upload_id}.json"
 
         @logger.debug("get_upload_url: #{api_path}")
